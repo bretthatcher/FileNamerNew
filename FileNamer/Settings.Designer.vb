@@ -39,6 +39,7 @@ Partial Class Settings
         Me.cbIndividualFolders = New System.Windows.Forms.CheckBox()
         Me.cbIncludeSubtitleFiles = New System.Windows.Forms.CheckBox()
         Me.cbMakeChanges = New System.Windows.Forms.CheckBox()
+        Me.Button1 = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'lblOriginalMovieFolder
@@ -195,11 +196,21 @@ Partial Class Settings
         Me.cbMakeChanges.Text = "Make Changes"
         Me.cbMakeChanges.UseVisualStyleBackColor = True
         '
+        'Button1
+        '
+        Me.Button1.Location = New System.Drawing.Point(372, 363)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(128, 32)
+        Me.Button1.TabIndex = 17
+        Me.Button1.Text = "Button1"
+        Me.Button1.UseVisualStyleBackColor = True
+        '
         'Settings
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(800, 450)
+        Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.cbMakeChanges)
         Me.Controls.Add(Me.cbIncludeSubtitleFiles)
         Me.Controls.Add(Me.cbIndividualFolders)
@@ -241,4 +252,5 @@ Partial Class Settings
     Friend WithEvents cbIndividualFolders As CheckBox
     Friend WithEvents cbIncludeSubtitleFiles As CheckBox
     Friend WithEvents cbMakeChanges As CheckBox
+    Friend WithEvents Button1 As Button
 End Class
