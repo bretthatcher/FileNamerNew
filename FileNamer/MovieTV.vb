@@ -1,33 +1,30 @@
-﻿''Imports System.IO
+﻿Imports System.IO
+Imports System.Text.RegularExpressions
 
-Imports System.Drawing.Text
 
-Public Class form1
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-        Call PopulateListBoxRecursively(ShowFolderChooser("g:\"), ListBox1)
-        'Dim aboutform As New About()
-        'aboutform.Show()
+Module MovieTV
+    Public mediadict As New Dictionary(Of String, String)
+
+    Public Sub ProcessFiles(ByVal mylistbox As ListBox)
+
+        For loopcount As Long = 0 To mylistbox.Items.Count - 1
+
+            If mylistbox.GetSelected(loopcount) = True Then
+
+                Dim OriginalFullPath As String = mylistbox.Items(loopcount)
+
+                Dim OriginalFileName As String = Path.GetFileNameWithoutExtension(OriginalFullPath)
+                Dim OriginalFileExt As String = Path.GetExtension(OriginalFullPath)
+                Dim OriginalFilePath As String = Path.GetDirectoryName(OriginalFullPath)
+
+                'File.Move(currentfile,)
+            End If
+
+        Next
+
     End Sub
 
-    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
-        Call ShowFolderChooser("g:\")
-    End Sub
-
-    Private Sub AboutToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AboutToolStripMenuItem.Click
-        Dim aboutform As New About()
-        aboutform.Show()
-    End Sub
-
-    Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
-        Dim settingsform As New Settings()
-        settingsform.Show()
-    End Sub
-
-    Private Sub OptionsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles OptionsToolStripMenuItem.Click
-        Dim settingsform As New Settings()
-        settingsform.Show()
-    End Sub
-    Private Sub GetMediaInfo(filepath As String)
+    Public Sub GetMediaInfo(filepath As String)
         Dim mywidth As Long
         Dim myheight As Long
         Dim MI As MediaInfo
@@ -38,7 +35,7 @@ Public Class form1
         mediadict.Add("VidWidth", MI.Get_(StreamKind.Visual, 0, "Width"))
         mediadict.Add("VidHeight", MI.Get_(StreamKind.Visual, 0, "Height"))
         mediadict.Add("VideoCodec", MI.Get_(StreamKind.Visual, 0, "Format"))
-        mediadict.Add("AudioChannels", MI.Get_(StreamKind.Audio, 0, "Channel(s)"))
+        mediadict.Add("AudioChannels", MI.Get_(StreamKind.Audio, 0, "Channel(s)") + "CH")
 
         MI.Close()
 
@@ -82,11 +79,11 @@ Public Class form1
         End If
 
     End Sub
-    Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
-        GetMediaInfo("G:\Movies\2 Fast 2 Furious (2003)\2 Fast 2 Furious (2003) 1080p HEVC 6CH.mp4")
-    End Sub
+    Public Sub GetMediaName(filename As String)
 
-    Private Sub GetMediaInfo2()
+
+    End Sub
+    Private Sub GetMediaInfo_Test()
         Dim To_Display As String
         Dim Temp As String
         Dim MI As MediaInfo
@@ -95,7 +92,7 @@ Public Class form1
         To_Display = MI.Option_("Info_Version", "0.7.0.0;MediaInfoDLL_Example_MSVB;0.7.0.0")
 
         If (To_Display.Length() = 0) Then
-            RichTextBox1.Text = "MediaInfo.Dll: this version of the DLL is not compatible"
+            MsgBox("MediaInfo.Dll: this version of the DLL is not compatible")
             Return
         End If
 
@@ -153,10 +150,8 @@ Public Class form1
         To_Display += vbCrLf + vbCrLf + "Get with Stream=Audio and Parameter='Codec/String'" + vbCrLf
         To_Display += MI.Get_(StreamKind.Audio, 0, "Channel(s)")
 
-        To_Display += RichTextBox1.Text + vbCrLf + vbCrLf + "Close" + vbCrLf
+        'To_Display += RichTextBox1.Text + vbCrLf + vbCrLf + "Close" + vbCrLf
         MI.Close()
 
-        'Displaying the text
-        RichTextBox1.Text = To_Display
     End Sub
-End Class
+End Module

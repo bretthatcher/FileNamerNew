@@ -2,7 +2,6 @@
 Imports System.Windows.Forms
 
 Module tools
-    Public mediadict As New Dictionary(Of String, String)
 
     Public Sub PopulateListBoxRecursively(folderPath As String, listBox As ListBox)
         ' Add all files in the current folder

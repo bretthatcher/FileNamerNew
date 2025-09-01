@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class form1
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
+Partial Class Main
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,9 +20,9 @@ Partial Class form1
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(form1))
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Main))
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
         Me.ToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.ExitToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -30,13 +30,18 @@ Partial Class form1
         Me.OptionsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.HelpToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.AboutToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ListBox1 = New System.Windows.Forms.ListBox()
-        Me.ListBox2 = New System.Windows.Forms.ListBox()
+        Me.lbOriginal = New System.Windows.Forms.ListBox()
+        Me.lbNew = New System.Windows.Forms.ListBox()
         Me.Button1 = New System.Windows.Forms.Button()
         Me.Button2 = New System.Windows.Forms.Button()
         Me.Button3 = New System.Windows.Forms.Button()
         Me.Button4 = New System.Windows.Forms.Button()
-        Me.RichTextBox1 = New System.Windows.Forms.RichTextBox()
+        Me.textOriginalFolder = New System.Windows.Forms.TextBox()
+        Me.btnOriginalFolder = New System.Windows.Forms.Button()
+        Me.lblOriginal = New System.Windows.Forms.Label()
+        Me.lblNew = New System.Windows.Forms.Label()
+        Me.btnNewFolder = New System.Windows.Forms.Button()
+        Me.textNewFolder = New System.Windows.Forms.TextBox()
         Me.MenuStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -45,7 +50,7 @@ Partial Class form1
         Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripMenuItem1, Me.SettingsToolStripMenuItem, Me.HelpToolStripMenuItem})
         Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip1.Name = "MenuStrip1"
-        Me.MenuStrip1.Size = New System.Drawing.Size(919, 24)
+        Me.MenuStrip1.Size = New System.Drawing.Size(1107, 24)
         Me.MenuStrip1.TabIndex = 0
         Me.MenuStrip1.Text = "MenuStrip1"
         '
@@ -88,21 +93,23 @@ Partial Class form1
         Me.AboutToolStripMenuItem.Size = New System.Drawing.Size(107, 22)
         Me.AboutToolStripMenuItem.Text = "About"
         '
-        'ListBox1
+        'lbOriginal
         '
-        Me.ListBox1.FormattingEnabled = True
-        Me.ListBox1.Location = New System.Drawing.Point(12, 54)
-        Me.ListBox1.Name = "ListBox1"
-        Me.ListBox1.Size = New System.Drawing.Size(372, 238)
-        Me.ListBox1.TabIndex = 1
+        Me.lbOriginal.BackColor = System.Drawing.Color.LightGreen
+        Me.lbOriginal.FormattingEnabled = True
+        Me.lbOriginal.Location = New System.Drawing.Point(12, 54)
+        Me.lbOriginal.Name = "lbOriginal"
+        Me.lbOriginal.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
+        Me.lbOriginal.Size = New System.Drawing.Size(510, 238)
+        Me.lbOriginal.TabIndex = 1
         '
-        'ListBox2
+        'lbNew
         '
-        Me.ListBox2.FormattingEnabled = True
-        Me.ListBox2.Location = New System.Drawing.Point(535, 54)
-        Me.ListBox2.Name = "ListBox2"
-        Me.ListBox2.Size = New System.Drawing.Size(372, 238)
-        Me.ListBox2.TabIndex = 2
+        Me.lbNew.FormattingEnabled = True
+        Me.lbNew.Location = New System.Drawing.Point(631, 54)
+        Me.lbNew.Name = "lbNew"
+        Me.lbNew.Size = New System.Drawing.Size(464, 238)
+        Me.lbNew.TabIndex = 2
         '
         'Button1
         '
@@ -140,30 +147,83 @@ Partial Class form1
         Me.Button4.Text = "Button4"
         Me.Button4.UseVisualStyleBackColor = True
         '
-        'RichTextBox1
+        'textOriginalFolder
         '
-        Me.RichTextBox1.Location = New System.Drawing.Point(369, 77)
-        Me.RichTextBox1.Name = "RichTextBox1"
-        Me.RichTextBox1.Size = New System.Drawing.Size(188, 278)
-        Me.RichTextBox1.TabIndex = 7
-        Me.RichTextBox1.Text = ""
+        Me.textOriginalFolder.BackColor = System.Drawing.SystemColors.Window
+        Me.textOriginalFolder.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.textOriginalFolder.Location = New System.Drawing.Point(200, 28)
+        Me.textOriginalFolder.Name = "textOriginalFolder"
+        Me.textOriginalFolder.Size = New System.Drawing.Size(301, 20)
+        Me.textOriginalFolder.TabIndex = 7
         '
-        'form1
+        'btnOriginalFolder
+        '
+        Me.btnOriginalFolder.Location = New System.Drawing.Point(504, 27)
+        Me.btnOriginalFolder.Name = "btnOriginalFolder"
+        Me.btnOriginalFolder.Size = New System.Drawing.Size(32, 27)
+        Me.btnOriginalFolder.TabIndex = 8
+        Me.btnOriginalFolder.Text = "Button5"
+        Me.btnOriginalFolder.UseVisualStyleBackColor = True
+        '
+        'lblOriginal
+        '
+        Me.lblOriginal.AutoSize = True
+        Me.lblOriginal.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblOriginal.Location = New System.Drawing.Point(12, 33)
+        Me.lblOriginal.Name = "lblOriginal"
+        Me.lblOriginal.Size = New System.Drawing.Size(70, 20)
+        Me.lblOriginal.TabIndex = 9
+        Me.lblOriginal.Text = "Original"
+        '
+        'lblNew
+        '
+        Me.lblNew.AutoSize = True
+        Me.lblNew.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblNew.Location = New System.Drawing.Point(634, 33)
+        Me.lblNew.Name = "lblNew"
+        Me.lblNew.Size = New System.Drawing.Size(43, 20)
+        Me.lblNew.TabIndex = 10
+        Me.lblNew.Text = "New"
+        '
+        'btnNewFolder
+        '
+        Me.btnNewFolder.Location = New System.Drawing.Point(1068, 27)
+        Me.btnNewFolder.Name = "btnNewFolder"
+        Me.btnNewFolder.Size = New System.Drawing.Size(32, 27)
+        Me.btnNewFolder.TabIndex = 12
+        Me.btnNewFolder.Text = "Button6"
+        Me.btnNewFolder.UseVisualStyleBackColor = True
+        '
+        'textNewFolder
+        '
+        Me.textNewFolder.BackColor = System.Drawing.SystemColors.Window
+        Me.textNewFolder.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.textNewFolder.Location = New System.Drawing.Point(764, 28)
+        Me.textNewFolder.Name = "textNewFolder"
+        Me.textNewFolder.Size = New System.Drawing.Size(301, 20)
+        Me.textNewFolder.TabIndex = 11
+        '
+        'Main
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(919, 470)
-        Me.Controls.Add(Me.RichTextBox1)
+        Me.ClientSize = New System.Drawing.Size(1107, 535)
+        Me.Controls.Add(Me.btnNewFolder)
+        Me.Controls.Add(Me.textNewFolder)
+        Me.Controls.Add(Me.lblNew)
+        Me.Controls.Add(Me.lblOriginal)
+        Me.Controls.Add(Me.btnOriginalFolder)
+        Me.Controls.Add(Me.textOriginalFolder)
         Me.Controls.Add(Me.Button4)
         Me.Controls.Add(Me.Button3)
         Me.Controls.Add(Me.Button2)
         Me.Controls.Add(Me.Button1)
-        Me.Controls.Add(Me.ListBox2)
-        Me.Controls.Add(Me.ListBox1)
+        Me.Controls.Add(Me.lbNew)
+        Me.Controls.Add(Me.lbOriginal)
         Me.Controls.Add(Me.MenuStrip1)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MainMenuStrip = Me.MenuStrip1
-        Me.Name = "form1"
+        Me.Name = "Main"
         Me.Text = "File Namer"
         Me.MenuStrip1.ResumeLayout(False)
         Me.MenuStrip1.PerformLayout()
@@ -179,11 +239,16 @@ Partial Class form1
     Friend WithEvents OptionsToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents HelpToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents AboutToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents ListBox1 As ListBox
-    Friend WithEvents ListBox2 As ListBox
+    Friend WithEvents lbOriginal As ListBox
+    Friend WithEvents lbNew As ListBox
     Friend WithEvents Button1 As Button
     Friend WithEvents Button2 As Button
     Friend WithEvents Button3 As Button
     Friend WithEvents Button4 As Button
-    Friend WithEvents RichTextBox1 As RichTextBox
+    Friend WithEvents textOriginalFolder As TextBox
+    Friend WithEvents btnOriginalFolder As Button
+    Friend WithEvents lblOriginal As Label
+    Friend WithEvents lblNew As Label
+    Friend WithEvents btnNewFolder As Button
+    Friend WithEvents textNewFolder As TextBox
 End Class
