@@ -61,38 +61,38 @@ Module JSON
 
     Public Sub JSON_Parse(mediatype As String)
         Dim validJSON As Boolean = True
+        If jsonstring <> "" Then
+            Using document As JsonDocument = JsonDocument.Parse(jsonstring)
 
-        Using document As JsonDocument = JsonDocument.Parse(jsonstring)
-
-            'This is a check to see if the call to retrieve an exact match based off of ID was successful
-            'This will fail if the ID is incorrect or if an invalid season or episode number is requested for the ID
-            Dim successelement As JsonElement
-            If document.RootElement.TryGetProperty("success", successelement) Then
-                Dim success As Boolean = successelement.GetBoolean
-                If success = False Then validJSON = False
-            End If
-
-            'This is a check to see if the search for a movie or tv show retruned any results
-            Dim totalresultselement As JsonElement
-            If document.RootElement.TryGetProperty("total_results", totalresultselement) Then
-                Dim totalresults As Integer = totalresultselement.GetInt32()
-                If totalresults = 0 Then
-                    validJSON = False
-                Else
-                    mediadict("totalresults") = totalresults
+                'This is a check to see if the call to retrieve an exact match based off of ID was successful
+                'This will fail if the ID is incorrect or if an invalid season or episode number is requested for the ID
+                Dim successelement As JsonElement
+                If document.RootElement.TryGetProperty("success", successelement) Then
+                    Dim success As Boolean = successelement.GetBoolean
+                    If success = False Then validJSON = False
                 End If
-            End If
 
-            If validJSON Then
+                'This is a check to see if the search for a movie or tv show retruned any results
+                Dim totalresultselement As JsonElement
+                If document.RootElement.TryGetProperty("total_results", totalresultselement) Then
+                    Dim totalresults As Integer = totalresultselement.GetInt32()
+                    If totalresults = 0 Then
+                        validJSON = False
+                    Else
+                        mediadict("totalresults") = totalresults
+                    End If
+                End If
 
-                Select Case mediatype
-                    Case "movie"
-                        Dim results = document.RootElement.GetProperty("results")
-                        movies.Clear()
-                        For Each result In results.EnumerateArray()
+                If validJSON Then
 
-                            'This code will add any of the properties requested in the result to the movie list that is returned
-                            movies.Add(New Movie With {
+                    Select Case mediatype
+                        Case "movie"
+                            Dim results = document.RootElement.GetProperty("results")
+                            movies.Clear()
+                            For Each result In results.EnumerateArray()
+
+                                'This code will add any of the properties requested in the result to the movie list that is returned
+                                movies.Add(New Movie With {
                                         .id = result.GetProperty("id").GetInt32(),
                                         .overview = result.GetProperty("overview").GetString(),
                                         .popularity = result.GetProperty("popularity").GetDouble(),
@@ -103,18 +103,18 @@ Module JSON
                                         .vote_count = result.GetProperty("vote_count").GetInt32()
                                     })
 
-                        Next
-                        For Each movie In movies
-                            movie.title = RemoveIllegalFilenameChars(movie.title)
-                        Next
+                            Next
+                            For Each movie In movies
+                                movie.title = RemoveIllegalFilenameChars(movie.title)
+                            Next
 
                         'Use this when we are looking for a TV show
-                    Case "tvshow"
-                        Dim results = document.RootElement.GetProperty("results")
-                        tvshows.Clear()
-                        For Each result In results.EnumerateArray()
-                            'This code will add any of the properties requested in the result to the tvshows list that is returned
-                            tvshows.Add(New TVShow With {
+                        Case "tvshow"
+                            Dim results = document.RootElement.GetProperty("results")
+                            tvshows.Clear()
+                            For Each result In results.EnumerateArray()
+                                'This code will add any of the properties requested in the result to the tvshows list that is returned
+                                tvshows.Add(New TVShow With {
                                         .id = result.GetProperty("id").GetInt32(),
                                         .overview = result.GetProperty("overview").GetString(),
                                         .popularity = result.GetProperty("popularity").GetDouble(),
@@ -124,27 +124,27 @@ Module JSON
                                         .vote_average = result.GetProperty("vote_average").GetDouble(),
                                         .vote_count = result.GetProperty("vote_count").GetInt32()
                                     })
-                        Next
+                            Next
 
-                        For Each tvshow In tvshows
-                            tvshow.title = RemoveIllegalFileNameChars(tvshow.title)
-                        Next
+                            For Each tvshow In tvshows
+                                tvshow.title = RemoveIllegalFileNameChars(tvshow.title)
+                            Next
 
                     'Use this to get details of a specific episode of a specific season of a specific show
-                    Case "tvexactshow"
-                        Dim result = document.RootElement
-                        mediadict("episodename") = result.GetProperty("name").GetString()
-                        mediadict("season") = result.GetProperty("season_number").GetInt32()
-                        mediadict("episode") = result.GetProperty("episode_number").GetInt32()
+                        Case "tvexactshow"
+                            Dim result = document.RootElement
+                            mediadict("episodename") = result.GetProperty("name").GetString()
+                            mediadict("season") = result.GetProperty("season_number").GetInt32()
+                            mediadict("episode") = result.GetProperty("episode_number").GetInt32()
 
                     'Use this when we don't know exactly which season we want
-                    Case "tvseasons"
-                        Dim results = document.RootElement.GetProperty("seasons")
-                        Dim tvseasons As New List(Of TVSeason)
-                        tvseasons.Clear()
-                        For Each result In results.EnumerateArray()
-                            'This code will add any of the properties requested in the result to the tvseasons list that is returned
-                            tvseasons.Add(New TVSeason With {
+                        Case "tvseasons"
+                            Dim results = document.RootElement.GetProperty("seasons")
+                            Dim tvseasons As New List(Of TVSeason)
+                            tvseasons.Clear()
+                            For Each result In results.EnumerateArray()
+                                'This code will add any of the properties requested in the result to the tvseasons list that is returned
+                                tvseasons.Add(New TVSeason With {
                                         .id = result.GetProperty("id").GetInt32(),
                                         .air_date = result.GetProperty("air_date").GetString(),
                                         .name = result.GetProperty("name").GetString(),
@@ -154,15 +154,15 @@ Module JSON
                                         .poster_path = result.GetProperty("poster_path").GetString(),
                                         .vote_average = result.GetProperty("vote_average").GetDouble()
                                     })
-                        Next
+                            Next
 
                     'Use this when we don't know exactly which episode we want
-                    Case "tvepisodes"
-                        Dim results = document.RootElement.GetProperty("episodes")
-                        tvepisodes.Clear()
-                        For Each result In results.EnumerateArray()
-                            'This code will add any of the properties requested in the result to the tvspisodes list that is returned
-                            tvepisodes.Add(New TVEpisode With {
+                        Case "tvepisodes"
+                            Dim results = document.RootElement.GetProperty("episodes")
+                            tvepisodes.Clear()
+                            For Each result In results.EnumerateArray()
+                                'This code will add any of the properties requested in the result to the tvspisodes list that is returned
+                                tvepisodes.Add(New TVEpisode With {
                                         .id = result.GetProperty("id").GetInt32(),
                                         .air_date = result.GetProperty("air_date").GetString(),
                                         .name = result.GetProperty("name").GetString(),
@@ -174,15 +174,18 @@ Module JSON
                                         .vote_average = result.GetProperty("vote_average").GetDouble(),
                                         .vote_count = result.GetProperty("vote_count").GetInt32()
                                     })
-                        Next
-                End Select
+                            Next
+                    End Select
 
-            Else
-                mediadict("totalresults") = 0
-            End If
+                Else
+                    mediadict("totalresults") = 0
+                End If
 
-        End Using
+            End Using
 
+        Else
+            mediadict("totalresults") = 0
+        End If
     End Sub
     Public Sub Test_Parse_Name()
         Dim filenames As String() = {

@@ -156,7 +156,7 @@ Module MovieTV
                 titlePart = Regex.Replace(titlePart, "[\(\[\{]+$", "")
                 'titlePart = Regex.Replace(titlePart, "^[\s._\-]+|[\s._\-]+$", "")
                 titlePart = Regex.Replace(titlePart, "^[\s_]+|[\s_]+$", "")
-                mediadict("searchname") = Regex.Replace(titlePart, "[\s._\-]+", " ").Trim()
+                mediadict("searchname") = Regex.Replace(titlePart, "[\s._]+", " ").Trim()
                 mediadict("searchname") = RemoveIllegalFilenameChars(mediadict("searchname"))
 
 
@@ -217,7 +217,7 @@ Module MovieTV
         End If
 
         'Set the VidResolution based off of the Width and Height of the video stream
-        If mediadict.ContainsKey("VidWidth") And mediadict.ContainsKey("VidHeight") Then
+        If (mediadict.ContainsKey("VidWidth") AndAlso mediadict("VidWidth") > 0) And (mediadict.ContainsKey("VidHeight") AndAlso mediadict("VidHeight") > 0) Then
 
             mywidth = Int(mediadict("VidWidth"))
             myheight = Int(mediadict("VidHeight"))

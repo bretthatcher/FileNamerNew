@@ -5,6 +5,7 @@ Imports System.Windows.Forms
 Module tools
     Public Function RemoveIllegalFilenameChars(filename As String) As String
         Dim invalidChars As Char() = Path.GetInvalidFileNameChars()
+
         For Each c As Char In invalidChars
             filename = filename.Replace(c, "") ' Replace invalid character with an underscore
         Next

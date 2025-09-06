@@ -45,6 +45,7 @@ Public Class Main
         myfolder = ShowFolderChooser(textOriginalFolder.Text)
         If myfolder <> "" Then
             lbOriginal.Items.Clear()
+            lbNew.Items.Clear()
             textOriginalFolder.Text = myfolder
             Call PopulateListBoxRecursively(textOriginalFolder.Text, lbOriginal)
         End If
@@ -67,11 +68,12 @@ Public Class Main
         Dim loopcount As Long
 
         For loopcount = 0 To lbOriginal.Items.Count - 1
-            mediadict.Clear()
-            mediadict("NewFilePath") = textNewFolder.Text
 
             If lbOriginal.GetSelected(loopcount) = True Then
 
+                mediadict.Clear()
+
+                mediadict("NewFilePath") = textNewFolder.Text
                 mediadict("OriginalFullPath") = lbOriginal.Items(loopcount).ToString
                 mediadict("OriginalFileName") = Path.GetFileNameWithoutExtension(mediadict("OriginalFullPath"))
                 mediadict("OriginalFileExt") = Path.GetExtension(mediadict("OriginalFullPath"))
@@ -194,31 +196,37 @@ Public Class Main
 
                         End Select
 
-                        'Check to see if the tvshow season and episode actually exists
-                        If mediatype = "tvshow" Then
-                            mediatype = "tvexactshow"
-                            Call ValidTVSeasonEpisode()
-                            mediatype = "tvshow"
-                        End If
-
                         Call GetMediaInfo(mediadict("OriginalFullPath"))
 
                         Select Case mediatype
                             Case "movie"
                                 mediadict("NewFullPath") = mediadict("NewFilePath") & "\" & mediadict("title") & " (" & mediadict("release_date") & ")"
-                                mediadict("NewFullPath") = mediadict("NewFullPath") & " " & mediadict("VideoResolution") & mediadict("VideoCodec") & mediadict("AudioChannels") & mediadict("OriginalFileExt")
+                                mediadict("NewFullPath") = mediadict("NewFullPath") & " " & mediadict("VideoResolution") & " " & mediadict("VideoCodec") & " " & mediadict("AudioChannels") & mediadict("OriginalFileExt")
+                                If cbMakeChanges.Checked = True Then
+                                    File.Copy(mediadict("OriginalFullPath"), mediadict("NewFullPath"), True)
+                                End If
+                                lbNew.Items.Add(mediadict("NewFullPath"))
 
                             Case "tvshow"
-                                mediadict("NewFullPath") = mediadict("NewFilePath") & "\" & mediadict("title") & " S" & mediadict("season") & "E" & mediadict("episode") & " - " & mediadict("episodename") & mediadict("OriginalFileExt")
-
+                                'Check to see if the tvshow season and episode actually exists
+                                If mediatype = "tvshow" Then
+                                    mediatype = "tvexactshow"
+                                    Call ValidTVSeasonEpisode()
+                                    mediatype = "tvshow"
+                                End If
+                                If mediadict("totalresults") <> 0 Then
+                                    mediadict("NewFullPath") = mediadict("NewFilePath") & "\" & mediadict("OriginalFileName") & mediadict("OriginalFileExt")
+                                    mediadict("NewFullPath") = mediadict("NewFilePath") & "\" & mediadict("title") & " S" & mediadict("season") & "E" & mediadict("episode") & " - " & mediadict("episodename") & mediadict("OriginalFileExt")
+                                    If cbMakeChanges.Checked = True Then
+                                        File.Copy(mediadict("OriginalFullPath"), mediadict("NewFullPath"), True)
+                                    End If
+                                    lbNew.Items.Add(mediadict("NewFullPath"))
+                                Else
+                                    lbNew.Items.Add(mediadict("title") & " (" & mediadict("release_date") & ") Season " & mediadict("searchseason") & " Episode " & mediadict("searchepisode") & " Not Found")
+                                End If
                         End Select
-                        If cbMakeChanges.Checked = True Then
-                            File.Copy(mediadict("OriginalFullPath"), mediadict("NewFullPath"), True)
-                        End If
-                        lbNew.Items.Add(mediadict("NewFullPath"))
                     Else
                         lbNew.Items.Add("Not Found")
-
                     End If
                 Else
                     lbNew.Items.Add("Not Found")
@@ -254,17 +262,17 @@ Public Class Main
     End Sub
 
     Private Sub cbSelectAll_CheckedChanged(sender As Object, e As EventArgs) Handles cbSelectAll.CheckedChanged
-        If True Then
-            lbOriginal.BeginUpdate()
+        lbOriginal.BeginUpdate()
+        If cbSelectAll.Checked = True Then
 
             For i As Integer = 0 To lbOriginal.Items.Count - 1
                 lbOriginal.SetSelected(i, True)
             Next
-
-            lbOriginal.TopIndex = 0
-
-            lbOriginal.EndUpdate()
-
+        Else
+            lbOriginal.ClearSelected()
         End If
+
+        lbOriginal.TopIndex = 0
+        lbOriginal.EndUpdate()
     End Sub
 End Class

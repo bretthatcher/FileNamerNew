@@ -38,40 +38,67 @@ Public Class Duplicate
 
                             lbDuplicates.Items.Add(movie.title & " (" & movie.release_date & ") (Exact Match)")
 
-                        Else
-                            lbDuplicates.Items.Add(movie.title & " (" & movie.release_date & ")")
-                        End If
-
-                        mediaarray.Add(New MediaDetails With {
+                            mediaarray.Add(New MediaDetails With {
                             .id = movie.id,
                             .overview = movie.overview,
                             .poster_path = movie.poster_path,
                             .release_date = movie.release_date,
                             .title = movie.title
                         })
-
-
+                        End If
                     Next
+
+                    If mediaarray.Count = 0 Then
+                        For Each movie In movies
+                            lbDuplicates.Items.Add(movie.title & " (" & movie.release_date & ")")
+
+                            mediaarray.Add(New MediaDetails With {
+                                    .id = movie.id,
+                                    .overview = movie.overview,
+                                    .poster_path = movie.poster_path,
+                                    .release_date = movie.release_date,
+                                    .title = movie.title
+                                })
+                        Next
+                    End If
                 End If
+
+
             Case "tvshow"
                 If tvshows IsNot Nothing AndAlso tvshows.Count > 0 Then
                     For Each tvshow In tvshows
                         If mediadict("searchname").ToString.ToLower() = tvshow.title.ToLower() Then
                             lbDuplicates.Items.Add(tvshow.title & " (" & tvshow.release_date & ") (Exact Match)")
-                        Else
-                            lbDuplicates.Items.Add(tvshow.title & " (" & tvshow.release_date & ")")
-                        End If
-                        mediaarray.Add(New MediaDetails With {
+
+                            mediaarray.Add(New MediaDetails With {
                             .id = tvshow.id,
                             .overview = tvshow.overview,
                             .poster_path = tvshow.poster_path,
                             .release_date = tvshow.release_date,
                             .title = tvshow.title
                         })
-
+                        End If
                     Next
+                    If mediaarray.Count = 0 Then
+                        For Each tvshow In tvshows
+
+                            lbDuplicates.Items.Add(tvshow.title & " (" & tvshow.release_date & ")")
+
+                            mediaarray.Add(New MediaDetails With {
+                            .id = tvshow.id,
+                            .overview = tvshow.overview,
+                            .poster_path = tvshow.poster_path,
+                            .release_date = tvshow.release_date,
+                            .title = tvshow.title
+                        })
+                        Next
+                    End If
+
                 End If
+
         End Select
+        lbDuplicates.SelectedIndex = 0
+        Call lbDuplicates_SelectedIndexChanged(Nothing, Nothing)
 
     End Sub
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
