@@ -1,19 +1,34 @@
-﻿Imports System.IO
+﻿Imports System.Net
+Imports System.IO
 Imports System.Windows.Forms
 
 Module tools
+    Public Function RemoveIllegalFilenameChars(filename As String) As String
+        Dim invalidChars As Char() = Path.GetInvalidFileNameChars()
+        For Each c As Char In invalidChars
+            filename = filename.Replace(c, "") ' Replace invalid character with an underscore
+        Next
+        Return filename
+    End Function
+
+    Public Function ValidExtension(filepath As String) As Boolean
+        Dim validExtensions As String() = {".mp4", ".mkv", ".avi", ".mov", ".wmv", ".flv", ".mpg", ".mpeg", ".m4v"}
+        Dim fileExtension As String = Path.GetExtension(filepath).ToLower()
+        Return validExtensions.Contains(fileExtension)
+    End Function
 
     Public Sub PopulateListBoxRecursively(folderPath As String, listBox As ListBox)
         ' Add all files in the current folder
         Dim files As String() = Directory.GetFiles(folderPath)
         For Each file As String In files
-            listBox.Items.Add(file)
+            If ValidExtension(file) Then
+                listBox.Items.Add(file)
+            End If
         Next
 
         ' Recursively add all subfolders
         Dim folders As String() = Directory.GetDirectories(folderPath)
         For Each folder As String In folders
-            'listBox.Items.Add(folder)
             ' Recursive call for the subfolder
             PopulateListBoxRecursively(folder, listBox)
         Next
@@ -40,6 +55,15 @@ Module tools
         End If
     End Function
 
+    Public Function Get_HTTP_Image(picurl As String) As String
+        Dim temppic As String = Path.GetTempPath & "temppic.jpg"
 
+        'If File.Exists(temppic) Then File.Delete(temppic)
+
+        Using client As New WebClient()
+            client.DownloadFile(picurl, temppic)
+        End Using
+        Return temppic
+    End Function
 End Module
 

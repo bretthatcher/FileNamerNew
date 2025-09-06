@@ -32,7 +32,7 @@ Partial Class Main
         Me.AboutToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.lbOriginal = New System.Windows.Forms.ListBox()
         Me.lbNew = New System.Windows.Forms.ListBox()
-        Me.Button1 = New System.Windows.Forms.Button()
+        Me.btnProcess = New System.Windows.Forms.Button()
         Me.Button2 = New System.Windows.Forms.Button()
         Me.Button3 = New System.Windows.Forms.Button()
         Me.Button4 = New System.Windows.Forms.Button()
@@ -42,6 +42,10 @@ Partial Class Main
         Me.lblNew = New System.Windows.Forms.Label()
         Me.btnNewFolder = New System.Windows.Forms.Button()
         Me.textNewFolder = New System.Windows.Forms.TextBox()
+        Me.cbMakeChanges = New System.Windows.Forms.CheckBox()
+        Me.cbMovies = New System.Windows.Forms.CheckBox()
+        Me.cbTV = New System.Windows.Forms.CheckBox()
+        Me.cbSelectAll = New System.Windows.Forms.CheckBox()
         Me.MenuStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -105,20 +109,21 @@ Partial Class Main
         '
         'lbNew
         '
+        Me.lbNew.BackColor = System.Drawing.Color.LightGreen
         Me.lbNew.FormattingEnabled = True
         Me.lbNew.Location = New System.Drawing.Point(631, 54)
         Me.lbNew.Name = "lbNew"
         Me.lbNew.Size = New System.Drawing.Size(464, 238)
         Me.lbNew.TabIndex = 2
         '
-        'Button1
+        'btnProcess
         '
-        Me.Button1.Location = New System.Drawing.Point(89, 372)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(161, 49)
-        Me.Button1.TabIndex = 3
-        Me.Button1.Text = "Button1"
-        Me.Button1.UseVisualStyleBackColor = True
+        Me.btnProcess.Location = New System.Drawing.Point(934, 372)
+        Me.btnProcess.Name = "btnProcess"
+        Me.btnProcess.Size = New System.Drawing.Size(161, 49)
+        Me.btnProcess.TabIndex = 3
+        Me.btnProcess.Text = "Process Files"
+        Me.btnProcess.UseVisualStyleBackColor = True
         '
         'Button2
         '
@@ -155,6 +160,7 @@ Partial Class Main
         Me.textOriginalFolder.Name = "textOriginalFolder"
         Me.textOriginalFolder.Size = New System.Drawing.Size(301, 20)
         Me.textOriginalFolder.TabIndex = 7
+        Me.textOriginalFolder.Text = "G:\Movies"
         '
         'btnOriginalFolder
         '
@@ -202,12 +208,57 @@ Partial Class Main
         Me.textNewFolder.Name = "textNewFolder"
         Me.textNewFolder.Size = New System.Drawing.Size(301, 20)
         Me.textNewFolder.TabIndex = 11
+        Me.textNewFolder.Text = "G:\Test Movies"
+        '
+        'cbMakeChanges
+        '
+        Me.cbMakeChanges.AutoSize = True
+        Me.cbMakeChanges.Location = New System.Drawing.Point(997, 336)
+        Me.cbMakeChanges.Name = "cbMakeChanges"
+        Me.cbMakeChanges.Size = New System.Drawing.Size(98, 17)
+        Me.cbMakeChanges.TabIndex = 17
+        Me.cbMakeChanges.Text = "Make Changes"
+        Me.cbMakeChanges.UseVisualStyleBackColor = True
+        '
+        'cbMovies
+        '
+        Me.cbMovies.AutoSize = True
+        Me.cbMovies.Location = New System.Drawing.Point(542, 218)
+        Me.cbMovies.Name = "cbMovies"
+        Me.cbMovies.Size = New System.Drawing.Size(60, 17)
+        Me.cbMovies.TabIndex = 18
+        Me.cbMovies.Text = "Movies"
+        Me.cbMovies.UseVisualStyleBackColor = True
+        '
+        'cbTV
+        '
+        Me.cbTV.AutoSize = True
+        Me.cbTV.Location = New System.Drawing.Point(542, 241)
+        Me.cbTV.Name = "cbTV"
+        Me.cbTV.Size = New System.Drawing.Size(40, 17)
+        Me.cbTV.TabIndex = 19
+        Me.cbTV.Text = "TV"
+        Me.cbTV.UseVisualStyleBackColor = True
+        '
+        'cbSelectAll
+        '
+        Me.cbSelectAll.AutoSize = True
+        Me.cbSelectAll.Location = New System.Drawing.Point(453, 298)
+        Me.cbSelectAll.Name = "cbSelectAll"
+        Me.cbSelectAll.Size = New System.Drawing.Size(70, 17)
+        Me.cbSelectAll.TabIndex = 20
+        Me.cbSelectAll.Text = "Select All"
+        Me.cbSelectAll.UseVisualStyleBackColor = True
         '
         'Main
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1107, 535)
+        Me.Controls.Add(Me.cbSelectAll)
+        Me.Controls.Add(Me.cbTV)
+        Me.Controls.Add(Me.cbMovies)
+        Me.Controls.Add(Me.cbMakeChanges)
         Me.Controls.Add(Me.btnNewFolder)
         Me.Controls.Add(Me.textNewFolder)
         Me.Controls.Add(Me.lblNew)
@@ -217,7 +268,7 @@ Partial Class Main
         Me.Controls.Add(Me.Button4)
         Me.Controls.Add(Me.Button3)
         Me.Controls.Add(Me.Button2)
-        Me.Controls.Add(Me.Button1)
+        Me.Controls.Add(Me.btnProcess)
         Me.Controls.Add(Me.lbNew)
         Me.Controls.Add(Me.lbOriginal)
         Me.Controls.Add(Me.MenuStrip1)
@@ -241,7 +292,7 @@ Partial Class Main
     Friend WithEvents AboutToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents lbOriginal As ListBox
     Friend WithEvents lbNew As ListBox
-    Friend WithEvents Button1 As Button
+    Friend WithEvents btnProcess As Button
     Friend WithEvents Button2 As Button
     Friend WithEvents Button3 As Button
     Friend WithEvents Button4 As Button
@@ -251,4 +302,8 @@ Partial Class Main
     Friend WithEvents lblNew As Label
     Friend WithEvents btnNewFolder As Button
     Friend WithEvents textNewFolder As TextBox
+    Friend WithEvents cbMakeChanges As CheckBox
+    Friend WithEvents cbMovies As CheckBox
+    Friend WithEvents cbTV As CheckBox
+    Friend WithEvents cbSelectAll As CheckBox
 End Class
