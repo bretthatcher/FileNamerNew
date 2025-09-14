@@ -3,21 +3,44 @@
 Imports System.Drawing.Text
 Imports System.IO
 Imports System.Net.Http.Headers
+Imports System.Reflection.Emit
 
 Public Class Main
     Private Sub btnProcess_Click(sender As Object, e As EventArgs) Handles btnProcess.Click
-        If cbMovies.Checked = False And cbTV.Checked = False Then
+        If textOriginalFolder.Text = "" Then
+            MsgBox("Please select your original files folder")
+            Exit Sub
+        End If
+
+        If textNewFolder.Text = "" Then
+            MsgBox("Please select your new files folder")
+            Exit Sub
+        End If
+
+        If (cbMovies.Checked = False And cbTV.Checked = False) And (mediaop = 0 Or mediaop = 1) Then
             MsgBox("Please select Movies or TV Shows")
             Exit Sub
         End If
+
         If cbMovies.Checked = True Then mediatype = "movie"
         If cbTV.Checked = True Then mediatype = "tvshow"
-        Call ProcessFiles()
-    End Sub
 
-    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
-        ' Call TMDB_Search_Media()
+        Select Case mediaop
+            Case 0, 1
+                Call ProcessFiles()
+            Case 2, 3
+                Call Move_Copy_Files()
+        End Select
+
+        'Clear both original and new listboxes - re-populate original listbox
+        MsgBox(btnProcess.Text & " complete")
+
+        lbOriginal.Items.Clear()
+        lbNew.Items.Clear()
         Call PopulateListBoxRecursively(textOriginalFolder.Text, lbOriginal)
+
+        Call cbSelectAll_CheckedChanged(Nothing, Nothing)
+
     End Sub
 
     Private Sub AboutToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AboutToolStripMenuItem.Click
@@ -25,19 +48,10 @@ Public Class Main
         aboutform.Show()
     End Sub
 
-    Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
-        Call Test_Parse_Name()
-    End Sub
-
     Private Sub OptionsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles OptionsToolStripMenuItem.Click
         Dim settingsform As New Settings()
         settingsform.Show()
     End Sub
-
-    Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
-        GetMediaInfo("G:\Movies\2 Fast 2 Furious (2003)\2 Fast 2 Furious (2003) 1080p HEVC 6CH.mp4")
-    End Sub
-
 
     Private Sub btnOriginalFolder_Click(sender As Object, e As EventArgs) Handles btnOriginalFolder.Click
         Dim myfolder As String
@@ -59,6 +73,41 @@ Public Class Main
             textNewFolder.Text = myfolder
         End If
     End Sub
+    Public Sub Move_Copy_Files()
+        For loopcount = 0 To lbOriginal.Items.Count - 1
+
+            If lbOriginal.GetSelected(loopcount) = True Then
+
+                mediadict.Clear()
+
+                mediadict("OriginalFullPath") = lbOriginal.Items(loopcount).ToString
+                mediadict("OriginalFullName") = Path.GetFileName(mediadict("OriginalFullPath"))
+
+                mediadict("NewFilePath") = textNewFolder.Text
+                mediadict("NewFullPath") = mediadict("NewFilePath") & "\" & mediadict("OriginalFullName")
+
+                If cbMakeChanges.Checked = True Then
+                    Select Case mediaop
+                        Case 2
+                            My.Computer.FileSystem.MoveFile(mediadict("OriginalFullPath"), mediadict("NewFullPath"), True)
+                        Case 3
+                            My.Computer.FileSystem.CopyFile(mediadict("OriginalFullPath"), mediadict("NewFullPath"), FileIO.UIOption.AllDialogs)
+                    End Select
+                End If
+
+                lbNew.Items.Add(mediadict("NewFullPath"))
+
+                If loopcount > 17 Then
+                    lbOriginal.TopIndex = loopcount - 17
+                    lbNew.TopIndex = loopcount - 17
+                End If
+            Else
+                lbNew.Items.Add("")
+            End If
+            lbOriginal.Update()
+            lbNew.Update()
+        Next
+    End Sub
 
     Public Sub ProcessFiles()
         'Dim mediatype = "movie"
@@ -75,6 +124,7 @@ Public Class Main
 
                 mediadict("NewFilePath") = textNewFolder.Text
                 mediadict("OriginalFullPath") = lbOriginal.Items(loopcount).ToString
+                mediadict("OriginalFullName") = Path.GetFileName("OriginalFullPath")
                 mediadict("OriginalFileName") = Path.GetFileNameWithoutExtension(mediadict("OriginalFullPath"))
                 mediadict("OriginalFileExt") = Path.GetExtension(mediadict("OriginalFullPath"))
                 mediadict("OriginalFilePath") = Path.GetDirectoryName(mediadict("OriginalFullPath"))
@@ -200,26 +250,65 @@ Public Class Main
 
                         Select Case mediatype
                             Case "movie"
-                                mediadict("NewFullPath") = mediadict("NewFilePath") & "\" & mediadict("title") & " (" & mediadict("release_date") & ")"
-                                mediadict("NewFullPath") = mediadict("NewFullPath") & " " & mediadict("VideoResolution") & " " & mediadict("VideoCodec") & " " & mediadict("AudioChannels") & mediadict("OriginalFileExt")
-                                If cbMakeChanges.Checked = True Then
-                                    File.Copy(mediadict("OriginalFullPath"), mediadict("NewFullPath"), True)
+                                'Build the new movie name and add options on the name as needed
+                                mediadict("NewFileName") = mediadict("title") & " (" & mediadict("release_date") & ")"
+                                mediadict("NewFileName") = mediadict("NewFileName") & " " & mediadict("VideoResolution") & " " & mediadict("VideoCodec") & " " & mediadict("AudioChannels") & mediadict("OriginalFileExt")
+
+                                If My.Settings.IndividualFolders = True Then
+                                    mediadict("NewFilePath") = mediadict("NewFilePath") & "\" & mediadict("title") & " (" & mediadict("release_date") & ")"
                                 End If
+
+                                mediadict("NewFullPath") = mediadict("NewFilePath") & "\" & mediadict("NewFileName")
+
+                                If cbMakeChanges.Checked = True Then
+                                    Select Case mediaop
+                                        Case 0
+                                            My.Computer.FileSystem.MoveFile(mediadict("OriginalFullPath"), mediadict("NewFullPath"), True)
+                                            If mediadict("OriginalFilePath") <> textOriginalFolder.Text Then
+                                                'If Directory.Exists(mediadict("OriginalFilePath")) And Directory.GetFiles(mediadict("OriginalFilePath").Length = 0) And Directory.GetDirectories(mediadict("OriginalFilePath").Length = 0) Then
+                                                'Directory.Delete(mediadict("OriginalFilePath"))
+                                                'End If
+                                            End If
+                                        Case 1
+                                            My.Computer.FileSystem.CopyFile(mediadict("OriginalFullPath"), mediadict("NewFullPath"), FileIO.UIOption.AllDialogs)
+
+                                    End Select
+                                    'My.Computer.FileSystem.CopyFile(mediadict("OriginalFullPath"), mediadict("NewFullPath"), True)
+                                    'File.Copy(mediadict("OriginalFullPath"), mediadict("NewFullPath"), True)
+                                End If
+
                                 lbNew.Items.Add(mediadict("NewFullPath"))
 
                             Case "tvshow"
                                 'Check to see if the tvshow season and episode actually exists
-                                If mediatype = "tvshow" Then
-                                    mediatype = "tvexactshow"
-                                    Call ValidTVSeasonEpisode()
-                                    mediatype = "tvshow"
-                                End If
+
+                                mediatype = "tvexactshow"
+                                Call ValidTVSeasonEpisode()
+                                mediatype = "tvshow"
+
                                 If mediadict("totalresults") <> 0 Then
-                                    mediadict("NewFullPath") = mediadict("NewFilePath") & "\" & mediadict("OriginalFileName") & mediadict("OriginalFileExt")
-                                    mediadict("NewFullPath") = mediadict("NewFilePath") & "\" & mediadict("title") & " S" & mediadict("season") & "E" & mediadict("episode") & " - " & mediadict("episodename") & mediadict("OriginalFileExt")
-                                    If cbMakeChanges.Checked = True Then
-                                        File.Copy(mediadict("OriginalFullPath"), mediadict("NewFullPath"), True)
+                                    'Build the new tv show name and add options on the name as needed
+                                    mediadict("NewFileName") = mediadict("title") & " S" & mediadict("season") & "E" & mediadict("episode") & " - " & mediadict("episodename") & mediadict("OriginalFileExt")
+
+                                    If My.Settings.IndividualFolders = True Then
+                                        mediadict("NewFilePath") = mediadict("NewFilePath") & "\" & mediadict("title") & " (" & mediadict("release_date") & ")"
+                                        mediadict("NewSeasonPath") = mediadict("NewFilePath") & "\Season " & mediadict("season")
+                                        mediadict("NewFullPath") = mediadict("NewSeasonPath") & "\" & mediadict("NewFileName")
+                                    Else
+                                        mediadict("NewFullPath") = mediadict("NewFilePath") & "\" & mediadict("NewFileName")
                                     End If
+
+                                    If cbMakeChanges.Checked = True Then
+                                        Select Case mediaop
+                                            Case 0
+                                                My.Computer.FileSystem.MoveFile(mediadict("OriginalFullPath"), mediadict("NewFullPath"), True)
+                                            Case 1
+                                                My.Computer.FileSystem.CopyFile(mediadict("OriginalFullPath"), mediadict("NewFullPath"), True)
+                                        End Select
+
+                                        'File.Copy(mediadict("OriginalFullPath"), mediadict("NewFullPath"), True)
+                                    End If
+
                                     lbNew.Items.Add(mediadict("NewFullPath"))
                                 Else
                                     lbNew.Items.Add(mediadict("title") & " (" & mediadict("release_date") & ") Season " & mediadict("searchseason") & " Episode " & mediadict("searchepisode") & " Not Found")
@@ -242,20 +331,23 @@ Public Class Main
                     lbNew.TopIndex = loopcount - 17
                 End If
             End If
+            lbOriginal.Update()
+            lbNew.Update()
 
         Next
 
     End Sub
 
     Private Sub cbMovies_CheckedChanged(sender As Object, e As EventArgs) Handles cbMovies.CheckedChanged
-        If True Then
+        If cbMovies.Checked = True Then
             cbTV.Checked = False
             mediatype = "movie"
         End If
+
     End Sub
 
     Private Sub cbTV_CheckedChanged(sender As Object, e As EventArgs) Handles cbTV.CheckedChanged
-        If True Then
+        If cbTV.Checked = True Then
             cbMovies.Checked = False
             mediatype = "tvshow"
         End If
@@ -275,4 +367,51 @@ Public Class Main
         lbOriginal.TopIndex = 0
         lbOriginal.EndUpdate()
     End Sub
+
+    Private Sub Main_Load(sender As Object, e As EventArgs) Handles Me.Load
+        cmbOperation.SelectedIndex = 0
+        mediaop = cmbOperation.SelectedIndex
+
+    End Sub
+
+    Private Sub cmbOperation_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbOperation.SelectedIndexChanged
+        mediaop = cmbOperation.SelectedIndex
+        btnProcess.Text = cmbOperation.SelectedItem.ToString & " Files"
+    End Sub
+
+    Private Sub UseDefaultMovieFoldersToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles UseDefaultMovieFoldersToolStripMenuItem.Click
+        If Directory.Exists(My.Settings.RenamedMovieFolder) Then
+            textNewFolder.Text = My.Settings.RenamedMovieFolder
+        Else
+            My.Settings.RenamedMovieFolder = ""
+        End If
+
+        If Directory.Exists(My.Settings.OriginalMovieFolder) Then
+            textOriginalFolder.Text = My.Settings.OriginalMovieFolder
+            lbOriginal.Items.Clear()
+            lbNew.Items.Clear()
+            Call PopulateListBoxRecursively(textOriginalFolder.Text, lbOriginal)
+        Else
+            My.Settings.OriginalMovieFolder = ""
+        End If
+
+    End Sub
+
+    Private Sub UseDefaultTVFoldersToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles UseDefaultTVFoldersToolStripMenuItem.Click
+        If Directory.Exists(My.Settings.RenamedTVFolder) Then
+            textNewFolder.Text = My.Settings.RenamedTVFolder
+        Else
+            My.Settings.RenamedTVFolder = ""
+        End If
+
+        If Directory.Exists(My.Settings.OriginalTVFolder) Then
+            textOriginalFolder.Text = My.Settings.OriginalTVFolder
+            lbOriginal.Items.Clear()
+            lbNew.Items.Clear()
+            Call PopulateListBoxRecursively(textOriginalFolder.Text, lbOriginal)
+        Else
+            My.Settings.OriginalTVFolder = ""
+        End If
+    End Sub
+
 End Class

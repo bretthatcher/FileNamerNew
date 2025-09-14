@@ -33,9 +33,6 @@ Partial Class Main
         Me.lbOriginal = New System.Windows.Forms.ListBox()
         Me.lbNew = New System.Windows.Forms.ListBox()
         Me.btnProcess = New System.Windows.Forms.Button()
-        Me.Button2 = New System.Windows.Forms.Button()
-        Me.Button3 = New System.Windows.Forms.Button()
-        Me.Button4 = New System.Windows.Forms.Button()
         Me.textOriginalFolder = New System.Windows.Forms.TextBox()
         Me.btnOriginalFolder = New System.Windows.Forms.Button()
         Me.lblOriginal = New System.Windows.Forms.Label()
@@ -46,6 +43,10 @@ Partial Class Main
         Me.cbMovies = New System.Windows.Forms.CheckBox()
         Me.cbTV = New System.Windows.Forms.CheckBox()
         Me.cbSelectAll = New System.Windows.Forms.CheckBox()
+        Me.cmbOperation = New System.Windows.Forms.ComboBox()
+        Me.UseDefaultMovieFoldersToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.UseDefaultTVFoldersToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
         Me.MenuStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -68,12 +69,12 @@ Partial Class Main
         'ExitToolStripMenuItem
         '
         Me.ExitToolStripMenuItem.Name = "ExitToolStripMenuItem"
-        Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(93, 22)
+        Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
         Me.ExitToolStripMenuItem.Text = "Exit"
         '
         'SettingsToolStripMenuItem
         '
-        Me.SettingsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.OptionsToolStripMenuItem})
+        Me.SettingsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.OptionsToolStripMenuItem, Me.ToolStripSeparator1, Me.UseDefaultMovieFoldersToolStripMenuItem, Me.UseDefaultTVFoldersToolStripMenuItem})
         Me.SettingsToolStripMenuItem.Name = "SettingsToolStripMenuItem"
         Me.SettingsToolStripMenuItem.Size = New System.Drawing.Size(61, 20)
         Me.SettingsToolStripMenuItem.Text = "Settings"
@@ -81,7 +82,7 @@ Partial Class Main
         'OptionsToolStripMenuItem
         '
         Me.OptionsToolStripMenuItem.Name = "OptionsToolStripMenuItem"
-        Me.OptionsToolStripMenuItem.Size = New System.Drawing.Size(116, 22)
+        Me.OptionsToolStripMenuItem.Size = New System.Drawing.Size(211, 22)
         Me.OptionsToolStripMenuItem.Text = "Options"
         '
         'HelpToolStripMenuItem
@@ -94,7 +95,7 @@ Partial Class Main
         'AboutToolStripMenuItem
         '
         Me.AboutToolStripMenuItem.Name = "AboutToolStripMenuItem"
-        Me.AboutToolStripMenuItem.Size = New System.Drawing.Size(107, 22)
+        Me.AboutToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
         Me.AboutToolStripMenuItem.Text = "About"
         '
         'lbOriginal
@@ -125,38 +126,11 @@ Partial Class Main
         Me.btnProcess.Text = "Process Files"
         Me.btnProcess.UseVisualStyleBackColor = True
         '
-        'Button2
-        '
-        Me.Button2.Location = New System.Drawing.Point(271, 372)
-        Me.Button2.Name = "Button2"
-        Me.Button2.Size = New System.Drawing.Size(161, 49)
-        Me.Button2.TabIndex = 4
-        Me.Button2.Text = "Button2"
-        Me.Button2.UseVisualStyleBackColor = True
-        '
-        'Button3
-        '
-        Me.Button3.Location = New System.Drawing.Point(453, 372)
-        Me.Button3.Name = "Button3"
-        Me.Button3.Size = New System.Drawing.Size(161, 49)
-        Me.Button3.TabIndex = 5
-        Me.Button3.Text = "Button3"
-        Me.Button3.UseVisualStyleBackColor = True
-        '
-        'Button4
-        '
-        Me.Button4.Location = New System.Drawing.Point(631, 372)
-        Me.Button4.Name = "Button4"
-        Me.Button4.Size = New System.Drawing.Size(161, 49)
-        Me.Button4.TabIndex = 6
-        Me.Button4.Text = "Button4"
-        Me.Button4.UseVisualStyleBackColor = True
-        '
         'textOriginalFolder
         '
         Me.textOriginalFolder.BackColor = System.Drawing.SystemColors.Window
         Me.textOriginalFolder.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.textOriginalFolder.Location = New System.Drawing.Point(200, 28)
+        Me.textOriginalFolder.Location = New System.Drawing.Point(200, 34)
         Me.textOriginalFolder.Name = "textOriginalFolder"
         Me.textOriginalFolder.Size = New System.Drawing.Size(301, 20)
         Me.textOriginalFolder.TabIndex = 7
@@ -164,9 +138,9 @@ Partial Class Main
         '
         'btnOriginalFolder
         '
-        Me.btnOriginalFolder.Location = New System.Drawing.Point(504, 27)
+        Me.btnOriginalFolder.Location = New System.Drawing.Point(502, 33)
         Me.btnOriginalFolder.Name = "btnOriginalFolder"
-        Me.btnOriginalFolder.Size = New System.Drawing.Size(32, 27)
+        Me.btnOriginalFolder.Size = New System.Drawing.Size(19, 21)
         Me.btnOriginalFolder.TabIndex = 8
         Me.btnOriginalFolder.Text = "Button5"
         Me.btnOriginalFolder.UseVisualStyleBackColor = True
@@ -250,11 +224,39 @@ Partial Class Main
         Me.cbSelectAll.Text = "Select All"
         Me.cbSelectAll.UseVisualStyleBackColor = True
         '
+        'cmbOperation
+        '
+        Me.cmbOperation.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cmbOperation.FormattingEnabled = True
+        Me.cmbOperation.Items.AddRange(New Object() {"Rename and Move", "Rename and Copy", "Move", "Copy"})
+        Me.cmbOperation.Location = New System.Drawing.Point(28, 313)
+        Me.cmbOperation.Name = "cmbOperation"
+        Me.cmbOperation.Size = New System.Drawing.Size(161, 21)
+        Me.cmbOperation.TabIndex = 21
+        '
+        'UseDefaultMovieFoldersToolStripMenuItem
+        '
+        Me.UseDefaultMovieFoldersToolStripMenuItem.Name = "UseDefaultMovieFoldersToolStripMenuItem"
+        Me.UseDefaultMovieFoldersToolStripMenuItem.Size = New System.Drawing.Size(211, 22)
+        Me.UseDefaultMovieFoldersToolStripMenuItem.Text = "Use Default Movie Folders"
+        '
+        'UseDefaultTVFoldersToolStripMenuItem
+        '
+        Me.UseDefaultTVFoldersToolStripMenuItem.Name = "UseDefaultTVFoldersToolStripMenuItem"
+        Me.UseDefaultTVFoldersToolStripMenuItem.Size = New System.Drawing.Size(211, 22)
+        Me.UseDefaultTVFoldersToolStripMenuItem.Text = "Use Default TV Folders"
+        '
+        'ToolStripSeparator1
+        '
+        Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
+        Me.ToolStripSeparator1.Size = New System.Drawing.Size(208, 6)
+        '
         'Main
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1107, 535)
+        Me.Controls.Add(Me.cmbOperation)
         Me.Controls.Add(Me.cbSelectAll)
         Me.Controls.Add(Me.cbTV)
         Me.Controls.Add(Me.cbMovies)
@@ -265,9 +267,6 @@ Partial Class Main
         Me.Controls.Add(Me.lblOriginal)
         Me.Controls.Add(Me.btnOriginalFolder)
         Me.Controls.Add(Me.textOriginalFolder)
-        Me.Controls.Add(Me.Button4)
-        Me.Controls.Add(Me.Button3)
-        Me.Controls.Add(Me.Button2)
         Me.Controls.Add(Me.btnProcess)
         Me.Controls.Add(Me.lbNew)
         Me.Controls.Add(Me.lbOriginal)
@@ -293,9 +292,6 @@ Partial Class Main
     Friend WithEvents lbOriginal As ListBox
     Friend WithEvents lbNew As ListBox
     Friend WithEvents btnProcess As Button
-    Friend WithEvents Button2 As Button
-    Friend WithEvents Button3 As Button
-    Friend WithEvents Button4 As Button
     Friend WithEvents textOriginalFolder As TextBox
     Friend WithEvents btnOriginalFolder As Button
     Friend WithEvents lblOriginal As Label
@@ -306,4 +302,8 @@ Partial Class Main
     Friend WithEvents cbMovies As CheckBox
     Friend WithEvents cbTV As CheckBox
     Friend WithEvents cbSelectAll As CheckBox
+    Friend WithEvents cmbOperation As ComboBox
+    Friend WithEvents ToolStripSeparator1 As ToolStripSeparator
+    Friend WithEvents UseDefaultMovieFoldersToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents UseDefaultTVFoldersToolStripMenuItem As ToolStripMenuItem
 End Class
