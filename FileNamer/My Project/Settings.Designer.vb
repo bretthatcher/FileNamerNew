@@ -152,13 +152,144 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("True")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
         Public Property MakeChanges() As Boolean
             Get
                 Return CType(Me("MakeChanges"),Boolean)
             End Get
             Set
                 Me("MakeChanges") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("True")>  _
+        Public Property RemoveEmptyFolders() As Boolean
+            Get
+                Return CType(Me("RemoveEmptyFolders"),Boolean)
+            End Get
+            Set
+                Me("RemoveEmptyFolders") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property TVTitleSeperator() As String
+            Get
+                Return CType(Me("TVTitleSeperator"),String)
+            End Get
+            Set
+                Me("TVTitleSeperator") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property TVSeasonText() As String
+            Get
+                Return CType(Me("TVSeasonText"),String)
+            End Get
+            Set
+                Me("TVSeasonText") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property TVSeasonNumber() As String
+            Get
+                Return CType(Me("TVSeasonNumber"),String)
+            End Get
+            Set
+                Me("TVSeasonNumber") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property TVSeasonEpisodeSeperator() As String
+            Get
+                Return CType(Me("TVSeasonEpisodeSeperator"),String)
+            End Get
+            Set
+                Me("TVSeasonEpisodeSeperator") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property TVEpisodeText() As String
+            Get
+                Return CType(Me("TVEpisodeText"),String)
+            End Get
+            Set
+                Me("TVEpisodeText") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property TVEpisodeNumber() As String
+            Get
+                Return CType(Me("TVEpisodeNumber"),String)
+            End Get
+            Set
+                Me("TVEpisodeNumber") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property TVDescriptionSeperator() As String
+            Get
+                Return CType(Me("TVDescriptionSeperator"),String)
+            End Get
+            Set
+                Me("TVDescriptionSeperator") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property TVDescription() As String
+            Get
+                Return CType(Me("TVDescription"),String)
+            End Get
+            Set
+                Me("TVDescription") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute()>  _
+        Public Property MovieExtras() As Global.System.Collections.Specialized.StringCollection
+            Get
+                Return CType(Me("MovieExtras"),Global.System.Collections.Specialized.StringCollection)
+            End Get
+            Set
+                Me("MovieExtras") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("1")>  _
+        Public Property TVExtras() As Integer
+            Get
+                Return CType(Me("TVExtras"),Integer)
+            End Get
+            Set
+                Me("TVExtras") = value
             End Set
         End Property
     End Class

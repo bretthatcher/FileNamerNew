@@ -22,133 +22,70 @@ Partial Class Settings
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Me.lblOriginalMovieFolder = New System.Windows.Forms.Label()
-        Me.txtOriginalMovieFolder = New System.Windows.Forms.TextBox()
-        Me.btnOriginalMovieFolder = New System.Windows.Forms.Button()
-        Me.btnRenamedMovieFolder = New System.Windows.Forms.Button()
-        Me.txtRenamedMovieFolder = New System.Windows.Forms.TextBox()
-        Me.lblRenamedMovieFolder = New System.Windows.Forms.Label()
-        Me.btnOriginalTVFolder = New System.Windows.Forms.Button()
-        Me.txtOriginalTVFolder = New System.Windows.Forms.TextBox()
-        Me.lblOriginalTVFolder = New System.Windows.Forms.Label()
-        Me.btnRenamedTVFolder = New System.Windows.Forms.Button()
-        Me.txtRenamedTVFolder = New System.Windows.Forms.TextBox()
-        Me.lblRenamedTVFolder = New System.Windows.Forms.Label()
+        Me.lblOriginalMovie = New System.Windows.Forms.Label()
+        Me.lblRenamedMovie = New System.Windows.Forms.Label()
+        Me.lblOriginalTV = New System.Windows.Forms.Label()
+        Me.lblRenamedTV = New System.Windows.Forms.Label()
         Me.cbWriteResults = New System.Windows.Forms.CheckBox()
         Me.cbSuggestFileName = New System.Windows.Forms.CheckBox()
         Me.cbIndividualFolders = New System.Windows.Forms.CheckBox()
         Me.cbIncludeSubtitleFiles = New System.Windows.Forms.CheckBox()
         Me.cbMakeChanges = New System.Windows.Forms.CheckBox()
+        Me.cbRemoveEmptyFolders = New System.Windows.Forms.CheckBox()
+        Me.FolderBrowserDialog1 = New System.Windows.Forms.FolderBrowserDialog()
+        Me.lblOriginalMovieFolder = New System.Windows.Forms.Label()
+        Me.btnOriginalMovieFolder = New System.Windows.Forms.Button()
+        Me.lblRenamedMovieFolder = New System.Windows.Forms.Label()
+        Me.btnRenamedMovieFolder = New System.Windows.Forms.Button()
+        Me.lblOriginalTVFolder = New System.Windows.Forms.Label()
+        Me.btnOriginalTVFolder = New System.Windows.Forms.Button()
+        Me.lblRenamedTVFolder = New System.Windows.Forms.Label()
+        Me.btnRenamedTVFolder = New System.Windows.Forms.Button()
+        Me.lblDefaults = New System.Windows.Forms.Label()
+        Me.lblOptions = New System.Windows.Forms.Label()
+        Me.btnExit = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
-        'lblOriginalMovieFolder
+        'lblOriginalMovie
         '
-        Me.lblOriginalMovieFolder.AutoSize = True
-        Me.lblOriginalMovieFolder.Location = New System.Drawing.Point(18, 22)
-        Me.lblOriginalMovieFolder.Name = "lblOriginalMovieFolder"
-        Me.lblOriginalMovieFolder.Size = New System.Drawing.Size(106, 13)
-        Me.lblOriginalMovieFolder.TabIndex = 0
-        Me.lblOriginalMovieFolder.Text = "Original Movie Folder"
+        Me.lblOriginalMovie.AutoSize = True
+        Me.lblOriginalMovie.Location = New System.Drawing.Point(29, 58)
+        Me.lblOriginalMovie.Name = "lblOriginalMovie"
+        Me.lblOriginalMovie.Size = New System.Drawing.Size(106, 13)
+        Me.lblOriginalMovie.TabIndex = 0
+        Me.lblOriginalMovie.Text = "Original Movie Folder"
         '
-        'txtOriginalMovieFolder
+        'lblRenamedMovie
         '
-        Me.txtOriginalMovieFolder.Location = New System.Drawing.Point(131, 17)
-        Me.txtOriginalMovieFolder.Name = "txtOriginalMovieFolder"
-        Me.txtOriginalMovieFolder.ReadOnly = True
-        Me.txtOriginalMovieFolder.Size = New System.Drawing.Size(283, 20)
-        Me.txtOriginalMovieFolder.TabIndex = 1
+        Me.lblRenamedMovie.AutoSize = True
+        Me.lblRenamedMovie.Location = New System.Drawing.Point(18, 92)
+        Me.lblRenamedMovie.Name = "lblRenamedMovie"
+        Me.lblRenamedMovie.Size = New System.Drawing.Size(117, 13)
+        Me.lblRenamedMovie.TabIndex = 3
+        Me.lblRenamedMovie.Text = "Renamed Movie Folder"
         '
-        'btnOriginalMovieFolder
+        'lblOriginalTV
         '
-        Me.btnOriginalMovieFolder.Location = New System.Drawing.Point(411, 17)
-        Me.btnOriginalMovieFolder.Name = "btnOriginalMovieFolder"
-        Me.btnOriginalMovieFolder.Size = New System.Drawing.Size(23, 21)
-        Me.btnOriginalMovieFolder.TabIndex = 2
-        Me.btnOriginalMovieFolder.Text = "Button1"
-        Me.btnOriginalMovieFolder.UseVisualStyleBackColor = True
+        Me.lblOriginalTV.AutoSize = True
+        Me.lblOriginalTV.Location = New System.Drawing.Point(44, 125)
+        Me.lblOriginalTV.Name = "lblOriginalTV"
+        Me.lblOriginalTV.Size = New System.Drawing.Size(91, 13)
+        Me.lblOriginalTV.TabIndex = 6
+        Me.lblOriginalTV.Text = "Original TV Folder"
         '
-        'btnRenamedMovieFolder
+        'lblRenamedTV
         '
-        Me.btnRenamedMovieFolder.Location = New System.Drawing.Point(412, 44)
-        Me.btnRenamedMovieFolder.Name = "btnRenamedMovieFolder"
-        Me.btnRenamedMovieFolder.Size = New System.Drawing.Size(23, 21)
-        Me.btnRenamedMovieFolder.TabIndex = 5
-        Me.btnRenamedMovieFolder.Text = "Button2"
-        Me.btnRenamedMovieFolder.UseVisualStyleBackColor = True
-        '
-        'txtRenamedMovieFolder
-        '
-        Me.txtRenamedMovieFolder.Enabled = False
-        Me.txtRenamedMovieFolder.Location = New System.Drawing.Point(132, 44)
-        Me.txtRenamedMovieFolder.Name = "txtRenamedMovieFolder"
-        Me.txtRenamedMovieFolder.Size = New System.Drawing.Size(283, 20)
-        Me.txtRenamedMovieFolder.TabIndex = 4
-        '
-        'lblRenamedMovieFolder
-        '
-        Me.lblRenamedMovieFolder.AutoSize = True
-        Me.lblRenamedMovieFolder.Location = New System.Drawing.Point(18, 49)
-        Me.lblRenamedMovieFolder.Name = "lblRenamedMovieFolder"
-        Me.lblRenamedMovieFolder.Size = New System.Drawing.Size(117, 13)
-        Me.lblRenamedMovieFolder.TabIndex = 3
-        Me.lblRenamedMovieFolder.Text = "Renamed Movie Folder"
-        '
-        'btnOriginalTVFolder
-        '
-        Me.btnOriginalTVFolder.Location = New System.Drawing.Point(412, 71)
-        Me.btnOriginalTVFolder.Name = "btnOriginalTVFolder"
-        Me.btnOriginalTVFolder.Size = New System.Drawing.Size(23, 21)
-        Me.btnOriginalTVFolder.TabIndex = 8
-        Me.btnOriginalTVFolder.Text = "Button3"
-        Me.btnOriginalTVFolder.UseVisualStyleBackColor = True
-        '
-        'txtOriginalTVFolder
-        '
-        Me.txtOriginalTVFolder.Enabled = False
-        Me.txtOriginalTVFolder.Location = New System.Drawing.Point(132, 71)
-        Me.txtOriginalTVFolder.Name = "txtOriginalTVFolder"
-        Me.txtOriginalTVFolder.Size = New System.Drawing.Size(283, 20)
-        Me.txtOriginalTVFolder.TabIndex = 7
-        '
-        'lblOriginalTVFolder
-        '
-        Me.lblOriginalTVFolder.AutoSize = True
-        Me.lblOriginalTVFolder.Location = New System.Drawing.Point(18, 76)
-        Me.lblOriginalTVFolder.Name = "lblOriginalTVFolder"
-        Me.lblOriginalTVFolder.Size = New System.Drawing.Size(91, 13)
-        Me.lblOriginalTVFolder.TabIndex = 6
-        Me.lblOriginalTVFolder.Text = "Original TV Folder"
-        '
-        'btnRenamedTVFolder
-        '
-        Me.btnRenamedTVFolder.Location = New System.Drawing.Point(412, 98)
-        Me.btnRenamedTVFolder.Name = "btnRenamedTVFolder"
-        Me.btnRenamedTVFolder.Size = New System.Drawing.Size(23, 21)
-        Me.btnRenamedTVFolder.TabIndex = 11
-        Me.btnRenamedTVFolder.Text = "Button4"
-        Me.btnRenamedTVFolder.UseVisualStyleBackColor = True
-        '
-        'txtRenamedTVFolder
-        '
-        Me.txtRenamedTVFolder.Enabled = False
-        Me.txtRenamedTVFolder.Location = New System.Drawing.Point(132, 98)
-        Me.txtRenamedTVFolder.Name = "txtRenamedTVFolder"
-        Me.txtRenamedTVFolder.Size = New System.Drawing.Size(283, 20)
-        Me.txtRenamedTVFolder.TabIndex = 10
-        '
-        'lblRenamedTVFolder
-        '
-        Me.lblRenamedTVFolder.AutoSize = True
-        Me.lblRenamedTVFolder.Location = New System.Drawing.Point(18, 103)
-        Me.lblRenamedTVFolder.Name = "lblRenamedTVFolder"
-        Me.lblRenamedTVFolder.Size = New System.Drawing.Size(102, 13)
-        Me.lblRenamedTVFolder.TabIndex = 9
-        Me.lblRenamedTVFolder.Text = "Renamed TV Folder"
+        Me.lblRenamedTV.AutoSize = True
+        Me.lblRenamedTV.Location = New System.Drawing.Point(33, 158)
+        Me.lblRenamedTV.Name = "lblRenamedTV"
+        Me.lblRenamedTV.Size = New System.Drawing.Size(102, 13)
+        Me.lblRenamedTV.TabIndex = 9
+        Me.lblRenamedTV.Text = "Renamed TV Folder"
         '
         'cbWriteResults
         '
         Me.cbWriteResults.AutoSize = True
-        Me.cbWriteResults.Location = New System.Drawing.Point(21, 169)
+        Me.cbWriteResults.Location = New System.Drawing.Point(28, 221)
         Me.cbWriteResults.Name = "cbWriteResults"
         Me.cbWriteResults.Size = New System.Drawing.Size(89, 17)
         Me.cbWriteResults.TabIndex = 12
@@ -158,7 +95,7 @@ Partial Class Settings
         'cbSuggestFileName
         '
         Me.cbSuggestFileName.AutoSize = True
-        Me.cbSuggestFileName.Location = New System.Drawing.Point(21, 200)
+        Me.cbSuggestFileName.Location = New System.Drawing.Point(28, 252)
         Me.cbSuggestFileName.Name = "cbSuggestFileName"
         Me.cbSuggestFileName.Size = New System.Drawing.Size(200, 17)
         Me.cbSuggestFileName.TabIndex = 13
@@ -168,7 +105,7 @@ Partial Class Settings
         'cbIndividualFolders
         '
         Me.cbIndividualFolders.AutoSize = True
-        Me.cbIndividualFolders.Location = New System.Drawing.Point(21, 231)
+        Me.cbIndividualFolders.Location = New System.Drawing.Point(28, 283)
         Me.cbIndividualFolders.Name = "cbIndividualFolders"
         Me.cbIndividualFolders.Size = New System.Drawing.Size(108, 17)
         Me.cbIndividualFolders.TabIndex = 14
@@ -178,7 +115,7 @@ Partial Class Settings
         'cbIncludeSubtitleFiles
         '
         Me.cbIncludeSubtitleFiles.AutoSize = True
-        Me.cbIncludeSubtitleFiles.Location = New System.Drawing.Point(21, 262)
+        Me.cbIncludeSubtitleFiles.Location = New System.Drawing.Point(28, 349)
         Me.cbIncludeSubtitleFiles.Name = "cbIncludeSubtitleFiles"
         Me.cbIncludeSubtitleFiles.Size = New System.Drawing.Size(127, 17)
         Me.cbIncludeSubtitleFiles.TabIndex = 15
@@ -188,35 +125,158 @@ Partial Class Settings
         'cbMakeChanges
         '
         Me.cbMakeChanges.AutoSize = True
-        Me.cbMakeChanges.Location = New System.Drawing.Point(21, 293)
+        Me.cbMakeChanges.Location = New System.Drawing.Point(28, 382)
         Me.cbMakeChanges.Name = "cbMakeChanges"
         Me.cbMakeChanges.Size = New System.Drawing.Size(98, 17)
         Me.cbMakeChanges.TabIndex = 16
         Me.cbMakeChanges.Text = "Make Changes"
         Me.cbMakeChanges.UseVisualStyleBackColor = True
         '
+        'cbRemoveEmptyFolders
+        '
+        Me.cbRemoveEmptyFolders.AutoSize = True
+        Me.cbRemoveEmptyFolders.Location = New System.Drawing.Point(28, 316)
+        Me.cbRemoveEmptyFolders.Name = "cbRemoveEmptyFolders"
+        Me.cbRemoveEmptyFolders.Size = New System.Drawing.Size(243, 17)
+        Me.cbRemoveEmptyFolders.TabIndex = 17
+        Me.cbRemoveEmptyFolders.Text = "Remove Empty Original Subfolders after Move"
+        Me.cbRemoveEmptyFolders.UseVisualStyleBackColor = True
+        '
+        'lblOriginalMovieFolder
+        '
+        Me.lblOriginalMovieFolder.BackColor = System.Drawing.SystemColors.ButtonHighlight
+        Me.lblOriginalMovieFolder.Location = New System.Drawing.Point(143, 54)
+        Me.lblOriginalMovieFolder.Name = "lblOriginalMovieFolder"
+        Me.lblOriginalMovieFolder.Size = New System.Drawing.Size(277, 20)
+        Me.lblOriginalMovieFolder.TabIndex = 25
+        Me.lblOriginalMovieFolder.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'btnOriginalMovieFolder
+        '
+        Me.btnOriginalMovieFolder.BackgroundImage = Global.FileNamer.My.Resources.Resources.folderyellow_92963
+        Me.btnOriginalMovieFolder.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom
+        Me.btnOriginalMovieFolder.CausesValidation = False
+        Me.btnOriginalMovieFolder.Location = New System.Drawing.Point(420, 50)
+        Me.btnOriginalMovieFolder.Name = "btnOriginalMovieFolder"
+        Me.btnOriginalMovieFolder.Size = New System.Drawing.Size(28, 26)
+        Me.btnOriginalMovieFolder.TabIndex = 24
+        Me.btnOriginalMovieFolder.UseVisualStyleBackColor = True
+        '
+        'lblRenamedMovieFolder
+        '
+        Me.lblRenamedMovieFolder.BackColor = System.Drawing.SystemColors.ButtonHighlight
+        Me.lblRenamedMovieFolder.Location = New System.Drawing.Point(143, 88)
+        Me.lblRenamedMovieFolder.Name = "lblRenamedMovieFolder"
+        Me.lblRenamedMovieFolder.Size = New System.Drawing.Size(277, 20)
+        Me.lblRenamedMovieFolder.TabIndex = 27
+        Me.lblRenamedMovieFolder.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'btnRenamedMovieFolder
+        '
+        Me.btnRenamedMovieFolder.BackgroundImage = Global.FileNamer.My.Resources.Resources.folderyellow_92963
+        Me.btnRenamedMovieFolder.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom
+        Me.btnRenamedMovieFolder.CausesValidation = False
+        Me.btnRenamedMovieFolder.Location = New System.Drawing.Point(420, 84)
+        Me.btnRenamedMovieFolder.Name = "btnRenamedMovieFolder"
+        Me.btnRenamedMovieFolder.Size = New System.Drawing.Size(28, 26)
+        Me.btnRenamedMovieFolder.TabIndex = 26
+        Me.btnRenamedMovieFolder.UseVisualStyleBackColor = True
+        '
+        'lblOriginalTVFolder
+        '
+        Me.lblOriginalTVFolder.BackColor = System.Drawing.SystemColors.ButtonHighlight
+        Me.lblOriginalTVFolder.Location = New System.Drawing.Point(143, 122)
+        Me.lblOriginalTVFolder.Name = "lblOriginalTVFolder"
+        Me.lblOriginalTVFolder.Size = New System.Drawing.Size(277, 20)
+        Me.lblOriginalTVFolder.TabIndex = 29
+        Me.lblOriginalTVFolder.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'btnOriginalTVFolder
+        '
+        Me.btnOriginalTVFolder.BackgroundImage = Global.FileNamer.My.Resources.Resources.folderyellow_92963
+        Me.btnOriginalTVFolder.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom
+        Me.btnOriginalTVFolder.CausesValidation = False
+        Me.btnOriginalTVFolder.Location = New System.Drawing.Point(420, 118)
+        Me.btnOriginalTVFolder.Name = "btnOriginalTVFolder"
+        Me.btnOriginalTVFolder.Size = New System.Drawing.Size(28, 26)
+        Me.btnOriginalTVFolder.TabIndex = 28
+        Me.btnOriginalTVFolder.UseVisualStyleBackColor = True
+        '
+        'lblRenamedTVFolder
+        '
+        Me.lblRenamedTVFolder.BackColor = System.Drawing.SystemColors.ButtonHighlight
+        Me.lblRenamedTVFolder.Location = New System.Drawing.Point(143, 155)
+        Me.lblRenamedTVFolder.Name = "lblRenamedTVFolder"
+        Me.lblRenamedTVFolder.Size = New System.Drawing.Size(277, 20)
+        Me.lblRenamedTVFolder.TabIndex = 31
+        Me.lblRenamedTVFolder.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'btnRenamedTVFolder
+        '
+        Me.btnRenamedTVFolder.BackgroundImage = Global.FileNamer.My.Resources.Resources.folderyellow_92963
+        Me.btnRenamedTVFolder.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom
+        Me.btnRenamedTVFolder.CausesValidation = False
+        Me.btnRenamedTVFolder.Location = New System.Drawing.Point(420, 151)
+        Me.btnRenamedTVFolder.Name = "btnRenamedTVFolder"
+        Me.btnRenamedTVFolder.Size = New System.Drawing.Size(28, 26)
+        Me.btnRenamedTVFolder.TabIndex = 30
+        Me.btnRenamedTVFolder.UseVisualStyleBackColor = True
+        '
+        'lblDefaults
+        '
+        Me.lblDefaults.AutoSize = True
+        Me.lblDefaults.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblDefaults.Location = New System.Drawing.Point(24, 11)
+        Me.lblDefaults.Name = "lblDefaults"
+        Me.lblDefaults.Size = New System.Drawing.Size(133, 20)
+        Me.lblDefaults.TabIndex = 32
+        Me.lblDefaults.Text = "Default Folders"
+        '
+        'lblOptions
+        '
+        Me.lblOptions.AutoSize = True
+        Me.lblOptions.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblOptions.Location = New System.Drawing.Point(24, 189)
+        Me.lblOptions.Name = "lblOptions"
+        Me.lblOptions.Size = New System.Drawing.Size(71, 20)
+        Me.lblOptions.TabIndex = 33
+        Me.lblOptions.Text = "Options"
+        '
+        'btnExit
+        '
+        Me.btnExit.Location = New System.Drawing.Point(389, 406)
+        Me.btnExit.Name = "btnExit"
+        Me.btnExit.Size = New System.Drawing.Size(92, 37)
+        Me.btnExit.TabIndex = 34
+        Me.btnExit.Text = "Save"
+        Me.btnExit.UseVisualStyleBackColor = True
+        '
         'Settings
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(800, 450)
+        Me.ClientSize = New System.Drawing.Size(492, 453)
+        Me.Controls.Add(Me.btnExit)
+        Me.Controls.Add(Me.lblOptions)
+        Me.Controls.Add(Me.lblDefaults)
+        Me.Controls.Add(Me.lblRenamedTVFolder)
+        Me.Controls.Add(Me.btnRenamedTVFolder)
+        Me.Controls.Add(Me.lblOriginalTVFolder)
+        Me.Controls.Add(Me.btnOriginalTVFolder)
+        Me.Controls.Add(Me.lblRenamedMovieFolder)
+        Me.Controls.Add(Me.btnRenamedMovieFolder)
+        Me.Controls.Add(Me.lblOriginalMovieFolder)
+        Me.Controls.Add(Me.btnOriginalMovieFolder)
+        Me.Controls.Add(Me.cbRemoveEmptyFolders)
         Me.Controls.Add(Me.cbMakeChanges)
         Me.Controls.Add(Me.cbIncludeSubtitleFiles)
         Me.Controls.Add(Me.cbIndividualFolders)
         Me.Controls.Add(Me.cbSuggestFileName)
         Me.Controls.Add(Me.cbWriteResults)
-        Me.Controls.Add(Me.btnRenamedTVFolder)
-        Me.Controls.Add(Me.txtRenamedTVFolder)
-        Me.Controls.Add(Me.lblRenamedTVFolder)
-        Me.Controls.Add(Me.btnOriginalTVFolder)
-        Me.Controls.Add(Me.txtOriginalTVFolder)
-        Me.Controls.Add(Me.lblOriginalTVFolder)
-        Me.Controls.Add(Me.btnRenamedMovieFolder)
-        Me.Controls.Add(Me.txtRenamedMovieFolder)
-        Me.Controls.Add(Me.lblRenamedMovieFolder)
-        Me.Controls.Add(Me.btnOriginalMovieFolder)
-        Me.Controls.Add(Me.txtOriginalMovieFolder)
-        Me.Controls.Add(Me.lblOriginalMovieFolder)
+        Me.Controls.Add(Me.lblRenamedTV)
+        Me.Controls.Add(Me.lblOriginalTV)
+        Me.Controls.Add(Me.lblRenamedMovie)
+        Me.Controls.Add(Me.lblOriginalMovie)
         Me.Name = "Settings"
         Me.Text = "Settings"
         Me.ResumeLayout(False)
@@ -224,21 +284,26 @@ Partial Class Settings
 
     End Sub
 
-    Friend WithEvents lblOriginalMovieFolder As Label
-    Friend WithEvents txtOriginalMovieFolder As TextBox
-    Friend WithEvents btnOriginalMovieFolder As Button
-    Friend WithEvents btnRenamedMovieFolder As Button
-    Friend WithEvents txtRenamedMovieFolder As TextBox
-    Friend WithEvents lblRenamedMovieFolder As Label
-    Friend WithEvents btnOriginalTVFolder As Button
-    Friend WithEvents txtOriginalTVFolder As TextBox
-    Friend WithEvents lblOriginalTVFolder As Label
-    Friend WithEvents btnRenamedTVFolder As Button
-    Friend WithEvents txtRenamedTVFolder As TextBox
-    Friend WithEvents lblRenamedTVFolder As Label
+    Friend WithEvents lblOriginalMovie As Label
+    Friend WithEvents lblRenamedMovie As Label
+    Friend WithEvents lblOriginalTV As Label
+    Friend WithEvents lblRenamedTV As Label
     Friend WithEvents cbWriteResults As CheckBox
     Friend WithEvents cbSuggestFileName As CheckBox
     Friend WithEvents cbIndividualFolders As CheckBox
     Friend WithEvents cbIncludeSubtitleFiles As CheckBox
     Friend WithEvents cbMakeChanges As CheckBox
+    Friend WithEvents cbRemoveEmptyFolders As CheckBox
+    Friend WithEvents FolderBrowserDialog1 As FolderBrowserDialog
+    Friend WithEvents lblOriginalMovieFolder As Label
+    Friend WithEvents btnOriginalMovieFolder As Button
+    Friend WithEvents lblRenamedMovieFolder As Label
+    Friend WithEvents btnRenamedMovieFolder As Button
+    Friend WithEvents lblOriginalTVFolder As Label
+    Friend WithEvents btnOriginalTVFolder As Button
+    Friend WithEvents lblRenamedTVFolder As Label
+    Friend WithEvents btnRenamedTVFolder As Button
+    Friend WithEvents lblDefaults As Label
+    Friend WithEvents lblOptions As Label
+    Friend WithEvents btnExit As Button
 End Class

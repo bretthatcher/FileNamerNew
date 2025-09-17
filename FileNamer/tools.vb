@@ -66,5 +66,31 @@ Module tools
         End Using
         Return temppic
     End Function
+
+    Public Sub DeleteEmptyParentFolders(ByVal folder As String, stopAt As String)
+        Dim current As String = folder
+
+        While Not String.IsNullOrEmpty(current) AndAlso
+              current.StartsWith(stopAt, StringComparison.OrdinalIgnoreCase)
+
+            ' If directory exists and is empty, delete it
+            If Directory.Exists(current) Then
+                If Directory.GetFiles(current).Length = 0 AndAlso Directory.GetDirectories(current).Length = 0 Then
+                    Try
+                        Directory.Delete(current)
+                    Catch ex As Exception
+                        'MsgBox("Could not delete: " & current & " - " & ex.Message)
+                        Exit While
+                    End Try
+                Else
+                    ' Stop if folder isn't empty
+                    Exit While
+                End If
+            End If
+            ' Move one level up
+            current = Path.GetDirectoryName(current)
+        End While
+    End Sub
+
 End Module
 

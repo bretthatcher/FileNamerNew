@@ -24,7 +24,7 @@ Partial Class Duplicate
     Private Sub InitializeComponent()
         Me.lbDuplicates = New System.Windows.Forms.ListBox()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
-        Me.Button1 = New System.Windows.Forms.Button()
+        Me.btnSaveExit = New System.Windows.Forms.Button()
         Me.lblDescription = New System.Windows.Forms.Label()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -46,14 +46,14 @@ Partial Class Duplicate
         Me.PictureBox1.TabIndex = 1
         Me.PictureBox1.TabStop = False
         '
-        'Button1
+        'btnSaveExit
         '
-        Me.Button1.Location = New System.Drawing.Point(566, 395)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(123, 42)
-        Me.Button1.TabIndex = 2
-        Me.Button1.Text = "Button1"
-        Me.Button1.UseVisualStyleBackColor = True
+        Me.btnSaveExit.Location = New System.Drawing.Point(663, 202)
+        Me.btnSaveExit.Name = "btnSaveExit"
+        Me.btnSaveExit.Size = New System.Drawing.Size(123, 42)
+        Me.btnSaveExit.TabIndex = 2
+        Me.btnSaveExit.Text = "Save and Exit"
+        Me.btnSaveExit.UseVisualStyleBackColor = True
         '
         'lblDescription
         '
@@ -67,9 +67,9 @@ Partial Class Duplicate
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(800, 450)
+        Me.ClientSize = New System.Drawing.Size(797, 265)
         Me.Controls.Add(Me.lblDescription)
-        Me.Controls.Add(Me.Button1)
+        Me.Controls.Add(Me.btnSaveExit)
         Me.Controls.Add(Me.PictureBox1)
         Me.Controls.Add(Me.lbDuplicates)
         Me.Name = "Duplicate"
@@ -81,6 +81,6 @@ Partial Class Duplicate
 
     Friend WithEvents lbDuplicates As ListBox
     Friend WithEvents PictureBox1 As PictureBox
-    Friend WithEvents Button1 As Button
+    Friend WithEvents btnSaveExit As Button
     Friend WithEvents lblDescription As Label
 End Class

@@ -6,13 +6,14 @@ Imports System.Net.Http.Headers
 Imports System.Reflection.Emit
 
 Public Class Main
+
     Private Sub btnProcess_Click(sender As Object, e As EventArgs) Handles btnProcess.Click
-        If textOriginalFolder.Text = "" Then
+        If lblOriginalFolder.Text = "" Then
             MsgBox("Please select your original files folder")
             Exit Sub
         End If
 
-        If textNewFolder.Text = "" Then
+        If lblNewFolder.Text = "" Then
             MsgBox("Please select your new files folder")
             Exit Sub
         End If
@@ -22,6 +23,10 @@ Public Class Main
             Exit Sub
         End If
 
+        If lbOriginal.SelectedItems.Count = 0 Then
+            MsgBox("Please select at least 1 original file to process")
+            Exit Sub
+        End If
         If cbMovies.Checked = True Then mediatype = "movie"
         If cbTV.Checked = True Then mediatype = "tvshow"
 
@@ -37,7 +42,7 @@ Public Class Main
 
         lbOriginal.Items.Clear()
         lbNew.Items.Clear()
-        Call PopulateListBoxRecursively(textOriginalFolder.Text, lbOriginal)
+        Call PopulateListBoxRecursively(lblOriginalFolder.Text, lbOriginal)
 
         Call cbSelectAll_CheckedChanged(Nothing, Nothing)
 
@@ -50,27 +55,33 @@ Public Class Main
 
     Private Sub OptionsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles OptionsToolStripMenuItem.Click
         Dim settingsform As New Settings()
+        AddHandler settingsform.FormClosed, AddressOf Settingsform_Closed
         settingsform.Show()
+
+    End Sub
+
+    Private Sub Settingsform_Closed(sender As Object, e As FormClosedEventArgs)
+        cbMakeChanges.Checked = My.Settings.MakeChanges
     End Sub
 
     Private Sub btnOriginalFolder_Click(sender As Object, e As EventArgs) Handles btnOriginalFolder.Click
         Dim myfolder As String
 
-        myfolder = ShowFolderChooser(textOriginalFolder.Text)
+        myfolder = ShowFolderChooser(lblOriginalFolder.Text)
         If myfolder <> "" Then
             lbOriginal.Items.Clear()
             lbNew.Items.Clear()
-            textOriginalFolder.Text = myfolder
-            Call PopulateListBoxRecursively(textOriginalFolder.Text, lbOriginal)
+            lblOriginalFolder.Text = myfolder
+            Call PopulateListBoxRecursively(lblOriginalFolder.Text, lbOriginal)
         End If
     End Sub
 
     Private Sub btnNewFolder_Click(sender As Object, e As EventArgs) Handles btnNewFolder.Click
         Dim myfolder As String
 
-        myfolder = ShowFolderChooser(textNewFolder.Text)
+        myfolder = ShowFolderChooser(lblNewFolder.Text)
         If myfolder <> "" Then
-            textNewFolder.Text = myfolder
+            lblNewFolder.Text = myfolder
         End If
     End Sub
     Public Sub Move_Copy_Files()
@@ -81,17 +92,40 @@ Public Class Main
                 mediadict.Clear()
 
                 mediadict("OriginalFullPath") = lbOriginal.Items(loopcount).ToString
+                mediadict("OriginalFilePath") = Path.GetDirectoryName(mediadict("OriginalFullPath"))
                 mediadict("OriginalFullName") = Path.GetFileName(mediadict("OriginalFullPath"))
 
-                mediadict("NewFilePath") = textNewFolder.Text
+                mediadict("NewFilePath") = lblNewFolder.Text
                 mediadict("NewFullPath") = mediadict("NewFilePath") & "\" & mediadict("OriginalFullName")
 
                 If cbMakeChanges.Checked = True Then
                     Select Case mediaop
                         Case 2
                             My.Computer.FileSystem.MoveFile(mediadict("OriginalFullPath"), mediadict("NewFullPath"), True)
+
+                            'This adds the operation to the filechanges list in case we need to undo the change
+                            If My.Settings.WriteResults = True Then
+                                filechanges.Add(New FileChange() With {
+                                .sourcefile = mediadict("OriginalFullPath"),
+                                .destinationfile = mediadict("NewFullPath"),
+                                .fileoperation = "move"
+                                })
+                            End If
+
+                            'this will delete empty folders back up to the root folder if they are empty as files are moved
+                            If My.Settings.RemoveEmptyFolders = True Then
+                                Call DeleteEmptyParentFolders(mediadict("OriginalFilePath"), lblOriginalFolder.Text)
+                            End If
+
                         Case 3
                             My.Computer.FileSystem.CopyFile(mediadict("OriginalFullPath"), mediadict("NewFullPath"), FileIO.UIOption.AllDialogs)
+                            If My.Settings.WriteResults = True Then
+                                filechanges.Add(New FileChange() With {
+                                .sourcefile = mediadict("OriginalFullPath"),
+                                .destinationfile = mediadict("NewFullPath"),
+                                .fileoperation = "copy"
+                                })
+                            End If
                     End Select
                 End If
 
@@ -113,7 +147,6 @@ Public Class Main
         'Dim mediatype = "movie"
         Dim lasttvshow As String = ""
         Dim media_unknown As String = ""
-        Dim url_search As String
         Dim loopcount As Long
 
         For loopcount = 0 To lbOriginal.Items.Count - 1
@@ -122,9 +155,9 @@ Public Class Main
 
                 mediadict.Clear()
 
-                mediadict("NewFilePath") = textNewFolder.Text
+                mediadict("NewFilePath") = lblNewFolder.Text.TrimEnd("\"c)
                 mediadict("OriginalFullPath") = lbOriginal.Items(loopcount).ToString
-                mediadict("OriginalFullName") = Path.GetFileName("OriginalFullPath")
+                mediadict("OriginalFullName") = Path.GetFileName(mediadict("OriginalFullPath"))
                 mediadict("OriginalFileName") = Path.GetFileNameWithoutExtension(mediadict("OriginalFullPath"))
                 mediadict("OriginalFileExt") = Path.GetExtension(mediadict("OriginalFullPath"))
                 mediadict("OriginalFilePath") = Path.GetDirectoryName(mediadict("OriginalFullPath"))
@@ -252,7 +285,10 @@ Public Class Main
                             Case "movie"
                                 'Build the new movie name and add options on the name as needed
                                 mediadict("NewFileName") = mediadict("title") & " (" & mediadict("release_date") & ")"
-                                mediadict("NewFileName") = mediadict("NewFileName") & " " & mediadict("VideoResolution") & " " & mediadict("VideoCodec") & " " & mediadict("AudioChannels") & mediadict("OriginalFileExt")
+
+                                mediadict("NewFileName") = BuildMovieName()
+
+                                mediadict("NewFileName") = mediadict("NewFileName") & mediadict("OriginalFileExt")
 
                                 If My.Settings.IndividualFolders = True Then
                                     mediadict("NewFilePath") = mediadict("NewFilePath") & "\" & mediadict("title") & " (" & mediadict("release_date") & ")"
@@ -264,14 +300,30 @@ Public Class Main
                                     Select Case mediaop
                                         Case 0
                                             My.Computer.FileSystem.MoveFile(mediadict("OriginalFullPath"), mediadict("NewFullPath"), True)
-                                            If mediadict("OriginalFilePath") <> textOriginalFolder.Text Then
-                                                'If Directory.Exists(mediadict("OriginalFilePath")) And Directory.GetFiles(mediadict("OriginalFilePath").Length = 0) And Directory.GetDirectories(mediadict("OriginalFilePath").Length = 0) Then
-                                                'Directory.Delete(mediadict("OriginalFilePath"))
-                                                'End If
+
+                                            If My.Settings.WriteResults = True Then
+                                                filechanges.Add(New FileChange() With {
+                                                .sourcefile = mediadict("OriginalFullPath"),
+                                                .destinationfile = mediadict("NewFullPath"),
+                                                .fileoperation = "move"
+                                                })
                                             End If
+
+                                            If My.Settings.RemoveEmptyFolders = True Then
+                                                'this will delete empty folders back up to the root folder if they are empty as files are moved
+                                                Call DeleteEmptyParentFolders(mediadict("OriginalFilePath"), lblOriginalFolder.Text)
+                                            End If
+
                                         Case 1
                                             My.Computer.FileSystem.CopyFile(mediadict("OriginalFullPath"), mediadict("NewFullPath"), FileIO.UIOption.AllDialogs)
 
+                                            If My.Settings.WriteResults = True Then
+                                                filechanges.Add(New FileChange() With {
+                                                .sourcefile = mediadict("OriginalFullPath"),
+                                                .destinationfile = mediadict("NewFullPath"),
+                                                .fileoperation = "copy"
+                                                })
+                                            End If
                                     End Select
                                     'My.Computer.FileSystem.CopyFile(mediadict("OriginalFullPath"), mediadict("NewFullPath"), True)
                                     'File.Copy(mediadict("OriginalFullPath"), mediadict("NewFullPath"), True)
@@ -288,7 +340,9 @@ Public Class Main
 
                                 If mediadict("totalresults") <> 0 Then
                                     'Build the new tv show name and add options on the name as needed
-                                    mediadict("NewFileName") = mediadict("title") & " S" & mediadict("season") & "E" & mediadict("episode") & " - " & mediadict("episodename") & mediadict("OriginalFileExt")
+                                    mediadict("NewFileName") = BuildTVName()
+
+                                    mediadict("NewFileName") = mediadict("NewFileName") & mediadict("OriginalFileExt")
 
                                     If My.Settings.IndividualFolders = True Then
                                         mediadict("NewFilePath") = mediadict("NewFilePath") & "\" & mediadict("title") & " (" & mediadict("release_date") & ")"
@@ -302,8 +356,30 @@ Public Class Main
                                         Select Case mediaop
                                             Case 0
                                                 My.Computer.FileSystem.MoveFile(mediadict("OriginalFullPath"), mediadict("NewFullPath"), True)
+
+                                                If My.Settings.WriteResults = True Then
+                                                    filechanges.Add(New FileChange() With {
+                                                    .sourcefile = mediadict("OriginalFullPath"),
+                                                    .destinationfile = mediadict("NewFullPath"),
+                                                    .fileoperation = "move"
+                                                    })
+                                                End If
+
+                                                If My.Settings.RemoveEmptyFolders = True Then
+                                                    'this will delete empty folders back up to the root folder if they are empty as files are moved
+                                                    Call DeleteEmptyParentFolders(mediadict("OriginalFilePath"), lblOriginalFolder.Text)
+                                                End If
+
                                             Case 1
                                                 My.Computer.FileSystem.CopyFile(mediadict("OriginalFullPath"), mediadict("NewFullPath"), True)
+
+                                                If My.Settings.WriteResults = True Then
+                                                    filechanges.Add(New FileChange() With {
+                                                    .sourcefile = mediadict("OriginalFullPath"),
+                                                    .destinationfile = mediadict("NewFullPath"),
+                                                    .fileoperation = "move"
+                                                    })
+                                                End If
                                         End Select
 
                                         'File.Copy(mediadict("OriginalFullPath"), mediadict("NewFullPath"), True)
@@ -342,6 +418,16 @@ Public Class Main
         If cbMovies.Checked = True Then
             cbTV.Checked = False
             mediatype = "movie"
+            lblExample.Visible = True
+            lblExtras.Visible = True
+            btnChangeExample.Visible = True
+
+            Call BuildMovieExample()
+        Else
+            mediatype = ""
+            lblExample.Visible = False
+            lblExtras.Visible = False
+            btnChangeExample.Visible = False
         End If
 
     End Sub
@@ -350,6 +436,17 @@ Public Class Main
         If cbTV.Checked = True Then
             cbMovies.Checked = False
             mediatype = "tvshow"
+            lblExample.Visible = True
+            lblExtras.Visible = True
+            btnChangeExample.Visible = True
+
+            Call BuildTVExample()
+        Else
+            mediatype = ""
+            lblExample.Visible = False
+            lblExtras.Visible = False
+            btnChangeExample.Visible = False
+
         End If
     End Sub
 
@@ -369,8 +466,21 @@ Public Class Main
     End Sub
 
     Private Sub Main_Load(sender As Object, e As EventArgs) Handles Me.Load
+
         cmbOperation.SelectedIndex = 0
         mediaop = cmbOperation.SelectedIndex
+        cbMakeChanges.Checked = My.Settings.MakeChanges
+
+        Dim tooltip As New ToolTip()
+        ' Set properties for the ToolTip (optional)
+        tooltip.AutoPopDelay = 5000  ' Time in milliseconds the tooltip remains visible
+        tooltip.InitialDelay = 1000 ' Time in milliseconds before the tooltip appears
+        tooltip.ReshowDelay = 500   ' Time in milliseconds before reappearing
+        tooltip.ShowAlways = True   ' Ensures the tooltip is displayed even if the form is inactive
+
+        ' Add a tooltip to a control (e.g., a Button)
+        tooltip.SetToolTip(cbMakeChanges, "If this is checked changes will be made to the files." & vbCrLf & "If not, it is a dry run with no changes.")
+        tooltip.SetToolTip(cbMovies, "Determines what extras to add to the movie when it is renamed")
 
     End Sub
 
@@ -381,16 +491,18 @@ Public Class Main
 
     Private Sub UseDefaultMovieFoldersToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles UseDefaultMovieFoldersToolStripMenuItem.Click
         If Directory.Exists(My.Settings.RenamedMovieFolder) Then
-            textNewFolder.Text = My.Settings.RenamedMovieFolder
+            lblNewFolder.Text = My.Settings.RenamedMovieFolder
         Else
             My.Settings.RenamedMovieFolder = ""
         End If
 
         If Directory.Exists(My.Settings.OriginalMovieFolder) Then
-            textOriginalFolder.Text = My.Settings.OriginalMovieFolder
+            lblOriginalFolder.Text = My.Settings.OriginalMovieFolder
             lbOriginal.Items.Clear()
             lbNew.Items.Clear()
-            Call PopulateListBoxRecursively(textOriginalFolder.Text, lbOriginal)
+            Call PopulateListBoxRecursively(lblOriginalFolder.Text, lbOriginal)
+            cbMovies.Checked = True
+            cbMovies_CheckedChanged(cbMovies, EventArgs.Empty)
         Else
             My.Settings.OriginalMovieFolder = ""
         End If
@@ -399,19 +511,240 @@ Public Class Main
 
     Private Sub UseDefaultTVFoldersToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles UseDefaultTVFoldersToolStripMenuItem.Click
         If Directory.Exists(My.Settings.RenamedTVFolder) Then
-            textNewFolder.Text = My.Settings.RenamedTVFolder
+            lblNewFolder.Text = My.Settings.RenamedTVFolder
         Else
             My.Settings.RenamedTVFolder = ""
         End If
 
         If Directory.Exists(My.Settings.OriginalTVFolder) Then
-            textOriginalFolder.Text = My.Settings.OriginalTVFolder
+            lblOriginalFolder.Text = My.Settings.OriginalTVFolder
             lbOriginal.Items.Clear()
             lbNew.Items.Clear()
-            Call PopulateListBoxRecursively(textOriginalFolder.Text, lbOriginal)
+            Call PopulateListBoxRecursively(lblOriginalFolder.Text, lbOriginal)
+            cbTV.Checked = True
+            cbTV_CheckedChanged(cbTV, EventArgs.Empty)
+
         Else
             My.Settings.OriginalTVFolder = ""
         End If
     End Sub
 
+    Private Sub btnChangeExample_Click(sender As Object, e As EventArgs) Handles btnChangeExample.Click
+        If cbTV.Checked Then
+            Dim tvextrasform As New TVExtras
+            AddHandler tvextrasform.FormClosed, AddressOf tvextrasform_Closed
+            tvextrasform.Show()
+
+        End If
+        If cbMovies.Checked Then
+            Dim movieextrasform As New MovieExtras
+            AddHandler movieextrasform.FormClosed, AddressOf movieextrasform_Closed
+            movieextrasform.Show()
+        End If
+    End Sub
+    Private Sub tvextrasform_Closed(sender As Object, e As FormClosedEventArgs)
+        Call BuildTVExample()
+    End Sub
+    Private Sub movieextrasform_Closed(sender As Object, e As FormClosedEventArgs)
+        Call BuildMovieExample()
+    End Sub
+    Private Function BuildTVName() As String
+        'mediadict("NewFileName") = mediadict("title") & " S" & mediadict("season") & "E" & mediadict("episode") & " - " & mediadict("episodename") & mediadict("OriginalFileExt")
+        Dim tvtitle As String = mediadict("title")
+        Dim tvdescription As String = mediadict("episodename")
+        Dim tvtitleseperator As String = ""
+        Dim seasontext As String = ""
+        Dim seasonnumber As String = ""
+        Dim seasonepisodeseperator As String = ""
+        Dim episodetext As String = ""
+        Dim episodenumber As String = ""
+        Dim tvdescriptionseperator = ""
+
+        If My.Settings.TVTitleSeperator <> "" Then
+            Select Case My.Settings.TVTitleSeperator
+                Case "<space>"
+                    tvtitleseperator = " "
+                Case "<dash>"
+                    tvtitleseperator = "-"
+                Case "<space><dash><space>"
+                    tvtitleseperator = " - "
+            End Select
+        End If
+
+        If My.Settings.TVSeasonText <> "" And My.Settings.TVSeasonText <> "<none>" Then
+            seasontext = My.Settings.TVSeasonText
+        End If
+
+        If My.Settings.TVSeasonNumber <> "" Then
+            seasonnumber = My.Settings.TVSeasonNumber
+            Select Case seasonnumber
+                Case "Leading Zero"
+                    If CInt(mediadict("season")) < 10 Then
+                        seasonnumber = "0" & mediadict("season")
+                    End If
+                Case "No Leading Zero"
+                    seasonnumber = mediadict("season")
+
+            End Select
+        End If
+
+        If My.Settings.TVSeasonEpisodeSeperator <> "" And My.Settings.TVSeasonEpisodeSeperator <> "<none>" Then
+            seasonepisodeseperator = My.Settings.TVSeasonEpisodeSeperator
+        End If
+
+        If My.Settings.TVEpisodeText <> "" And My.Settings.TVEpisodeText <> "<none>" Then
+            episodetext = My.Settings.TVEpisodeText
+        End If
+
+        If My.Settings.TVEpisodeNumber <> "" Then
+            episodenumber = My.Settings.TVSeasonNumber
+            Select Case episodenumber
+                Case "Leading Zero"
+                    If CInt(mediadict("episode")) < 10 Then
+                        episodenumber = "0" & mediadict("episode")
+                    End If
+                Case "No Leading Zero"
+                    episodenumber = mediadict("episode")
+            End Select
+        End If
+
+        If My.Settings.TVDescriptionSeperator <> "" Then
+            Select Case My.Settings.TVDescriptionSeperator
+                Case "<space>"
+                    tvdescriptionseperator = " "
+                Case "<dash>"
+                    tvdescriptionseperator = "-"
+                Case "<space><dash><space>"
+                    tvdescriptionseperator = " - "
+            End Select
+        End If
+
+        If My.Settings.TVDescription <> "" Then
+            If My.Settings.TVDescription = "Don't Show" Then tvdescription = ""
+        End If
+
+        Return tvtitle & tvtitleseperator & seasontext & seasonnumber & seasonepisodeseperator & episodetext & episodenumber & tvdescriptionseperator & tvdescription
+    End Function
+
+    Private Sub BuildTVExample()
+        Dim tvtitle As String = "TVShow"
+        Dim tvdescription As String = ""
+        Dim tvtitleseperator As String = ""
+        Dim seasontext As String = ""
+        Dim seasonnumber As String = ""
+        Dim seasonepisodeseperator As String = ""
+        Dim episodetext As String = ""
+        Dim episodenumber As String = ""
+        Dim tvdescriptionseperator = ""
+
+        If My.Settings.TVTitleSeperator <> "" Then
+            Select Case My.Settings.TVTitleSeperator
+                Case "<space>"
+                    tvtitleseperator = " "
+                Case "<dash>"
+                    tvtitleseperator = "-"
+                Case "<space><dash><space>"
+                    tvtitleseperator = " - "
+            End Select
+        End If
+
+        If My.Settings.TVSeasonText <> "" And My.Settings.TVSeasonText <> "<none>" Then
+            seasontext = My.Settings.TVSeasonText
+        End If
+
+        If My.Settings.TVSeasonNumber <> "" Then
+            seasonnumber = My.Settings.TVSeasonNumber
+            Select Case seasonnumber
+                Case "Leading Zero"
+                    seasonnumber = "01"
+                Case "No Leading Zero"
+                    seasonnumber = "1"
+            End Select
+        End If
+
+        If My.Settings.TVSeasonEpisodeSeperator <> "" And My.Settings.TVSeasonEpisodeSeperator <> "<none>" Then
+            seasonepisodeseperator = My.Settings.TVSeasonEpisodeSeperator
+        End If
+
+        If My.Settings.TVEpisodeText <> "" And My.Settings.TVEpisodeText <> "<none>" Then
+            episodetext = My.Settings.TVEpisodeText
+        End If
+
+        If My.Settings.TVEpisodeNumber <> "" Then
+            episodenumber = My.Settings.TVSeasonNumber
+            Select Case episodenumber
+                Case "Leading Zero"
+                    episodenumber = "01"
+                Case "No Leading Zero"
+                    episodenumber = "1"
+            End Select
+        End If
+
+        If My.Settings.TVDescriptionSeperator <> "" Then
+            Select Case My.Settings.TVDescriptionSeperator
+                Case "<space>"
+                    tvdescriptionseperator = " "
+                Case "<dash>"
+                    tvdescriptionseperator = "-"
+                Case "<space><dash><space>"
+                    tvdescriptionseperator = " - "
+            End Select
+        End If
+
+        If My.Settings.TVDescription <> "" Then
+            If My.Settings.TVDescription = "Show" Then tvdescription = "Description"
+        End If
+
+        lblExtras.Text = tvtitle & tvtitleseperator & seasontext & seasonnumber & seasonepisodeseperator & episodetext & episodenumber & tvdescriptionseperator & tvdescription
+    End Sub
+
+
+    Private Function BuildMovieName() As String
+        Dim completemoviename As String = mediadict("NewFileName")
+
+        'mediadict("NewFileName") = mediadict("NewFileName") & " " & mediadict("VideoResolution") & " " & mediadict("VideoCodec") & " " & mediadict("AudioChannels") & mediadict("OriginalFileExt")
+        If My.Settings.MovieExtras IsNot Nothing Then
+            For Each item As String In My.Settings.MovieExtras
+                Select Case item
+                    Case "Video Resolution"
+                        completemoviename = completemoviename & " " & mediadict("VideoResolution")
+                    Case "Video Codec"
+                        completemoviename = completemoviename & " " & mediadict("VideoCodec")
+                    Case "Audio Channels"
+                        completemoviename = completemoviename & " " & mediadict("AudioChannels")
+                End Select
+            Next
+        End If
+
+        Return completemoviename
+
+    End Function
+    Private Sub BuildMovieExample()
+        If My.Settings.MovieExtras IsNot Nothing Then
+            lblExtras.Text = "Movie (2025)"
+            For Each item As String In My.Settings.MovieExtras
+                Select Case item
+                    Case "Video Resolution"
+                        lblExtras.Text = lblExtras.Text & " 1080p"
+                    Case "Video Codec"
+                        lblExtras.Text = lblExtras.Text & " HVEC"
+                    Case "Audio Channels"
+                        lblExtras.Text = lblExtras.Text & " 6CH"
+                End Select
+            Next
+        End If
+
+    End Sub
+
+    Private Sub ExitToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ExitToolStripMenuItem.Click
+        Me.Close()
+
+    End Sub
+
+    Private Sub ToolStripMenuItem2_Click(sender As Object, e As EventArgs) Handles ToolStripMenuItem2.Click
+        Dim undochangesform As New UndoChanges
+        undochangesform.Show()
+
+
+    End Sub
 End Class

@@ -101,7 +101,7 @@ Public Class Duplicate
         Call lbDuplicates_SelectedIndexChanged(Nothing, Nothing)
 
     End Sub
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+    Private Sub btnSaveExit_Click(sender As Object, e As EventArgs) Handles btnSaveExit.Click
         mediadict("title") = mediaarray(lbDuplicates.SelectedIndex).title
         mediadict("release_date") = mediaarray(lbDuplicates.SelectedIndex).release_date.Substring(0, 4)
         mediadict("id") = mediaarray(lbDuplicates.SelectedIndex).id

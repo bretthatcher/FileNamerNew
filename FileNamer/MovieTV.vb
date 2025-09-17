@@ -3,12 +3,19 @@ Imports System.Net.Http
 Imports System.Security.Policy
 Imports System.Text.RegularExpressions
 
+Public Class FileChange
+    Public Property sourcefile As String
+    Public Property destinationfile As String
+    Public Property fileoperation As String
+End Class
 
 Module MovieTV
     Public mediatype As String
     Public mediaop As Integer
     Public tvdict As New Dictionary(Of String, String)
     Public mediadict As New Dictionary(Of String, String)
+    Public filechanges As New List(Of FileChange)
+
     Private apikey As String = "27a8df932b72b4ceb2fed7c4a3cec29d"
 
     Public Sub TMDB_Search_Media(mediatype As String)

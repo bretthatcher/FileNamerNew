@@ -117,6 +117,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_CAFC539AE8FB48EC89961700BE5B3C92"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_CEAC2CE709F6F75B8907C37DDD1F3FC2"
         "OwnerKey" = "8:_EEC6FAEB86473E45227E82F7E49E446F"
         "MsmSig" = "8:_UNDEFINED"
@@ -203,12 +209,6 @@
         {
         "MsmKey" = "8:_EEC6FAEB86473E45227E82F7E49E446F"
         "OwnerKey" = "8:_8D14CF9A2725BD718E0B36A53E1B7D67"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_0FB2ECEC945664B2E659E9C7552D37F5"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -277,6 +277,12 @@
         "OwnerKey" = "8:_EA26D6EE726CBEC5DEBEF12033A75549"
         "MsmSig" = "8:_UNDEFINED"
         }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_0FB2ECEC945664B2E659E9C7552D37F5"
+        "MsmSig" = "8:_UNDEFINED"
+        }
     }
     "Configurations"
     {
@@ -295,6 +301,22 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
+            }
         }
         "Release"
         {
@@ -311,6 +333,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
     }
     "Deployable"
@@ -526,6 +556,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_CAFC539AE8FB48EC89961700BE5B3C92"
+            {
+            "SourcePath" = "8:..\\FileNamer\\bin\\Debug\\MediaInfo.dll"
+            "TargetName" = "8:MediaInfo.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_5226C4B5B6434851B4513B96BB6992A0"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_CEAC2CE709F6F75B8907C37DDD1F3FC2"
             {
             "AssemblyRegister" = "3:1"
@@ -689,7 +739,7 @@
         {
             "{3C67513D-01DD-4637-8A68-80971EB9504F}:_5226C4B5B6434851B4513B96BB6992A0"
             {
-            "DefaultLocation" = "8:[ProgramFilesFolder][Manufacturer]\\[ProductName]"
+            "DefaultLocation" = "8:[ProgramFiles64Folder][Manufacturer]\\[ProductName]"
             "Name" = "8:#1925"
             "AlwaysCreate" = "11:FALSE"
             "Condition" = "8:"
@@ -747,9 +797,9 @@
         "Product"
         {
         "Name" = "8:Microsoft Visual Studio"
-        "ProductName" = "8:Setup"
+        "ProductName" = "8:File Namer"
         "ProductCode" = "8:{E199EB0F-76B8-4E5F-9F66-9C85C7E08435}"
-        "PackageCode" = "8:{46911F37-3B31-46AB-8131-8269B6917F1A}"
+        "PackageCode" = "8:{6C86F6EB-ACB9-4C19-8B83-0ECDE144A1F7}"
         "UpgradeCode" = "8:{2F0DBB92-E800-4B2D-AD45-27B05B5BE255}"
         "AspNetVersion" = "8:"
         "RestartWWWService" = "11:FALSE"
@@ -757,12 +807,12 @@
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
         "ProductVersion" = "8:1.0.0"
-        "Manufacturer" = "8:Default Company Name"
+        "Manufacturer" = "8:Brett Hatcher"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
         "Title" = "8:Setup"
         "Subject" = "8:"
-        "ARPCONTACT" = "8:Default Company Name"
+        "ARPCONTACT" = "8:Brett Hatcher"
         "Keywords" = "8:"
         "ARPCOMMENTS" = "8:"
         "ARPURLINFOABOUT" = "8:"
@@ -770,7 +820,7 @@
         "ARPIconIndex" = "3:0"
         "SearchPath" = "8:"
         "UseSystemSearchPath" = "11:TRUE"
-        "TargetPlatform" = "3:0"
+        "TargetPlatform" = "3:1"
         "PreBuildEvent" = "8:"
         "PostBuildEvent" = "8:"
         "RunPostBuildEvent" = "3:0"

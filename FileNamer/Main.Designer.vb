@@ -26,27 +26,32 @@ Partial Class Main
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
         Me.ToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.ExitToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripMenuItem2 = New System.Windows.Forms.ToolStripMenuItem()
         Me.SettingsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.OptionsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
+        Me.UseDefaultMovieFoldersToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.UseDefaultTVFoldersToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.HelpToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.AboutToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.lbOriginal = New System.Windows.Forms.ListBox()
         Me.lbNew = New System.Windows.Forms.ListBox()
         Me.btnProcess = New System.Windows.Forms.Button()
-        Me.textOriginalFolder = New System.Windows.Forms.TextBox()
         Me.btnOriginalFolder = New System.Windows.Forms.Button()
         Me.lblOriginal = New System.Windows.Forms.Label()
         Me.lblNew = New System.Windows.Forms.Label()
-        Me.btnNewFolder = New System.Windows.Forms.Button()
-        Me.textNewFolder = New System.Windows.Forms.TextBox()
         Me.cbMakeChanges = New System.Windows.Forms.CheckBox()
         Me.cbMovies = New System.Windows.Forms.CheckBox()
         Me.cbTV = New System.Windows.Forms.CheckBox()
         Me.cbSelectAll = New System.Windows.Forms.CheckBox()
         Me.cmbOperation = New System.Windows.Forms.ComboBox()
-        Me.UseDefaultMovieFoldersToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.UseDefaultTVFoldersToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
+        Me.btnNewFolder = New System.Windows.Forms.Button()
+        Me.lblOriginalFolder = New System.Windows.Forms.Label()
+        Me.lblNewFolder = New System.Windows.Forms.Label()
+        Me.lblAction = New System.Windows.Forms.Label()
+        Me.btnChangeExample = New System.Windows.Forms.Button()
+        Me.lblExtras = New System.Windows.Forms.Label()
+        Me.lblExample = New System.Windows.Forms.Label()
         Me.MenuStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -55,13 +60,13 @@ Partial Class Main
         Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripMenuItem1, Me.SettingsToolStripMenuItem, Me.HelpToolStripMenuItem})
         Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip1.Name = "MenuStrip1"
-        Me.MenuStrip1.Size = New System.Drawing.Size(1107, 24)
+        Me.MenuStrip1.Size = New System.Drawing.Size(1105, 24)
         Me.MenuStrip1.TabIndex = 0
         Me.MenuStrip1.Text = "MenuStrip1"
         '
         'ToolStripMenuItem1
         '
-        Me.ToolStripMenuItem1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ExitToolStripMenuItem})
+        Me.ToolStripMenuItem1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripMenuItem2, Me.ExitToolStripMenuItem})
         Me.ToolStripMenuItem1.Name = "ToolStripMenuItem1"
         Me.ToolStripMenuItem1.Size = New System.Drawing.Size(37, 20)
         Me.ToolStripMenuItem1.Text = "File"
@@ -71,6 +76,12 @@ Partial Class Main
         Me.ExitToolStripMenuItem.Name = "ExitToolStripMenuItem"
         Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
         Me.ExitToolStripMenuItem.Text = "Exit"
+        '
+        'ToolStripMenuItem2
+        '
+        Me.ToolStripMenuItem2.Name = "ToolStripMenuItem2"
+        Me.ToolStripMenuItem2.Size = New System.Drawing.Size(180, 22)
+        Me.ToolStripMenuItem2.Text = "Undo Changes"
         '
         'SettingsToolStripMenuItem
         '
@@ -85,6 +96,23 @@ Partial Class Main
         Me.OptionsToolStripMenuItem.Size = New System.Drawing.Size(211, 22)
         Me.OptionsToolStripMenuItem.Text = "Options"
         '
+        'ToolStripSeparator1
+        '
+        Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
+        Me.ToolStripSeparator1.Size = New System.Drawing.Size(208, 6)
+        '
+        'UseDefaultMovieFoldersToolStripMenuItem
+        '
+        Me.UseDefaultMovieFoldersToolStripMenuItem.Name = "UseDefaultMovieFoldersToolStripMenuItem"
+        Me.UseDefaultMovieFoldersToolStripMenuItem.Size = New System.Drawing.Size(211, 22)
+        Me.UseDefaultMovieFoldersToolStripMenuItem.Text = "Use Default Movie Folders"
+        '
+        'UseDefaultTVFoldersToolStripMenuItem
+        '
+        Me.UseDefaultTVFoldersToolStripMenuItem.Name = "UseDefaultTVFoldersToolStripMenuItem"
+        Me.UseDefaultTVFoldersToolStripMenuItem.Size = New System.Drawing.Size(211, 22)
+        Me.UseDefaultTVFoldersToolStripMenuItem.Text = "Use Default TV Folders"
+        '
         'HelpToolStripMenuItem
         '
         Me.HelpToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AboutToolStripMenuItem})
@@ -95,7 +123,7 @@ Partial Class Main
         'AboutToolStripMenuItem
         '
         Me.AboutToolStripMenuItem.Name = "AboutToolStripMenuItem"
-        Me.AboutToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.AboutToolStripMenuItem.Size = New System.Drawing.Size(107, 22)
         Me.AboutToolStripMenuItem.Text = "About"
         '
         'lbOriginal
@@ -105,7 +133,7 @@ Partial Class Main
         Me.lbOriginal.Location = New System.Drawing.Point(12, 54)
         Me.lbOriginal.Name = "lbOriginal"
         Me.lbOriginal.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
-        Me.lbOriginal.Size = New System.Drawing.Size(510, 238)
+        Me.lbOriginal.Size = New System.Drawing.Size(510, 290)
         Me.lbOriginal.TabIndex = 1
         '
         'lbNew
@@ -114,35 +142,27 @@ Partial Class Main
         Me.lbNew.FormattingEnabled = True
         Me.lbNew.Location = New System.Drawing.Point(631, 54)
         Me.lbNew.Name = "lbNew"
-        Me.lbNew.Size = New System.Drawing.Size(464, 238)
+        Me.lbNew.Size = New System.Drawing.Size(464, 290)
         Me.lbNew.TabIndex = 2
         '
         'btnProcess
         '
-        Me.btnProcess.Location = New System.Drawing.Point(934, 372)
+        Me.btnProcess.Location = New System.Drawing.Point(927, 441)
         Me.btnProcess.Name = "btnProcess"
-        Me.btnProcess.Size = New System.Drawing.Size(161, 49)
+        Me.btnProcess.Size = New System.Drawing.Size(168, 49)
         Me.btnProcess.TabIndex = 3
         Me.btnProcess.Text = "Process Files"
         Me.btnProcess.UseVisualStyleBackColor = True
         '
-        'textOriginalFolder
-        '
-        Me.textOriginalFolder.BackColor = System.Drawing.SystemColors.Window
-        Me.textOriginalFolder.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.textOriginalFolder.Location = New System.Drawing.Point(200, 34)
-        Me.textOriginalFolder.Name = "textOriginalFolder"
-        Me.textOriginalFolder.Size = New System.Drawing.Size(301, 20)
-        Me.textOriginalFolder.TabIndex = 7
-        Me.textOriginalFolder.Text = "G:\Movies"
-        '
         'btnOriginalFolder
         '
-        Me.btnOriginalFolder.Location = New System.Drawing.Point(502, 33)
+        Me.btnOriginalFolder.BackgroundImage = Global.FileNamer.My.Resources.Resources.folderyellow_92963
+        Me.btnOriginalFolder.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom
+        Me.btnOriginalFolder.CausesValidation = False
+        Me.btnOriginalFolder.Location = New System.Drawing.Point(495, 28)
         Me.btnOriginalFolder.Name = "btnOriginalFolder"
-        Me.btnOriginalFolder.Size = New System.Drawing.Size(19, 21)
+        Me.btnOriginalFolder.Size = New System.Drawing.Size(28, 26)
         Me.btnOriginalFolder.TabIndex = 8
-        Me.btnOriginalFolder.Text = "Button5"
         Me.btnOriginalFolder.UseVisualStyleBackColor = True
         '
         'lblOriginal
@@ -165,29 +185,10 @@ Partial Class Main
         Me.lblNew.TabIndex = 10
         Me.lblNew.Text = "New"
         '
-        'btnNewFolder
-        '
-        Me.btnNewFolder.Location = New System.Drawing.Point(1068, 27)
-        Me.btnNewFolder.Name = "btnNewFolder"
-        Me.btnNewFolder.Size = New System.Drawing.Size(32, 27)
-        Me.btnNewFolder.TabIndex = 12
-        Me.btnNewFolder.Text = "Button6"
-        Me.btnNewFolder.UseVisualStyleBackColor = True
-        '
-        'textNewFolder
-        '
-        Me.textNewFolder.BackColor = System.Drawing.SystemColors.Window
-        Me.textNewFolder.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.textNewFolder.Location = New System.Drawing.Point(764, 28)
-        Me.textNewFolder.Name = "textNewFolder"
-        Me.textNewFolder.Size = New System.Drawing.Size(301, 20)
-        Me.textNewFolder.TabIndex = 11
-        Me.textNewFolder.Text = "G:\Test Movies"
-        '
         'cbMakeChanges
         '
         Me.cbMakeChanges.AutoSize = True
-        Me.cbMakeChanges.Location = New System.Drawing.Point(997, 336)
+        Me.cbMakeChanges.Location = New System.Drawing.Point(997, 354)
         Me.cbMakeChanges.Name = "cbMakeChanges"
         Me.cbMakeChanges.Size = New System.Drawing.Size(98, 17)
         Me.cbMakeChanges.TabIndex = 17
@@ -197,7 +198,7 @@ Partial Class Main
         'cbMovies
         '
         Me.cbMovies.AutoSize = True
-        Me.cbMovies.Location = New System.Drawing.Point(542, 218)
+        Me.cbMovies.Location = New System.Drawing.Point(549, 218)
         Me.cbMovies.Name = "cbMovies"
         Me.cbMovies.Size = New System.Drawing.Size(60, 17)
         Me.cbMovies.TabIndex = 18
@@ -207,7 +208,7 @@ Partial Class Main
         'cbTV
         '
         Me.cbTV.AutoSize = True
-        Me.cbTV.Location = New System.Drawing.Point(542, 241)
+        Me.cbTV.Location = New System.Drawing.Point(549, 241)
         Me.cbTV.Name = "cbTV"
         Me.cbTV.Size = New System.Drawing.Size(40, 17)
         Me.cbTV.TabIndex = 19
@@ -217,7 +218,7 @@ Partial Class Main
         'cbSelectAll
         '
         Me.cbSelectAll.AutoSize = True
-        Me.cbSelectAll.Location = New System.Drawing.Point(453, 298)
+        Me.cbSelectAll.Location = New System.Drawing.Point(453, 354)
         Me.cbSelectAll.Name = "cbSelectAll"
         Me.cbSelectAll.Size = New System.Drawing.Size(70, 17)
         Me.cbSelectAll.TabIndex = 20
@@ -229,44 +230,100 @@ Partial Class Main
         Me.cmbOperation.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cmbOperation.FormattingEnabled = True
         Me.cmbOperation.Items.AddRange(New Object() {"Rename and Move", "Rename and Copy", "Move", "Copy"})
-        Me.cmbOperation.Location = New System.Drawing.Point(28, 313)
+        Me.cmbOperation.Location = New System.Drawing.Point(977, 414)
         Me.cmbOperation.Name = "cmbOperation"
-        Me.cmbOperation.Size = New System.Drawing.Size(161, 21)
+        Me.cmbOperation.Size = New System.Drawing.Size(118, 21)
         Me.cmbOperation.TabIndex = 21
         '
-        'UseDefaultMovieFoldersToolStripMenuItem
+        'btnNewFolder
         '
-        Me.UseDefaultMovieFoldersToolStripMenuItem.Name = "UseDefaultMovieFoldersToolStripMenuItem"
-        Me.UseDefaultMovieFoldersToolStripMenuItem.Size = New System.Drawing.Size(211, 22)
-        Me.UseDefaultMovieFoldersToolStripMenuItem.Text = "Use Default Movie Folders"
+        Me.btnNewFolder.BackgroundImage = Global.FileNamer.My.Resources.Resources.folderyellow_92963
+        Me.btnNewFolder.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom
+        Me.btnNewFolder.CausesValidation = False
+        Me.btnNewFolder.Location = New System.Drawing.Point(1067, 28)
+        Me.btnNewFolder.Name = "btnNewFolder"
+        Me.btnNewFolder.Size = New System.Drawing.Size(28, 26)
+        Me.btnNewFolder.TabIndex = 22
+        Me.btnNewFolder.UseVisualStyleBackColor = True
         '
-        'UseDefaultTVFoldersToolStripMenuItem
+        'lblOriginalFolder
         '
-        Me.UseDefaultTVFoldersToolStripMenuItem.Name = "UseDefaultTVFoldersToolStripMenuItem"
-        Me.UseDefaultTVFoldersToolStripMenuItem.Size = New System.Drawing.Size(211, 22)
-        Me.UseDefaultTVFoldersToolStripMenuItem.Text = "Use Default TV Folders"
+        Me.lblOriginalFolder.BackColor = System.Drawing.SystemColors.ButtonHighlight
+        Me.lblOriginalFolder.Location = New System.Drawing.Point(218, 32)
+        Me.lblOriginalFolder.Name = "lblOriginalFolder"
+        Me.lblOriginalFolder.Size = New System.Drawing.Size(277, 20)
+        Me.lblOriginalFolder.TabIndex = 23
+        Me.lblOriginalFolder.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
-        'ToolStripSeparator1
+        'lblNewFolder
         '
-        Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-        Me.ToolStripSeparator1.Size = New System.Drawing.Size(208, 6)
+        Me.lblNewFolder.BackColor = System.Drawing.SystemColors.ButtonHighlight
+        Me.lblNewFolder.Location = New System.Drawing.Point(790, 32)
+        Me.lblNewFolder.Name = "lblNewFolder"
+        Me.lblNewFolder.Size = New System.Drawing.Size(277, 20)
+        Me.lblNewFolder.TabIndex = 24
+        Me.lblNewFolder.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'lblAction
+        '
+        Me.lblAction.AutoSize = True
+        Me.lblAction.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblAction.Location = New System.Drawing.Point(924, 418)
+        Me.lblAction.Name = "lblAction"
+        Me.lblAction.Size = New System.Drawing.Size(50, 16)
+        Me.lblAction.TabIndex = 25
+        Me.lblAction.Text = "Action"
+        '
+        'btnChangeExample
+        '
+        Me.btnChangeExample.BackgroundImage = Global.FileNamer.My.Resources.Resources.folderyellow_92963
+        Me.btnChangeExample.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom
+        Me.btnChangeExample.Location = New System.Drawing.Point(948, 349)
+        Me.btnChangeExample.Name = "btnChangeExample"
+        Me.btnChangeExample.Size = New System.Drawing.Size(28, 25)
+        Me.btnChangeExample.TabIndex = 26
+        Me.btnChangeExample.UseVisualStyleBackColor = True
+        Me.btnChangeExample.Visible = False
+        '
+        'lblExtras
+        '
+        Me.lblExtras.BackColor = System.Drawing.SystemColors.ButtonHighlight
+        Me.lblExtras.Location = New System.Drawing.Point(684, 352)
+        Me.lblExtras.Name = "lblExtras"
+        Me.lblExtras.Size = New System.Drawing.Size(265, 19)
+        Me.lblExtras.TabIndex = 27
+        Me.lblExtras.Visible = False
+        '
+        'lblExample
+        '
+        Me.lblExample.AutoSize = True
+        Me.lblExample.Location = New System.Drawing.Point(628, 355)
+        Me.lblExample.Name = "lblExample"
+        Me.lblExample.Size = New System.Drawing.Size(50, 13)
+        Me.lblExample.TabIndex = 28
+        Me.lblExample.Text = "Example:"
+        Me.lblExample.Visible = False
         '
         'Main
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1107, 535)
+        Me.ClientSize = New System.Drawing.Size(1105, 502)
+        Me.Controls.Add(Me.lblExample)
+        Me.Controls.Add(Me.lblExtras)
+        Me.Controls.Add(Me.btnChangeExample)
+        Me.Controls.Add(Me.lblAction)
+        Me.Controls.Add(Me.lblNewFolder)
+        Me.Controls.Add(Me.lblOriginalFolder)
+        Me.Controls.Add(Me.btnNewFolder)
         Me.Controls.Add(Me.cmbOperation)
         Me.Controls.Add(Me.cbSelectAll)
         Me.Controls.Add(Me.cbTV)
         Me.Controls.Add(Me.cbMovies)
         Me.Controls.Add(Me.cbMakeChanges)
-        Me.Controls.Add(Me.btnNewFolder)
-        Me.Controls.Add(Me.textNewFolder)
         Me.Controls.Add(Me.lblNew)
         Me.Controls.Add(Me.lblOriginal)
         Me.Controls.Add(Me.btnOriginalFolder)
-        Me.Controls.Add(Me.textOriginalFolder)
         Me.Controls.Add(Me.btnProcess)
         Me.Controls.Add(Me.lbNew)
         Me.Controls.Add(Me.lbOriginal)
@@ -292,12 +349,9 @@ Partial Class Main
     Friend WithEvents lbOriginal As ListBox
     Friend WithEvents lbNew As ListBox
     Friend WithEvents btnProcess As Button
-    Friend WithEvents textOriginalFolder As TextBox
     Friend WithEvents btnOriginalFolder As Button
     Friend WithEvents lblOriginal As Label
     Friend WithEvents lblNew As Label
-    Friend WithEvents btnNewFolder As Button
-    Friend WithEvents textNewFolder As TextBox
     Friend WithEvents cbMakeChanges As CheckBox
     Friend WithEvents cbMovies As CheckBox
     Friend WithEvents cbTV As CheckBox
@@ -306,4 +360,12 @@ Partial Class Main
     Friend WithEvents ToolStripSeparator1 As ToolStripSeparator
     Friend WithEvents UseDefaultMovieFoldersToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents UseDefaultTVFoldersToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents btnNewFolder As Button
+    Friend WithEvents lblOriginalFolder As Label
+    Friend WithEvents lblNewFolder As Label
+    Friend WithEvents lblAction As Label
+    Friend WithEvents btnChangeExample As Button
+    Friend WithEvents lblExtras As Label
+    Friend WithEvents lblExample As Label
+    Friend WithEvents ToolStripMenuItem2 As ToolStripMenuItem
 End Class

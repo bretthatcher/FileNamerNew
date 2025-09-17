@@ -130,6 +130,12 @@
     </Compile>
     <Compile Include="MediaInfoDLL.vb" />
     <Compile Include="JSON.vb" />
+    <Compile Include="MovieExtras.Designer.vb">
+      <DependentUpon>MovieExtras.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MovieExtras.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="MovieTV.vb" />
     <Compile Include="Settings.Designer.vb">
       <DependentUpon>Settings.vb</DependentUpon>
@@ -137,6 +143,7 @@
     <Compile Include="Settings.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Settings1.vb" />
     <Compile Include="tools.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
@@ -154,6 +161,18 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="TVExtras.Designer.vb">
+      <DependentUpon>TVExtras.vb</DependentUpon>
+    </Compile>
+    <Compile Include="TVExtras.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UndoChanges.Designer.vb">
+      <DependentUpon>UndoChanges.vb</DependentUpon>
+    </Compile>
+    <Compile Include="UndoChanges.vb">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="About.resx">
@@ -165,6 +184,9 @@
     <EmbeddedResource Include="Main.resx">
       <DependentUpon>Main.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="MovieExtras.resx">
+      <DependentUpon>MovieExtras.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Settings.resx">
       <DependentUpon>Settings.vb</DependentUpon>
     </EmbeddedResource>
@@ -173,6 +195,12 @@
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TVExtras.resx">
+      <DependentUpon>TVExtras.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UndoChanges.resx">
+      <DependentUpon>UndoChanges.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -191,6 +219,21 @@
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="Resources\beermonster.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Folder.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\folder.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\folderyellow_92963.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\FileNamer.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\folderyellow_929631.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>
