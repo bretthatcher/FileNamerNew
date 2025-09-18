@@ -73,7 +73,7 @@ Partial Class Duplicate
         Me.Controls.Add(Me.PictureBox1)
         Me.Controls.Add(Me.lbDuplicates)
         Me.Name = "Duplicate"
-        Me.Text = "Choose Media"
+        Me.Text = "Choose Media Match"
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 

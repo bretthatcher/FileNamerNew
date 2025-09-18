@@ -138,7 +138,7 @@ Partial Class MovieExtras
         Me.Controls.Add(Me.ListBox2)
         Me.Controls.Add(Me.ListBox1)
         Me.Name = "MovieExtras"
-        Me.Text = "MovieExtras"
+        Me.Text = "Movie Extras"
         Me.ResumeLayout(False)
         Me.PerformLayout()
 

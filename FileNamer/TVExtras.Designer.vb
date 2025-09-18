@@ -36,6 +36,7 @@ Partial Class TVExtras
         Me.rbOption1 = New System.Windows.Forms.RadioButton()
         Me.rbOption2 = New System.Windows.Forms.RadioButton()
         Me.rbOption3 = New System.Windows.Forms.RadioButton()
+        Me.Label2 = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'cmbSeasonText
@@ -94,10 +95,10 @@ Partial Class TVExtras
         '
         'lblTVExtras
         '
-        Me.lblTVExtras.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblTVExtras.Location = New System.Drawing.Point(12, 9)
+        Me.lblTVExtras.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblTVExtras.Location = New System.Drawing.Point(102, 20)
         Me.lblTVExtras.Name = "lblTVExtras"
-        Me.lblTVExtras.Size = New System.Drawing.Size(757, 28)
+        Me.lblTVExtras.Size = New System.Drawing.Size(364, 17)
         Me.lblTVExtras.TabIndex = 6
         '
         'cmbEpisodeNumber
@@ -170,11 +171,21 @@ Partial Class TVExtras
         Me.rbOption3.Text = "Custom"
         Me.rbOption3.UseVisualStyleBackColor = True
         '
+        'Label2
+        '
+        Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label2.Location = New System.Drawing.Point(15, 20)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(81, 17)
+        Me.Label2.TabIndex = 17
+        Me.Label2.Text = "Example:"
+        '
         'TVExtras
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(955, 286)
+        Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.rbOption3)
         Me.Controls.Add(Me.rbOption2)
         Me.Controls.Add(Me.rbOption1)
@@ -190,7 +201,7 @@ Partial Class TVExtras
         Me.Controls.Add(Me.cmbSeasonNumber)
         Me.Controls.Add(Me.cmbSeasonText)
         Me.Name = "TVExtras"
-        Me.Text = "TVExtras"
+        Me.Text = "TV Extras"
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -210,4 +221,5 @@ Partial Class TVExtras
     Friend WithEvents rbOption1 As RadioButton
     Friend WithEvents rbOption2 As RadioButton
     Friend WithEvents rbOption3 As RadioButton
+    Friend WithEvents Label2 As Label
 End Class

@@ -3,6 +3,7 @@
 Imports System.Drawing.Text
 Imports System.IO
 Imports System.Net.Http.Headers
+Imports System.Reflection
 Imports System.Reflection.Emit
 
 Public Class Main
@@ -146,7 +147,7 @@ Public Class Main
     Public Sub ProcessFiles()
         'Dim mediatype = "movie"
         Dim lasttvshow As String = ""
-        Dim media_unknown As String = ""
+        Dim name_unknown As String = ""
         Dim loopcount As Long
 
         For loopcount = 0 To lbOriginal.Items.Count - 1
@@ -174,23 +175,25 @@ Public Class Main
                     'Parse the returned JSON and populate the movies, tvshows, tvseasons or tvepisodes lists
                     Call JSON_Parse(mediatype)
 
-                    Dim url_tryagain As String
+                    Dim new_searchname As String = ""
 
                     Do While mediadict("totalresults") = 0
 
-                        If media_unknown = mediadict("searchname") Then
+                        If name_unknown = mediadict("searchname") Then
                             If mediatype = "tvshow" Then
-                                mediadict("searchname") = media_unknown
-                                Call TMDB_Search_Media(mediatype)
-                                Call JSON_Parse(mediatype)
+                                mediadict("totalresults") = 1
+                                Exit Do
+                                'mediadict("searchname") = tvdict("title")
+                                'lasttvshow = name_unknown
+                                'Call TMDB_Search_Media(mediatype)
+                                'Call JSON_Parse(mediatype)
                             End If
                         Else
-
                             'Try again with a different search name
-                            url_tryagain = InputBox("Couldn't find a match for " & mediadict("searchname") & vbCrLf & "Please try a different name:", "No Matches Found", mediadict("searchname"))
-                            If url_tryagain <> "" Then
-                                media_unknown = mediadict("searchname")
-                                mediadict("searchname") = url_tryagain
+                            new_searchname = InputBox("Couldn't find a match for " & mediadict("searchname") & vbCrLf & "Please try a different name:", "No Matches Found", mediadict("searchname"))
+                            If new_searchname <> "" Then
+                                name_unknown = mediadict("searchname")
+                                mediadict("searchname") = new_searchname
 
                                 Call TMDB_Search_Media(mediatype)
                                 Call JSON_Parse(mediatype)
@@ -243,7 +246,7 @@ Public Class Main
 
                             Case "tvshow"
 
-                                If lasttvshow = mediadict("searchname") Then
+                                If lasttvshow = mediadict("searchname") Or name_unknown = mediadict("searchname") Then
                                     mediadict("title") = tvdict("title")
                                     mediadict("id") = tvdict("id")
                                     mediadict("release_date") = tvdict("release_date")
@@ -270,8 +273,8 @@ Public Class Main
 
                                     End If
 
-                                    'this store the last tvshow name for use when renaming multiple episodes of the same show
-                                    lasttvshow = mediadict("title")
+                                    'this stores the last tvshow name for use when renaming multiple episodes of the same show
+                                    lasttvshow = mediadict("searchname")
                                     tvdict("title") = mediadict("title")
                                     tvdict("id") = mediadict("id")
                                     tvdict("release_date") = mediadict("release_date")

@@ -44,7 +44,19 @@ Public Class Duplicate
                             .poster_path = movie.poster_path,
                             .release_date = movie.release_date,
                             .title = movie.title
-                        })
+                            })
+
+                        ElseIf movie.title.ToLower.StartsWith(mediadict("searchname").ToString.ToLower) Then
+                            lbDuplicates.Items.Add(movie.title & " (" & movie.release_date & ")")
+
+                            mediaarray.Add(New MediaDetails With {
+                            .id = movie.id,
+                            .overview = movie.overview,
+                            .poster_path = movie.poster_path,
+                            .release_date = movie.release_date,
+                            .title = movie.title
+                            })
+
                         End If
                     Next
 
@@ -76,8 +88,20 @@ Public Class Duplicate
                             .poster_path = tvshow.poster_path,
                             .release_date = tvshow.release_date,
                             .title = tvshow.title
-                        })
+                            })
+
+                        ElseIf tvshow.title.ToLower.StartsWith(mediadict("searchname").ToString.ToLower) Then
+                            lbDuplicates.Items.Add(tvshow.title & " (" & tvshow.release_date & ")")
+
+                            mediaarray.Add(New MediaDetails With {
+                           .id = tvshow.id,
+                           .overview = tvshow.overview,
+                           .poster_path = tvshow.poster_path,
+                           .release_date = tvshow.release_date,
+                           .title = tvshow.title
+                            })
                         End If
+
                     Next
                     If mediaarray.Count = 0 Then
                         For Each tvshow In tvshows

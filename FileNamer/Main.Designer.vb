@@ -25,8 +25,8 @@ Partial Class Main
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Main))
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
         Me.ToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ExitToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripMenuItem2 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ExitToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.SettingsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.OptionsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
@@ -71,17 +71,17 @@ Partial Class Main
         Me.ToolStripMenuItem1.Size = New System.Drawing.Size(37, 20)
         Me.ToolStripMenuItem1.Text = "File"
         '
-        'ExitToolStripMenuItem
-        '
-        Me.ExitToolStripMenuItem.Name = "ExitToolStripMenuItem"
-        Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
-        Me.ExitToolStripMenuItem.Text = "Exit"
-        '
         'ToolStripMenuItem2
         '
         Me.ToolStripMenuItem2.Name = "ToolStripMenuItem2"
-        Me.ToolStripMenuItem2.Size = New System.Drawing.Size(180, 22)
+        Me.ToolStripMenuItem2.Size = New System.Drawing.Size(152, 22)
         Me.ToolStripMenuItem2.Text = "Undo Changes"
+        '
+        'ExitToolStripMenuItem
+        '
+        Me.ExitToolStripMenuItem.Name = "ExitToolStripMenuItem"
+        Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.ExitToolStripMenuItem.Text = "Exit"
         '
         'SettingsToolStripMenuItem
         '
@@ -133,16 +133,16 @@ Partial Class Main
         Me.lbOriginal.Location = New System.Drawing.Point(12, 54)
         Me.lbOriginal.Name = "lbOriginal"
         Me.lbOriginal.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
-        Me.lbOriginal.Size = New System.Drawing.Size(510, 290)
+        Me.lbOriginal.Size = New System.Drawing.Size(531, 290)
         Me.lbOriginal.TabIndex = 1
         '
         'lbNew
         '
         Me.lbNew.BackColor = System.Drawing.Color.LightGreen
         Me.lbNew.FormattingEnabled = True
-        Me.lbNew.Location = New System.Drawing.Point(631, 54)
+        Me.lbNew.Location = New System.Drawing.Point(615, 54)
         Me.lbNew.Name = "lbNew"
-        Me.lbNew.Size = New System.Drawing.Size(464, 290)
+        Me.lbNew.Size = New System.Drawing.Size(480, 290)
         Me.lbNew.TabIndex = 2
         '
         'btnProcess
@@ -169,7 +169,7 @@ Partial Class Main
         '
         Me.lblOriginal.AutoSize = True
         Me.lblOriginal.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblOriginal.Location = New System.Drawing.Point(12, 33)
+        Me.lblOriginal.Location = New System.Drawing.Point(9, 33)
         Me.lblOriginal.Name = "lblOriginal"
         Me.lblOriginal.Size = New System.Drawing.Size(70, 20)
         Me.lblOriginal.TabIndex = 9
@@ -179,7 +179,7 @@ Partial Class Main
         '
         Me.lblNew.AutoSize = True
         Me.lblNew.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblNew.Location = New System.Drawing.Point(634, 33)
+        Me.lblNew.Location = New System.Drawing.Point(612, 33)
         Me.lblNew.Name = "lblNew"
         Me.lblNew.Size = New System.Drawing.Size(43, 20)
         Me.lblNew.TabIndex = 10
