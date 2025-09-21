@@ -158,7 +158,7 @@
     End Sub
     Private Sub TVExtras_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Select Case My.Settings.TVExtras
-            Case 1
+            Case 0, 1
                 EnableCustomOptions(False)
                 Call BuildStandardExtras(1)
                 rbOption1.Checked = True

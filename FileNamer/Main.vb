@@ -7,6 +7,7 @@ Imports System.Reflection
 Imports System.Reflection.Emit
 
 Public Class Main
+    Private cancelprocess As Boolean = False
 
     Private Sub btnProcess_Click(sender As Object, e As EventArgs) Handles btnProcess.Click
         If lblOriginalFolder.Text = "" Then
@@ -31,6 +32,27 @@ Public Class Main
         If cbMovies.Checked = True Then mediatype = "movie"
         If cbTV.Checked = True Then mediatype = "tvshow"
 
+        If cbMakeChanges.Checked = True Then
+            Dim msgresult As MsgBoxResult = MsgBox("You are about to make changes to the original files.  Continue?", MsgBoxStyle.YesNo)
+            If msgresult = MsgBoxResult.No Then
+                Exit Sub
+            End If
+        End If
+
+        If cbMakeChanges.Checked = False Then
+            Dim msgresult As MsgBoxResult = MsgBox("Make Changes is not checked so this is a dry run. Continue?", MsgBoxStyle.YesNo)
+            If msgresult = MsgBoxResult.No Then
+                Exit Sub
+            End If
+        End If
+
+        lblProcessingText.Visible = True
+        lblProcessingOfText.Visible = True
+        lblCurrentItemText.Visible = True
+        lblTotalItemsText.Visible = True
+        btnCancel.Visible = True
+        btnCancel.Focus()
+
         Select Case mediaop
             Case 0, 1
                 Call ProcessFiles()
@@ -39,10 +61,21 @@ Public Class Main
         End Select
 
         'Clear both original and new listboxes - re-populate original listbox
-        MsgBox(btnProcess.Text & " complete")
+        If cancelprocess = True Then
+            MsgBox("Process canceled by the user")
+            cancelprocess = False
+        Else
+            MsgBox(btnProcess.Text & " complete")
+        End If
 
+        lblProcessingText.Visible = False
+        lblProcessingOfText.Visible = False
+        lblCurrentItemText.Visible = False
+        lblTotalItemsText.Visible = False
+        btnCancel.Visible = False
         lbOriginal.Items.Clear()
         lbNew.Items.Clear()
+
         Call PopulateListBoxRecursively(lblOriginalFolder.Text, lbOriginal)
 
         Call cbSelectAll_CheckedChanged(Nothing, Nothing)
@@ -86,7 +119,16 @@ Public Class Main
         End If
     End Sub
     Public Sub Move_Copy_Files()
+
+        lblTotalItemsText.Text = lbOriginal.Items.Count
+
         For loopcount = 0 To lbOriginal.Items.Count - 1
+
+            If cancelprocess = True Then
+                Exit For
+            End If
+
+            lblCurrentItemText.Text = loopcount + 1
 
             If lbOriginal.GetSelected(loopcount) = True Then
 
@@ -102,7 +144,7 @@ Public Class Main
                 If cbMakeChanges.Checked = True Then
                     Select Case mediaop
                         Case 2
-                            My.Computer.FileSystem.MoveFile(mediadict("OriginalFullPath"), mediadict("NewFullPath"), True)
+                            My.Computer.FileSystem.MoveFile(mediadict("OriginalFullPath"), mediadict("NewFullPath"), FileIO.UIOption.AllDialogs)
 
                             'This adds the operation to the filechanges list in case we need to undo the change
                             If My.Settings.WriteResults = True Then
@@ -141,6 +183,9 @@ Public Class Main
             End If
             lbOriginal.Update()
             lbNew.Update()
+            lblCurrentItemText.Refresh()
+            Application.DoEvents()
+
         Next
     End Sub
 
@@ -150,8 +195,15 @@ Public Class Main
         Dim name_unknown As String = ""
         Dim loopcount As Long
 
+        lblTotalItemsText.Text = lbOriginal.Items.Count
+
         For loopcount = 0 To lbOriginal.Items.Count - 1
 
+            If cancelprocess = True Then
+                Exit For
+            End If
+
+            lblCurrentItemText.Text = loopcount + 1
             If lbOriginal.GetSelected(loopcount) = True Then
 
                 mediadict.Clear()
@@ -191,7 +243,12 @@ Public Class Main
                         Else
                             'Try again with a different search name
                             new_searchname = InputBox("Couldn't find a match for " & mediadict("searchname") & vbCrLf & "Please try a different name:", "No Matches Found", mediadict("searchname"))
-                            If new_searchname <> "" Then
+                            If String.IsNullOrEmpty(new_searchname) Then
+                                Exit Do
+                            End If
+
+                            If new_searchname <> mediadict("searchname") Then
+
                                 name_unknown = mediadict("searchname")
                                 mediadict("searchname") = new_searchname
 
@@ -200,6 +257,7 @@ Public Class Main
                             Else
                                 Exit Do
                             End If
+
                         End If
                     Loop
 
@@ -302,7 +360,7 @@ Public Class Main
                                 If cbMakeChanges.Checked = True Then
                                     Select Case mediaop
                                         Case 0
-                                            My.Computer.FileSystem.MoveFile(mediadict("OriginalFullPath"), mediadict("NewFullPath"), True)
+                                            My.Computer.FileSystem.MoveFile(mediadict("OriginalFullPath"), mediadict("NewFullPath"), FileIO.UIOption.AllDialogs)
 
                                             If My.Settings.WriteResults = True Then
                                                 filechanges.Add(New FileChange() With {
@@ -358,7 +416,7 @@ Public Class Main
                                     If cbMakeChanges.Checked = True Then
                                         Select Case mediaop
                                             Case 0
-                                                My.Computer.FileSystem.MoveFile(mediadict("OriginalFullPath"), mediadict("NewFullPath"), True)
+                                                My.Computer.FileSystem.MoveFile(mediadict("OriginalFullPath"), mediadict("NewFullPath"), FileIO.UIOption.AllDialogs)
 
                                                 If My.Settings.WriteResults = True Then
                                                     filechanges.Add(New FileChange() With {
@@ -374,7 +432,7 @@ Public Class Main
                                                 End If
 
                                             Case 1
-                                                My.Computer.FileSystem.CopyFile(mediadict("OriginalFullPath"), mediadict("NewFullPath"), True)
+                                                My.Computer.FileSystem.CopyFile(mediadict("OriginalFullPath"), mediadict("NewFullPath"), FileIO.UIOption.AllDialogs)
 
                                                 If My.Settings.WriteResults = True Then
                                                     filechanges.Add(New FileChange() With {
@@ -399,19 +457,21 @@ Public Class Main
                 Else
                     lbNew.Items.Add("Not Found")
                 End If
-                If loopcount > 17 Then
-                    lbOriginal.TopIndex = loopcount - 17
-                    lbNew.TopIndex = loopcount - 17
+                If loopcount > 21 Then
+                    lbOriginal.TopIndex = loopcount - 21
+                    lbNew.TopIndex = loopcount - 21
                 End If
             Else
                 lbNew.Items.Add("")
-                If loopcount > 17 Then
-                    lbOriginal.TopIndex = loopcount - 17
-                    lbNew.TopIndex = loopcount - 17
+                If loopcount > 21 Then
+                    lbOriginal.TopIndex = loopcount - 21
+                    lbNew.TopIndex = loopcount - 21
                 End If
             End If
             lbOriginal.Update()
             lbNew.Update()
+            lblCurrentItemText.Refresh()
+            Application.DoEvents()
 
         Next
 
@@ -437,11 +497,21 @@ Public Class Main
 
     Private Sub cbTV_CheckedChanged(sender As Object, e As EventArgs) Handles cbTV.CheckedChanged
         If cbTV.Checked = True Then
+
             cbMovies.Checked = False
             mediatype = "tvshow"
             lblExample.Visible = True
             lblExtras.Visible = True
             btnChangeExample.Visible = True
+
+            If My.Settings.TVExtras = 0 Then
+                Dim msgresult As MsgBoxResult = MsgBox("Since you don't have a default tv show format set, you will now be asked to set it.")
+
+                Dim tvextrasform As New TVExtras
+                AddHandler tvextrasform.FormClosed, AddressOf tvextrasform_Closed
+                tvextrasform.Show()
+
+            End If
 
             Call BuildTVExample()
         Else
@@ -582,8 +652,8 @@ Public Class Main
             seasonnumber = My.Settings.TVSeasonNumber
             Select Case seasonnumber
                 Case "Leading Zero"
-                    If CInt(mediadict("season")) < 10 Then
-                        seasonnumber = "0" & mediadict("season")
+                    If CInt(mediadict("season")) <10 Then
+                        seasonnumber="0" & mediadict("season")
                     End If
                 Case "No Leading Zero"
                     seasonnumber = mediadict("season")
@@ -723,8 +793,9 @@ Public Class Main
 
     End Function
     Private Sub BuildMovieExample()
+        lblExtras.Text = "Movie (2025)"
         If My.Settings.MovieExtras IsNot Nothing Then
-            lblExtras.Text = "Movie (2025)"
+
             For Each item As String In My.Settings.MovieExtras
                 Select Case item
                     Case "Video Resolution"
@@ -735,6 +806,7 @@ Public Class Main
                         lblExtras.Text = lblExtras.Text & " 6CH"
                 End Select
             Next
+
         End If
 
     End Sub
@@ -750,4 +822,10 @@ Public Class Main
 
 
     End Sub
+
+    Private Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
+        cancelprocess = True
+    End Sub
+
+
 End Class

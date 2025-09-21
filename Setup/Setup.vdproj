@@ -3,7 +3,7 @@
 "VSVersion" = "3:800"
 "ProjectType" = "8:{978C614F-708E-4E1A-B201-565925725DBA}"
 "IsWebType" = "8:FALSE"
-"ProjectName" = "8:Setup"
+"ProjectName" = "8:File Namer"
 "LanguageId" = "3:1033"
 "CodePage" = "3:1252"
 "UILanguageId" = "3:1033"
@@ -213,6 +213,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_F66B6CAEA4BA46CA922C4E6DD8E87B1E"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_184353C55C0B4285B0AA389F1F6DAD9A"
         "MsmSig" = "8:_UNDEFINED"
@@ -291,7 +297,7 @@
         "DisplayName" = "8:Debug"
         "IsDebugOnly" = "11:TRUE"
         "IsReleaseOnly" = "11:FALSE"
-        "OutputFilename" = "8:Debug\\Setup.msi"
+        "OutputFilename" = "8:Debug\\File Namer.msi"
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
@@ -323,7 +329,7 @@
         "DisplayName" = "8:Release"
         "IsDebugOnly" = "11:FALSE"
         "IsReleaseOnly" = "11:TRUE"
-        "OutputFilename" = "8:Release\\Setup.msi"
+        "OutputFilename" = "8:Release\\File Namer.msi"
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
@@ -340,6 +346,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
             }
         }
     }
@@ -731,6 +745,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F66B6CAEA4BA46CA922C4E6DD8E87B1E"
+            {
+            "SourcePath" = "8:..\\FileNamer\\Resources\\FileNamer.ico"
+            "TargetName" = "8:FileNamer.ico"
+            "Tag" = "8:"
+            "Folder" = "8:_5226C4B5B6434851B4513B96BB6992A0"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
         }
         "FileType"
         {
@@ -771,7 +805,7 @@
                 {
                     "{9EF0B969-E518-4E46-987F-47570745A589}:_7B5DBECAD78946309CDFA5B07FC7382F"
                     {
-                    "Name" = "8:FileNamer"
+                    "Name" = "8:File Namer"
                     "AlwaysCreate" = "11:FALSE"
                     "Condition" = "8:"
                     "Transitive" = "11:FALSE"
@@ -799,7 +833,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:File Namer"
         "ProductCode" = "8:{E199EB0F-76B8-4E5F-9F66-9C85C7E08435}"
-        "PackageCode" = "8:{6C86F6EB-ACB9-4C19-8B83-0ECDE144A1F7}"
+        "PackageCode" = "8:{2156AE3A-EA36-4A54-BF15-93F9E7EB99BF}"
         "UpgradeCode" = "8:{2F0DBB92-E800-4B2D-AD45-27B05B5BE255}"
         "AspNetVersion" = "8:"
         "RestartWWWService" = "11:FALSE"
@@ -807,10 +841,10 @@
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
         "ProductVersion" = "8:1.0.0"
-        "Manufacturer" = "8:Brett Hatcher"
+        "Manufacturer" = "8:File Namer"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
-        "Title" = "8:Setup"
+        "Title" = "8:File Namer"
         "Subject" = "8:"
         "ARPCONTACT" = "8:Brett Hatcher"
         "Keywords" = "8:"
@@ -822,7 +856,7 @@
         "UseSystemSearchPath" = "11:TRUE"
         "TargetPlatform" = "3:1"
         "PreBuildEvent" = "8:"
-        "PostBuildEvent" = "8:"
+        "PostBuildEvent" = "8:powershell -Command \"$sourcePath = 'C:\\Users\\brett\\source\\repos\\FileNamer\\Setup\\Debug'; $zipPath = 'C:\\Users\\brett\\source\\repos\\FileNamer\\Setup\\File Namer - x64.zip'; if(Test-Path $zipPath){ Remove-Item $zipPath }; Add-Type -AssemblyName 'System.IO.Compression.FileSystem'; [IO.Compression.ZipFile]::CreateFromDirectory($sourcePath, $zipPath)\""
         "RunPostBuildEvent" = "3:0"
         }
         "Registry"
@@ -921,7 +955,7 @@
         {
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_2B923024F75C49ED89E9392BF1303DFF"
             {
-            "Name" = "8:FileNamer"
+            "Name" = "8:File Namer"
             "Arguments" = "8:"
             "Description" = "8:"
             "ShowCmd" = "3:1"
@@ -930,7 +964,21 @@
             "Target" = "8:_184353C55C0B4285B0AA389F1F6DAD9A"
             "Folder" = "8:_670426E27000484294745A398040B208"
             "WorkingFolder" = "8:_5226C4B5B6434851B4513B96BB6992A0"
-            "Icon" = "8:"
+            "Icon" = "8:_F66B6CAEA4BA46CA922C4E6DD8E87B1E"
+            "Feature" = "8:"
+            }
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_4D61E8C79D85418A9E0F3ABD0E74978A"
+            {
+            "Name" = "8:File Namer"
+            "Arguments" = "8:"
+            "Description" = "8:"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:0"
+            "Transitive" = "11:FALSE"
+            "Target" = "8:_184353C55C0B4285B0AA389F1F6DAD9A"
+            "Folder" = "8:_7B5DBECAD78946309CDFA5B07FC7382F"
+            "WorkingFolder" = "8:_5226C4B5B6434851B4513B96BB6992A0"
+            "Icon" = "8:_F66B6CAEA4BA46CA922C4E6DD8E87B1E"
             "Feature" = "8:"
             }
         }
@@ -1334,7 +1382,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_184353C55C0B4285B0AA389F1F6DAD9A"
             {
-            "SourcePath" = "8:..\\FileNamer\\obj\\Debug\\FileNamer.exe"
+            "SourcePath" = "8:..\\FileNamer\\obj\\x64\\Debug\\FileNamer.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_5226C4B5B6434851B4513B96BB6992A0"

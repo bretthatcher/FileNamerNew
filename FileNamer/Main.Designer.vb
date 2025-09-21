@@ -52,6 +52,11 @@ Partial Class Main
         Me.btnChangeExample = New System.Windows.Forms.Button()
         Me.lblExtras = New System.Windows.Forms.Label()
         Me.lblExample = New System.Windows.Forms.Label()
+        Me.lblProcessingText = New System.Windows.Forms.Label()
+        Me.lblCurrentItemText = New System.Windows.Forms.Label()
+        Me.lblTotalItemsText = New System.Windows.Forms.Label()
+        Me.lblProcessingOfText = New System.Windows.Forms.Label()
+        Me.btnCancel = New System.Windows.Forms.Button()
         Me.MenuStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -159,7 +164,7 @@ Partial Class Main
         Me.btnOriginalFolder.BackgroundImage = Global.FileNamer.My.Resources.Resources.folderyellow_92963
         Me.btnOriginalFolder.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom
         Me.btnOriginalFolder.CausesValidation = False
-        Me.btnOriginalFolder.Location = New System.Drawing.Point(495, 28)
+        Me.btnOriginalFolder.Location = New System.Drawing.Point(516, 28)
         Me.btnOriginalFolder.Name = "btnOriginalFolder"
         Me.btnOriginalFolder.Size = New System.Drawing.Size(28, 26)
         Me.btnOriginalFolder.TabIndex = 8
@@ -249,7 +254,7 @@ Partial Class Main
         'lblOriginalFolder
         '
         Me.lblOriginalFolder.BackColor = System.Drawing.SystemColors.ButtonHighlight
-        Me.lblOriginalFolder.Location = New System.Drawing.Point(218, 32)
+        Me.lblOriginalFolder.Location = New System.Drawing.Point(239, 32)
         Me.lblOriginalFolder.Name = "lblOriginalFolder"
         Me.lblOriginalFolder.Size = New System.Drawing.Size(277, 20)
         Me.lblOriginalFolder.TabIndex = 23
@@ -304,11 +309,67 @@ Partial Class Main
         Me.lblExample.Text = "Example:"
         Me.lblExample.Visible = False
         '
+        'lblProcessingText
+        '
+        Me.lblProcessingText.AutoSize = True
+        Me.lblProcessingText.Location = New System.Drawing.Point(750, 459)
+        Me.lblProcessingText.Name = "lblProcessingText"
+        Me.lblProcessingText.Size = New System.Drawing.Size(81, 13)
+        Me.lblProcessingText.TabIndex = 29
+        Me.lblProcessingText.Text = "Processing File:"
+        Me.lblProcessingText.Visible = False
+        '
+        'lblCurrentItemText
+        '
+        Me.lblCurrentItemText.AutoSize = True
+        Me.lblCurrentItemText.Location = New System.Drawing.Point(837, 459)
+        Me.lblCurrentItemText.Name = "lblCurrentItemText"
+        Me.lblCurrentItemText.Size = New System.Drawing.Size(23, 13)
+        Me.lblCurrentItemText.TabIndex = 30
+        Me.lblCurrentItemText.Text = "first"
+        Me.lblCurrentItemText.TextAlign = System.Drawing.ContentAlignment.TopRight
+        Me.lblCurrentItemText.Visible = False
+        '
+        'lblTotalItemsText
+        '
+        Me.lblTotalItemsText.AutoSize = True
+        Me.lblTotalItemsText.Location = New System.Drawing.Point(885, 459)
+        Me.lblTotalItemsText.Name = "lblTotalItemsText"
+        Me.lblTotalItemsText.Size = New System.Drawing.Size(27, 13)
+        Me.lblTotalItemsText.TabIndex = 31
+        Me.lblTotalItemsText.Text = "total"
+        Me.lblTotalItemsText.Visible = False
+        '
+        'lblProcessingOfText
+        '
+        Me.lblProcessingOfText.AutoSize = True
+        Me.lblProcessingOfText.Location = New System.Drawing.Point(866, 459)
+        Me.lblProcessingOfText.Name = "lblProcessingOfText"
+        Me.lblProcessingOfText.Size = New System.Drawing.Size(16, 13)
+        Me.lblProcessingOfText.TabIndex = 32
+        Me.lblProcessingOfText.Text = "of"
+        Me.lblProcessingOfText.Visible = False
+        '
+        'btnCancel
+        '
+        Me.btnCancel.Location = New System.Drawing.Point(927, 441)
+        Me.btnCancel.Name = "btnCancel"
+        Me.btnCancel.Size = New System.Drawing.Size(168, 49)
+        Me.btnCancel.TabIndex = 33
+        Me.btnCancel.Text = "Cancel"
+        Me.btnCancel.UseVisualStyleBackColor = True
+        Me.btnCancel.Visible = False
+        '
         'Main
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1105, 502)
+        Me.Controls.Add(Me.btnCancel)
+        Me.Controls.Add(Me.lblProcessingOfText)
+        Me.Controls.Add(Me.lblTotalItemsText)
+        Me.Controls.Add(Me.lblCurrentItemText)
+        Me.Controls.Add(Me.lblProcessingText)
         Me.Controls.Add(Me.lblExample)
         Me.Controls.Add(Me.lblExtras)
         Me.Controls.Add(Me.btnChangeExample)
@@ -368,4 +429,9 @@ Partial Class Main
     Friend WithEvents lblExtras As Label
     Friend WithEvents lblExample As Label
     Friend WithEvents ToolStripMenuItem2 As ToolStripMenuItem
+    Friend WithEvents lblProcessingText As Label
+    Friend WithEvents lblCurrentItemText As Label
+    Friend WithEvents lblTotalItemsText As Label
+    Friend WithEvents lblProcessingOfText As Label
+    Friend WithEvents btnCancel As Button
 End Class
