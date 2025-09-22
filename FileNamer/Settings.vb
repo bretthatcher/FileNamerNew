@@ -22,7 +22,28 @@
         tooltip.SetToolTip(cbRemoveEmptyFolders, "For example: You have one episode of the TV Show Banshee in the following folder structure: " _
             & vbCrLf & "c:\tv\banshee\season 1\.  If you move the one episode to another folder this setting will remove" _
             & vbCrLf & "the season 1 folder and the banshee folder leaving you with c:\tv")
+
+        tooltip.SetToolTip(cbIndividualFolders, "Creates a folder for movies and tv shows and seasons when renaming original. " _
+             & vbCrLf & "For a movie it will create a movie folder off of the New Folder and then place the movie in the new movie folder." _
+             & vbCrLf & "For a tv show it will create a tv show folder and a season folder for the corresponding episodes.")
+
+        tooltip.SetToolTip(cbWriteResults, "This will save any rename, move, or copy operation when Make Changes is selected." _
+             & vbCrLf & "This allows the user to Undo those changes from the File menu if it was inadvertent.")
+
+        tooltip.SetToolTip(cbSuggestFileName, "This will prompt the user for a Movie or TV Show title if it can't be found in the database.")
+
+        tooltip.SetToolTip(cbMakeChanges, "This will set the default to make changes in the file system when the rename, copy or move occurs.")
+
+        tooltip.SetToolTip(btnOriginalMovieFolder, "This will set the default Original Folder for Movies.  Defaults can be selected from the Settings Menu.")
+
+        tooltip.SetToolTip(btnOriginalTVFolder, "This will set the default Original Folder for TV Shows.  Defaults can be selected from the Settings Menu.")
+
+        tooltip.SetToolTip(btnRenamedMovieFolder, "This will set the default New Folder for Movies.  Defaults can be selected from the Settings Menu.")
+
+        tooltip.SetToolTip(btnRenamedTVFolder, "This will Set the default New Folder for TV Shows.  Defaults can be selected from the Settings Menu.")
+
     End Sub
+
 
     Private Sub cbWriteResults_CheckedChanged(sender As Object, e As EventArgs) Handles cbWriteResults.CheckedChanged
         'If Me.cbWriteResults.Checked = True Then

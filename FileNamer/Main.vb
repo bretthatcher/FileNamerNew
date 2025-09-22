@@ -96,6 +96,11 @@ Public Class Main
 
     Private Sub Settingsform_Closed(sender As Object, e As FormClosedEventArgs)
         cbMakeChanges.Checked = My.Settings.MakeChanges
+        If lblOriginalFolder.Text <> "" Then
+            lbOriginal.Items.Clear()
+            lbNew.Items.Clear()
+            Call PopulateListBoxRecursively(lblOriginalFolder.Text, lbOriginal)
+        End If
     End Sub
 
     Private Sub btnOriginalFolder_Click(sender As Object, e As EventArgs) Handles btnOriginalFolder.Click
@@ -190,7 +195,7 @@ Public Class Main
     End Sub
 
     Public Sub ProcessFiles()
-        'Dim mediatype = "movie"
+        Dim subtitlefile As Boolean = False
         Dim lasttvshow As String = ""
         Dim name_unknown As String = ""
         Dim loopcount As Long
@@ -207,6 +212,7 @@ Public Class Main
             If lbOriginal.GetSelected(loopcount) = True Then
 
                 mediadict.Clear()
+                subtitlefile = False
 
                 mediadict("NewFilePath") = lblNewFolder.Text.TrimEnd("\"c)
                 mediadict("OriginalFullPath") = lbOriginal.Items(loopcount).ToString
@@ -215,6 +221,11 @@ Public Class Main
                 mediadict("OriginalFileExt") = Path.GetExtension(mediadict("OriginalFullPath"))
                 mediadict("OriginalFilePath") = Path.GetDirectoryName(mediadict("OriginalFullPath"))
 
+                If My.Settings.IncludeSubtitleFiles = True Then
+                    If ValidSubTitleExtension(mediadict("OriginalFullName")) = True Then
+                        subtitlefile = True
+                    End If
+                End If
                 'Pull out important information from the filename like show name, season and episode numbers, year etc
                 Call Parse_Name(mediadict("OriginalFileName"), mediatype)
 
@@ -242,22 +253,25 @@ Public Class Main
                             End If
                         Else
                             'Try again with a different search name
-                            new_searchname = InputBox("Couldn't find a match for " & mediadict("searchname") & vbCrLf & "Please try a different name:", "No Matches Found", mediadict("searchname"))
-                            If String.IsNullOrEmpty(new_searchname) Then
-                                Exit Do
-                            End If
+                            If My.Settings.SuggestFileName = True Then
+                                new_searchname = InputBox("Couldn't find a match for " & mediadict("searchname") & vbCrLf & "Please try a different name:", "No Matches Found", mediadict("searchname"))
+                                If String.IsNullOrEmpty(new_searchname) Then
+                                    Exit Do
+                                End If
 
-                            If new_searchname <> mediadict("searchname") Then
+                                If new_searchname <> mediadict("searchname") Then
 
-                                name_unknown = mediadict("searchname")
-                                mediadict("searchname") = new_searchname
+                                    name_unknown = mediadict("searchname")
+                                    mediadict("searchname") = new_searchname
 
-                                Call TMDB_Search_Media(mediatype)
-                                Call JSON_Parse(mediatype)
+                                    Call TMDB_Search_Media(mediatype)
+                                    Call JSON_Parse(mediatype)
+                                Else
+                                    Exit Do
+                                End If
                             Else
                                 Exit Do
                             End If
-
                         End If
                     Loop
 
@@ -340,7 +354,9 @@ Public Class Main
 
                         End Select
 
-                        Call GetMediaInfo(mediadict("OriginalFullPath"))
+                        If subtitlefile = False Then
+                            Call GetMediaInfo(mediadict("OriginalFullPath"))
+                        End If
 
                         Select Case mediatype
                             Case "movie"
@@ -553,8 +569,11 @@ Public Class Main
 
         ' Add a tooltip to a control (e.g., a Button)
         tooltip.SetToolTip(cbMakeChanges, "If this is checked changes will be made to the files." & vbCrLf & "If not, it is a dry run with no changes.")
-        tooltip.SetToolTip(cbMovies, "Determines what extras to add to the movie when it is renamed")
-
+        tooltip.SetToolTip(cbMovies, "Sets the type of media to be Movies")
+        tooltip.SetToolTip(cbTV, "Sets the type of media to be TV Shows")
+        tooltip.SetToolTip(btnChangeExample, "Allows the user to set the defaul template for Movie or TV Show titles when renaming")
+        tooltip.SetToolTip(btnOriginalFolder, "Sets the root folder for original files for the rename, copy or move process")
+        tooltip.SetToolTip(btnNewFolder, "Sets the root folder for the new files after the rename, copy or move process")
     End Sub
 
     Private Sub cmbOperation_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbOperation.SelectedIndexChanged
@@ -567,6 +586,7 @@ Public Class Main
             lblNewFolder.Text = My.Settings.RenamedMovieFolder
         Else
             My.Settings.RenamedMovieFolder = ""
+            lblNewFolder.Text = ""
         End If
 
         If Directory.Exists(My.Settings.OriginalMovieFolder) Then
@@ -578,6 +598,16 @@ Public Class Main
             cbMovies_CheckedChanged(cbMovies, EventArgs.Empty)
         Else
             My.Settings.OriginalMovieFolder = ""
+            lblOriginalFolder.Text = ""
+            lbOriginal.Items.Clear()
+            If cbMovies.Checked = False Then
+                cbMovies.Checked = True
+                cbMovies_CheckedChanged(cbMovies, EventArgs.Empty)
+            End If
+            If cbTV.Checked = True Then
+                cbTV.Checked = False
+                cbTV_CheckedChanged(cbTV, EventArgs.Empty)
+            End If
         End If
 
     End Sub
@@ -587,6 +617,7 @@ Public Class Main
             lblNewFolder.Text = My.Settings.RenamedTVFolder
         Else
             My.Settings.RenamedTVFolder = ""
+            lblNewFolder.Text = ""
         End If
 
         If Directory.Exists(My.Settings.OriginalTVFolder) Then
@@ -599,6 +630,16 @@ Public Class Main
 
         Else
             My.Settings.OriginalTVFolder = ""
+            lblOriginalFolder.Text = ""
+            lbOriginal.Items.Clear()
+            If cbTV.Checked = True Then
+                cbTV.Checked = False
+                cbTV_CheckedChanged(cbTV, EventArgs.Empty)
+            End If
+            If cbMovies.Checked = True Then
+                cbMovies.Checked = False
+                cbMovies_CheckedChanged(cbMovies, EventArgs.Empty)
+            End If
         End If
     End Sub
 
@@ -652,9 +693,12 @@ Public Class Main
             seasonnumber = My.Settings.TVSeasonNumber
             Select Case seasonnumber
                 Case "Leading Zero"
-                    If CInt(mediadict("season")) <10 Then
-                        seasonnumber="0" & mediadict("season")
+                    If CInt(mediadict("season")) < 10 Then
+                        seasonnumber = "0" & mediadict("season")
+                    Else
+                        seasonnumber = mediadict("season")
                     End If
+
                 Case "No Leading Zero"
                     seasonnumber = mediadict("season")
 
@@ -675,7 +719,10 @@ Public Class Main
                 Case "Leading Zero"
                     If CInt(mediadict("episode")) < 10 Then
                         episodenumber = "0" & mediadict("episode")
+                    Else
+                        episodenumber = mediadict("episode")
                     End If
+
                 Case "No Leading Zero"
                     episodenumber = mediadict("episode")
             End Select

@@ -1,5 +1,6 @@
-﻿Imports System.Net
-Imports System.IO
+﻿Imports System.IO
+Imports System.Net
+Imports System.Security.Cryptography
 Imports System.Windows.Forms
 
 Module tools
@@ -18,12 +19,23 @@ Module tools
         Return validExtensions.Contains(fileExtension)
     End Function
 
+    Public Function ValidSubTitleExtension(filepath As String) As Boolean
+        Dim validExtensions As String() = {".srt", ".smi", ".ssa", ".ass", ".vtt"}
+        Dim fileExtension As String = Path.GetExtension(filepath).ToLower()
+        Return validExtensions.Contains(fileExtension)
+    End Function
+
     Public Sub PopulateListBoxRecursively(folderPath As String, listBox As ListBox)
         ' Add all files in the current folder
         Dim files As String() = Directory.GetFiles(folderPath)
         For Each file As String In files
             If ValidExtension(file) Then
                 listBox.Items.Add(file)
+            End If
+            If My.Settings.IncludeSubtitleFiles = True Then
+                If ValidSubTitleExtension(file) Then
+                    listBox.Items.Add(file)
+                End If
             End If
         Next
 

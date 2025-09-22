@@ -41,6 +41,7 @@ Partial Class TVExtras
         '
         'cmbSeasonText
         '
+        Me.cmbSeasonText.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cmbSeasonText.FormattingEnabled = True
         Me.cmbSeasonText.Items.AddRange(New Object() {"<none>", "S", "s", "Season"})
         Me.cmbSeasonText.Location = New System.Drawing.Point(151, 189)
@@ -50,6 +51,7 @@ Partial Class TVExtras
         '
         'cmbSeasonNumber
         '
+        Me.cmbSeasonNumber.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cmbSeasonNumber.FormattingEnabled = True
         Me.cmbSeasonNumber.Items.AddRange(New Object() {"Leading Zero", "No Leading Zero"})
         Me.cmbSeasonNumber.Location = New System.Drawing.Point(236, 189)
@@ -59,6 +61,7 @@ Partial Class TVExtras
         '
         'cmbSeasonEpisodeSeperator
         '
+        Me.cmbSeasonEpisodeSeperator.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cmbSeasonEpisodeSeperator.FormattingEnabled = True
         Me.cmbSeasonEpisodeSeperator.Items.AddRange(New Object() {"<none>", "X", "x"})
         Me.cmbSeasonEpisodeSeperator.Location = New System.Drawing.Point(351, 189)
@@ -68,6 +71,7 @@ Partial Class TVExtras
         '
         'cmbEpisodeText
         '
+        Me.cmbEpisodeText.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cmbEpisodeText.FormattingEnabled = True
         Me.cmbEpisodeText.Items.AddRange(New Object() {"<none>", "E", "e", "Episode"})
         Me.cmbEpisodeText.Location = New System.Drawing.Point(436, 189)
@@ -77,6 +81,7 @@ Partial Class TVExtras
         '
         'cmbDescriptionSeperator
         '
+        Me.cmbDescriptionSeperator.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cmbDescriptionSeperator.FormattingEnabled = True
         Me.cmbDescriptionSeperator.Items.AddRange(New Object() {"<none>", "<space>", "<dash>", "<space><dash><space>"})
         Me.cmbDescriptionSeperator.Location = New System.Drawing.Point(636, 189)
@@ -86,6 +91,7 @@ Partial Class TVExtras
         '
         'cmbTitleSeperator
         '
+        Me.cmbTitleSeperator.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cmbTitleSeperator.FormattingEnabled = True
         Me.cmbTitleSeperator.Items.AddRange(New Object() {"<space>", "<dash>", "<space><dash><space>"})
         Me.cmbTitleSeperator.Location = New System.Drawing.Point(13, 189)
@@ -103,6 +109,7 @@ Partial Class TVExtras
         '
         'cmbEpisodeNumber
         '
+        Me.cmbEpisodeNumber.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cmbEpisodeNumber.FormattingEnabled = True
         Me.cmbEpisodeNumber.Items.AddRange(New Object() {"Leading Zero", "No Leading Zero"})
         Me.cmbEpisodeNumber.Location = New System.Drawing.Point(521, 189)
@@ -131,6 +138,7 @@ Partial Class TVExtras
         '
         'cmbDescription
         '
+        Me.cmbDescription.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cmbDescription.FormattingEnabled = True
         Me.cmbDescription.Items.AddRange(New Object() {"Show", "Don't Show"})
         Me.cmbDescription.Location = New System.Drawing.Point(774, 189)
