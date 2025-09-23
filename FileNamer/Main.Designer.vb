@@ -223,6 +223,8 @@ Partial Class Main
         'cbSelectAll
         '
         Me.cbSelectAll.AutoSize = True
+        Me.cbSelectAll.Checked = True
+        Me.cbSelectAll.CheckState = System.Windows.Forms.CheckState.Checked
         Me.cbSelectAll.Location = New System.Drawing.Point(453, 354)
         Me.cbSelectAll.Name = "cbSelectAll"
         Me.cbSelectAll.Size = New System.Drawing.Size(70, 17)

@@ -61,13 +61,14 @@ Module MovieTV
             'add the search name
             Dim searchterm As String = "&query=" & Replace(mediadict("searchname"), " ", "%20")
 
-            'add the year if it exists
-            If mediadict.ContainsKey("searchyear") AndAlso Not String.IsNullOrEmpty("searchyear") Then
-                searchterm = searchterm & "&year=" & mediadict("searchyear")
-            End If
 
             Select Case mediatype
                 Case "movie"
+
+                    'add the year if it exists for movies
+                    If mediadict.ContainsKey("searchyear") AndAlso Not String.IsNullOrEmpty("searchyear") Then
+                        searchterm = searchterm & "&year=" & mediadict("searchyear")
+                    End If
 
                     Return "https://api.themoviedb.org/3/search/movie?api_key=" & apikey & searchterm
 
@@ -81,6 +82,8 @@ Module MovieTV
 
 
             End Select
+        Else
+            Return ""
         End If
     End Function
     Public Function goodfile() As Boolean

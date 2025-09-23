@@ -112,6 +112,8 @@ Public Class Main
             lbNew.Items.Clear()
             lblOriginalFolder.Text = myfolder
             Call PopulateListBoxRecursively(lblOriginalFolder.Text, lbOriginal)
+
+            cbSelectAll_CheckedChanged(cbSelectAll, EventArgs.Empty)
         End If
     End Sub
 
@@ -363,7 +365,9 @@ Public Class Main
                                 'Build the new movie name and add options on the name as needed
                                 mediadict("NewFileName") = mediadict("title") & " (" & mediadict("release_date") & ")"
 
-                                mediadict("NewFileName") = BuildMovieName()
+                                If subtitlefile = False Then
+                                    mediadict("NewFileName") = BuildMovieName()
+                                End If
 
                                 mediadict("NewFileName") = mediadict("NewFileName") & mediadict("OriginalFileExt")
 
@@ -579,6 +583,22 @@ Public Class Main
     Private Sub cmbOperation_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbOperation.SelectedIndexChanged
         mediaop = cmbOperation.SelectedIndex
         btnProcess.Text = cmbOperation.SelectedItem.ToString & " Files"
+        Select Case mediaop
+            Case 0, 1
+
+                cbMovies.Enabled = True
+                cbTV.Enabled = True
+
+            Case 2, 3
+
+                cbMovies.Checked = False
+                cbTV.Checked = False
+                cbMovies_CheckedChanged(cbMovies, EventArgs.Empty)
+                cbTV_CheckedChanged(cbTV, EventArgs.Empty)
+                cbMovies.Enabled = False
+                cbTV.Enabled = False
+
+        End Select
     End Sub
 
     Private Sub UseDefaultMovieFoldersToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles UseDefaultMovieFoldersToolStripMenuItem.Click
@@ -594,22 +614,20 @@ Public Class Main
             lbOriginal.Items.Clear()
             lbNew.Items.Clear()
             Call PopulateListBoxRecursively(lblOriginalFolder.Text, lbOriginal)
-            cbMovies.Checked = True
-            cbMovies_CheckedChanged(cbMovies, EventArgs.Empty)
+            cbSelectAll_CheckedChanged(cbSelectAll, EventArgs.Empty)
         Else
             My.Settings.OriginalMovieFolder = ""
             lblOriginalFolder.Text = ""
             lbOriginal.Items.Clear()
-            If cbMovies.Checked = False Then
-                cbMovies.Checked = True
-                cbMovies_CheckedChanged(cbMovies, EventArgs.Empty)
-            End If
-            If cbTV.Checked = True Then
-                cbTV.Checked = False
-                cbTV_CheckedChanged(cbTV, EventArgs.Empty)
-            End If
+
         End If
 
+        If mediaop = 0 Or mediaop = 1 Then
+            cbMovies.Enabled = True
+            cbTV.Enabled = True
+            cbMovies.Checked = True
+            cbMovies_CheckedChanged(cbMovies, EventArgs.Empty)
+        End If
     End Sub
 
     Private Sub UseDefaultTVFoldersToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles UseDefaultTVFoldersToolStripMenuItem.Click
@@ -625,22 +643,20 @@ Public Class Main
             lbOriginal.Items.Clear()
             lbNew.Items.Clear()
             Call PopulateListBoxRecursively(lblOriginalFolder.Text, lbOriginal)
-            cbTV.Checked = True
-            cbTV_CheckedChanged(cbTV, EventArgs.Empty)
-
+            cbSelectAll_CheckedChanged(cbSelectAll, EventArgs.Empty)
         Else
             My.Settings.OriginalTVFolder = ""
             lblOriginalFolder.Text = ""
             lbOriginal.Items.Clear()
-            If cbTV.Checked = True Then
-                cbTV.Checked = False
+        End If
+
+        If mediaop = 0 Or mediaop = 1 Then
+                cbTV.Enabled = True
+                cbMovies.Enabled = True
+                cbTV.Checked = True
                 cbTV_CheckedChanged(cbTV, EventArgs.Empty)
             End If
-            If cbMovies.Checked = True Then
-                cbMovies.Checked = False
-                cbMovies_CheckedChanged(cbMovies, EventArgs.Empty)
-            End If
-        End If
+
     End Sub
 
     Private Sub btnChangeExample_Click(sender As Object, e As EventArgs) Handles btnChangeExample.Click
@@ -740,7 +756,11 @@ Public Class Main
         End If
 
         If My.Settings.TVDescription <> "" Then
-            If My.Settings.TVDescription = "Don't Show" Then tvdescription = ""
+            If My.Settings.TVDescription = "Don't Show" Then
+                tvdescription = ""
+            Else
+                tvdescription = RemoveIllegalFilenameChars(tvdescription)
+            End If
         End If
 
         Return tvtitle & tvtitleseperator & seasontext & seasonnumber & seasonepisodeseperator & episodetext & episodenumber & tvdescriptionseperator & tvdescription
@@ -827,11 +847,17 @@ Public Class Main
             For Each item As String In My.Settings.MovieExtras
                 Select Case item
                     Case "Video Resolution"
-                        completemoviename = completemoviename & " " & mediadict("VideoResolution")
+                        If mediadict.ContainsKey("VideoResolution") AndAlso mediadict("VideoResolution") <> "" Then
+                            completemoviename = completemoviename & " " & mediadict("VideoResolution")
+                        End If
                     Case "Video Codec"
-                        completemoviename = completemoviename & " " & mediadict("VideoCodec")
+                        If mediadict.ContainsKey("VideoCodec") AndAlso mediadict("VideoCodec") <> "" Then
+                            completemoviename = completemoviename & " " & mediadict("VideoCodec")
+                        End If
                     Case "Audio Channels"
-                        completemoviename = completemoviename & " " & mediadict("AudioChannels")
+                        If mediadict.ContainsKey("AudioChannels") AndAlso mediadict("AudioChannels") <> "" Then
+                            completemoviename = completemoviename & " " & mediadict("AudioChannels")
+                        End If
                 End Select
             Next
         End If
@@ -867,12 +893,10 @@ Public Class Main
         Dim undochangesform As New UndoChanges
         undochangesform.Show()
 
-
     End Sub
 
     Private Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
         cancelprocess = True
     End Sub
-
 
 End Class
