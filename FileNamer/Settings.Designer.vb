@@ -44,6 +44,9 @@ Partial Class Settings
         Me.lblDefaults = New System.Windows.Forms.Label()
         Me.lblOptions = New System.Windows.Forms.Label()
         Me.btnExit = New System.Windows.Forms.Button()
+        Me.lblDefaultOperation = New System.Windows.Forms.Label()
+        Me.lblAction = New System.Windows.Forms.Label()
+        Me.cmbDefaultAction = New System.Windows.Forms.ComboBox()
         Me.SuspendLayout()
         '
         'lblOriginalMovie
@@ -85,7 +88,7 @@ Partial Class Settings
         'cbWriteResults
         '
         Me.cbWriteResults.AutoSize = True
-        Me.cbWriteResults.Location = New System.Drawing.Point(28, 221)
+        Me.cbWriteResults.Location = New System.Drawing.Point(28, 333)
         Me.cbWriteResults.Name = "cbWriteResults"
         Me.cbWriteResults.Size = New System.Drawing.Size(89, 17)
         Me.cbWriteResults.TabIndex = 12
@@ -95,7 +98,7 @@ Partial Class Settings
         'cbSuggestFileName
         '
         Me.cbSuggestFileName.AutoSize = True
-        Me.cbSuggestFileName.Location = New System.Drawing.Point(28, 252)
+        Me.cbSuggestFileName.Location = New System.Drawing.Point(28, 364)
         Me.cbSuggestFileName.Name = "cbSuggestFileName"
         Me.cbSuggestFileName.Size = New System.Drawing.Size(200, 17)
         Me.cbSuggestFileName.TabIndex = 13
@@ -105,7 +108,7 @@ Partial Class Settings
         'cbIndividualFolders
         '
         Me.cbIndividualFolders.AutoSize = True
-        Me.cbIndividualFolders.Location = New System.Drawing.Point(28, 283)
+        Me.cbIndividualFolders.Location = New System.Drawing.Point(28, 395)
         Me.cbIndividualFolders.Name = "cbIndividualFolders"
         Me.cbIndividualFolders.Size = New System.Drawing.Size(108, 17)
         Me.cbIndividualFolders.TabIndex = 14
@@ -115,17 +118,17 @@ Partial Class Settings
         'cbIncludeSubtitleFiles
         '
         Me.cbIncludeSubtitleFiles.AutoSize = True
-        Me.cbIncludeSubtitleFiles.Location = New System.Drawing.Point(28, 349)
+        Me.cbIncludeSubtitleFiles.Location = New System.Drawing.Point(28, 461)
         Me.cbIncludeSubtitleFiles.Name = "cbIncludeSubtitleFiles"
-        Me.cbIncludeSubtitleFiles.Size = New System.Drawing.Size(127, 17)
+        Me.cbIncludeSubtitleFiles.Size = New System.Drawing.Size(123, 17)
         Me.cbIncludeSubtitleFiles.TabIndex = 15
-        Me.cbIncludeSubtitleFiles.Text = "Include SubTitle Files"
+        Me.cbIncludeSubtitleFiles.Text = "Include Subtitle Files"
         Me.cbIncludeSubtitleFiles.UseVisualStyleBackColor = True
         '
         'cbMakeChanges
         '
         Me.cbMakeChanges.AutoSize = True
-        Me.cbMakeChanges.Location = New System.Drawing.Point(28, 382)
+        Me.cbMakeChanges.Location = New System.Drawing.Point(28, 494)
         Me.cbMakeChanges.Name = "cbMakeChanges"
         Me.cbMakeChanges.Size = New System.Drawing.Size(98, 17)
         Me.cbMakeChanges.TabIndex = 16
@@ -135,7 +138,7 @@ Partial Class Settings
         'cbRemoveEmptyFolders
         '
         Me.cbRemoveEmptyFolders.AutoSize = True
-        Me.cbRemoveEmptyFolders.Location = New System.Drawing.Point(28, 316)
+        Me.cbRemoveEmptyFolders.Location = New System.Drawing.Point(28, 428)
         Me.cbRemoveEmptyFolders.Name = "cbRemoveEmptyFolders"
         Me.cbRemoveEmptyFolders.Size = New System.Drawing.Size(243, 17)
         Me.cbRemoveEmptyFolders.TabIndex = 17
@@ -236,7 +239,7 @@ Partial Class Settings
         '
         Me.lblOptions.AutoSize = True
         Me.lblOptions.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblOptions.Location = New System.Drawing.Point(24, 189)
+        Me.lblOptions.Location = New System.Drawing.Point(24, 301)
         Me.lblOptions.Name = "lblOptions"
         Me.lblOptions.Size = New System.Drawing.Size(71, 20)
         Me.lblOptions.TabIndex = 33
@@ -244,18 +247,50 @@ Partial Class Settings
         '
         'btnExit
         '
-        Me.btnExit.Location = New System.Drawing.Point(389, 406)
+        Me.btnExit.Location = New System.Drawing.Point(389, 518)
         Me.btnExit.Name = "btnExit"
         Me.btnExit.Size = New System.Drawing.Size(92, 37)
         Me.btnExit.TabIndex = 34
         Me.btnExit.Text = "Save"
         Me.btnExit.UseVisualStyleBackColor = True
         '
+        'lblDefaultOperation
+        '
+        Me.lblDefaultOperation.AutoSize = True
+        Me.lblDefaultOperation.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblDefaultOperation.Location = New System.Drawing.Point(24, 211)
+        Me.lblDefaultOperation.Name = "lblDefaultOperation"
+        Me.lblDefaultOperation.Size = New System.Drawing.Size(124, 20)
+        Me.lblDefaultOperation.TabIndex = 35
+        Me.lblDefaultOperation.Text = "Default Action"
+        '
+        'lblAction
+        '
+        Me.lblAction.AutoSize = True
+        Me.lblAction.Location = New System.Drawing.Point(89, 254)
+        Me.lblAction.Name = "lblAction"
+        Me.lblAction.Size = New System.Drawing.Size(37, 13)
+        Me.lblAction.TabIndex = 36
+        Me.lblAction.Text = "Action"
+        '
+        'cmbDefaultAction
+        '
+        Me.cmbDefaultAction.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cmbDefaultAction.FormattingEnabled = True
+        Me.cmbDefaultAction.Items.AddRange(New Object() {"Rename and Move", "Rename and Copy", "Move", "Copy"})
+        Me.cmbDefaultAction.Location = New System.Drawing.Point(141, 252)
+        Me.cmbDefaultAction.Name = "cmbDefaultAction"
+        Me.cmbDefaultAction.Size = New System.Drawing.Size(279, 21)
+        Me.cmbDefaultAction.TabIndex = 37
+        '
         'Settings
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(492, 453)
+        Me.ClientSize = New System.Drawing.Size(496, 587)
+        Me.Controls.Add(Me.cmbDefaultAction)
+        Me.Controls.Add(Me.lblAction)
+        Me.Controls.Add(Me.lblDefaultOperation)
         Me.Controls.Add(Me.btnExit)
         Me.Controls.Add(Me.lblOptions)
         Me.Controls.Add(Me.lblDefaults)
@@ -278,7 +313,7 @@ Partial Class Settings
         Me.Controls.Add(Me.lblRenamedMovie)
         Me.Controls.Add(Me.lblOriginalMovie)
         Me.Name = "Settings"
-        Me.Text = "Settings"
+        Me.Text = "Options"
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -306,4 +341,7 @@ Partial Class Settings
     Friend WithEvents lblDefaults As Label
     Friend WithEvents lblOptions As Label
     Friend WithEvents btnExit As Button
+    Friend WithEvents lblDefaultOperation As Label
+    Friend WithEvents lblAction As Label
+    Friend WithEvents cmbDefaultAction As ComboBox
 End Class

@@ -5,6 +5,7 @@ Imports System.IO
 Imports System.Net.Http.Headers
 Imports System.Reflection
 Imports System.Reflection.Emit
+Imports System.Runtime.CompilerServices
 
 Public Class Main
     Private cancelprocess As Boolean = False
@@ -51,7 +52,7 @@ Public Class Main
         lblCurrentItemText.Visible = True
         lblTotalItemsText.Visible = True
         btnCancel.Visible = True
-        btnCancel.Focus()
+        'btnCancel.Focus()
 
         Select Case mediaop
             Case 0, 1
@@ -76,9 +77,12 @@ Public Class Main
         lbOriginal.Items.Clear()
         lbNew.Items.Clear()
 
-        Call PopulateListBoxRecursively(lblOriginalFolder.Text, lbOriginal)
-
-        Call cbSelectAll_CheckedChanged(Nothing, Nothing)
+        If Directory.Exists(lblOriginalFolder.Text) Then
+            Call PopulateListBoxRecursively(lblOriginalFolder.Text, lbOriginal)
+            Call cbSelectAll_CheckedChanged(Nothing, Nothing)
+        Else
+            lblOriginalFolder.Text = ""
+        End If
 
     End Sub
 
@@ -95,6 +99,8 @@ Public Class Main
     End Sub
 
     Private Sub Settingsform_Closed(sender As Object, e As FormClosedEventArgs)
+        cmbOperation.SelectedIndex = My.Settings.DefaultAction
+        mediaop = cmbOperation.SelectedIndex
         cbMakeChanges.Checked = My.Settings.MakeChanges
         If lblOriginalFolder.Text <> "" Then
             lbOriginal.Items.Clear()
@@ -151,35 +157,51 @@ Public Class Main
                 If cbMakeChanges.Checked = True Then
                     Select Case mediaop
                         Case 2
-                            My.Computer.FileSystem.MoveFile(mediadict("OriginalFullPath"), mediadict("NewFullPath"), FileIO.UIOption.AllDialogs)
+                            Try
+                                My.Computer.FileSystem.MoveFile(mediadict("OriginalFullPath"), mediadict("NewFullPath"), FileIO.UIOption.AllDialogs)
 
-                            'This adds the operation to the filechanges list in case we need to undo the change
-                            If My.Settings.WriteResults = True Then
-                                filechanges.Add(New FileChange() With {
-                                .sourcefile = mediadict("OriginalFullPath"),
-                                .destinationfile = mediadict("NewFullPath"),
-                                .fileoperation = "move"
-                                })
-                            End If
+                                'This adds the operation to the filechanges list in case we need to undo the change
+                                If My.Settings.WriteResults = True Then
+                                    filechanges.Add(New FileChange() With {
+                                    .sourcefile = mediadict("OriginalFullPath"),
+                                    .destinationfile = mediadict("NewFullPath"),
+                                    .fileoperation = "move"
+                                    })
+                                End If
 
-                            'this will delete empty folders back up to the root folder if they are empty as files are moved
-                            If My.Settings.RemoveEmptyFolders = True Then
-                                Call DeleteEmptyParentFolders(mediadict("OriginalFilePath"), lblOriginalFolder.Text)
-                            End If
+                                'this will delete empty folders back up to the root folder if they are empty as files are moved
+                                If My.Settings.RemoveEmptyFolders = True Then
+                                    Call DeleteEmptyParentFolders(mediadict("OriginalFilePath"), lblOriginalFolder.Text)
+                                End If
+
+                                lbNew.Items.Add(mediadict("NewFullPath"))
+
+                            Catch ex As Exception
+                                MsgBox("Error - " & ex.Message.ToString)
+                                lbNew.Items.Add("Error - Moving File")
+                            End Try
 
                         Case 3
-                            My.Computer.FileSystem.CopyFile(mediadict("OriginalFullPath"), mediadict("NewFullPath"), FileIO.UIOption.AllDialogs)
-                            If My.Settings.WriteResults = True Then
-                                filechanges.Add(New FileChange() With {
-                                .sourcefile = mediadict("OriginalFullPath"),
-                                .destinationfile = mediadict("NewFullPath"),
-                                .fileoperation = "copy"
-                                })
-                            End If
-                    End Select
-                End If
+                            Try
+                                My.Computer.FileSystem.CopyFile(mediadict("OriginalFullPath"), mediadict("NewFullPath"), FileIO.UIOption.AllDialogs)
+                                If My.Settings.WriteResults = True Then
+                                    filechanges.Add(New FileChange() With {
+                                    .sourcefile = mediadict("OriginalFullPath"),
+                                    .destinationfile = mediadict("NewFullPath"),
+                                    .fileoperation = "copy"
+                                    })
+                                End If
+                                lbNew.Items.Add(mediadict("NewFullPath"))
 
-                lbNew.Items.Add(mediadict("NewFullPath"))
+                            Catch ex As Exception
+                                MsgBox("Error - " & ex.Message.ToString)
+                                lbNew.Items.Add("Error - Copying File")
+                            End Try
+                    End Select
+                Else
+
+                    lbNew.Items.Add(mediadict("NewFullPath"))
+                End If
 
                 If loopcount > 17 Then
                     lbOriginal.TopIndex = loopcount - 17
@@ -188,6 +210,7 @@ Public Class Main
             Else
                 lbNew.Items.Add("")
             End If
+
             lbOriginal.Update()
             lbNew.Update()
             lblCurrentItemText.Refresh()
@@ -344,6 +367,9 @@ Public Class Main
                                     Else
                                         Dim duplicateform As New Duplicate()
                                         duplicateform.ShowDialog()
+                                        If mediadict.ContainsKey("title") = False Then
+                                            Exit Select
+                                        End If
 
                                     End If
 
@@ -356,121 +382,174 @@ Public Class Main
 
                         End Select
 
-                        If subtitlefile = False Then
-                            Call GetMediaInfo(mediadict("OriginalFullPath"))
-                        End If
+                        'This checks to see if a valid media file was found - if not skip to end of loop
+                        If mediadict.ContainsKey("title") = True Then
 
-                        Select Case mediatype
-                            Case "movie"
-                                'Build the new movie name and add options on the name as needed
-                                mediadict("NewFileName") = mediadict("title") & " (" & mediadict("release_date") & ")"
+                            'Grab media info if not a subtitle file
+                            If subtitlefile = False Then
+                                Call GetMediaInfo(mediadict("OriginalFullPath"))
+                            End If
 
-                                If subtitlefile = False Then
-                                    mediadict("NewFileName") = BuildMovieName()
-                                End If
+                            'Build the new file name and path based off the type of media
+                            Select Case mediatype
+                                Case "movie"
+                                    'Build the new movie name and add options on the name as needed
+                                    mediadict("NewFileName") = mediadict("title") & " (" & mediadict("release_date") & ")"
 
-                                mediadict("NewFileName") = mediadict("NewFileName") & mediadict("OriginalFileExt")
-
-                                If My.Settings.IndividualFolders = True Then
-                                    mediadict("NewFilePath") = mediadict("NewFilePath") & "\" & mediadict("title") & " (" & mediadict("release_date") & ")"
-                                End If
-
-                                mediadict("NewFullPath") = mediadict("NewFilePath") & "\" & mediadict("NewFileName")
-
-                                If cbMakeChanges.Checked = True Then
-                                    Select Case mediaop
-                                        Case 0
-                                            My.Computer.FileSystem.MoveFile(mediadict("OriginalFullPath"), mediadict("NewFullPath"), FileIO.UIOption.AllDialogs)
-
-                                            If My.Settings.WriteResults = True Then
-                                                filechanges.Add(New FileChange() With {
-                                                .sourcefile = mediadict("OriginalFullPath"),
-                                                .destinationfile = mediadict("NewFullPath"),
-                                                .fileoperation = "move"
-                                                })
-                                            End If
-
-                                            If My.Settings.RemoveEmptyFolders = True Then
-                                                'this will delete empty folders back up to the root folder if they are empty as files are moved
-                                                Call DeleteEmptyParentFolders(mediadict("OriginalFilePath"), lblOriginalFolder.Text)
-                                            End If
-
-                                        Case 1
-                                            My.Computer.FileSystem.CopyFile(mediadict("OriginalFullPath"), mediadict("NewFullPath"), FileIO.UIOption.AllDialogs)
-
-                                            If My.Settings.WriteResults = True Then
-                                                filechanges.Add(New FileChange() With {
-                                                .sourcefile = mediadict("OriginalFullPath"),
-                                                .destinationfile = mediadict("NewFullPath"),
-                                                .fileoperation = "copy"
-                                                })
-                                            End If
-                                    End Select
-                                    'My.Computer.FileSystem.CopyFile(mediadict("OriginalFullPath"), mediadict("NewFullPath"), True)
-                                    'File.Copy(mediadict("OriginalFullPath"), mediadict("NewFullPath"), True)
-                                End If
-
-                                lbNew.Items.Add(mediadict("NewFullPath"))
-
-                            Case "tvshow"
-                                'Check to see if the tvshow season and episode actually exists
-
-                                mediatype = "tvexactshow"
-                                Call ValidTVSeasonEpisode()
-                                mediatype = "tvshow"
-
-                                If mediadict("totalresults") <> 0 Then
-                                    'Build the new tv show name and add options on the name as needed
-                                    mediadict("NewFileName") = BuildTVName()
+                                    If subtitlefile = False Then
+                                        mediadict("NewFileName") = BuildMovieName()
+                                    End If
 
                                     mediadict("NewFileName") = mediadict("NewFileName") & mediadict("OriginalFileExt")
 
+                                    'Then if creating individual folders - then add in the movie folder
                                     If My.Settings.IndividualFolders = True Then
                                         mediadict("NewFilePath") = mediadict("NewFilePath") & "\" & mediadict("title") & " (" & mediadict("release_date") & ")"
-                                        mediadict("NewSeasonPath") = mediadict("NewFilePath") & "\Season " & mediadict("season")
-                                        mediadict("NewFullPath") = mediadict("NewSeasonPath") & "\" & mediadict("NewFileName")
-                                    Else
-                                        mediadict("NewFullPath") = mediadict("NewFilePath") & "\" & mediadict("NewFileName")
                                     End If
 
+                                    mediadict("NewFullPath") = mediadict("NewFilePath") & "\" & mediadict("NewFileName")
+
+                                    'Make changes in the file system if Make Changes is checked
                                     If cbMakeChanges.Checked = True Then
                                         Select Case mediaop
                                             Case 0
-                                                My.Computer.FileSystem.MoveFile(mediadict("OriginalFullPath"), mediadict("NewFullPath"), FileIO.UIOption.AllDialogs)
+                                                Try
+                                                    'This will move the file to the new location and create any needed folders
+                                                    My.Computer.FileSystem.MoveFile(mediadict("OriginalFullPath"), mediadict("NewFullPath"), FileIO.UIOption.AllDialogs)
 
-                                                If My.Settings.WriteResults = True Then
-                                                    filechanges.Add(New FileChange() With {
-                                                    .sourcefile = mediadict("OriginalFullPath"),
-                                                    .destinationfile = mediadict("NewFullPath"),
-                                                    .fileoperation = "move"
-                                                    })
-                                                End If
+                                                    'This adds the operation to the filechanges list in case we need to undo the change
+                                                    If My.Settings.WriteResults = True Then
+                                                        filechanges.Add(New FileChange() With {
+                                                        .sourcefile = mediadict("OriginalFullPath"),
+                                                        .destinationfile = mediadict("NewFullPath"),
+                                                        .fileoperation = "move"
+                                                        })
+                                                    End If
 
-                                                If My.Settings.RemoveEmptyFolders = True Then
                                                     'this will delete empty folders back up to the root folder if they are empty as files are moved
-                                                    Call DeleteEmptyParentFolders(mediadict("OriginalFilePath"), lblOriginalFolder.Text)
-                                                End If
+                                                    If My.Settings.RemoveEmptyFolders = True Then
+                                                        Call DeleteEmptyParentFolders(mediadict("OriginalFilePath"), lblOriginalFolder.Text)
+                                                    End If
+
+                                                    lbNew.Items.Add(mediadict("NewFullPath"))
+
+                                                Catch ex As Exception
+                                                    MsgBox("Error - " & ex.Message.ToString)
+                                                    lbNew.Items.Add("Error - Moving File")
+                                                End Try
+
 
                                             Case 1
-                                                My.Computer.FileSystem.CopyFile(mediadict("OriginalFullPath"), mediadict("NewFullPath"), FileIO.UIOption.AllDialogs)
+                                                Try
+                                                    My.Computer.FileSystem.CopyFile(mediadict("OriginalFullPath"), mediadict("NewFullPath"), FileIO.UIOption.AllDialogs)
 
-                                                If My.Settings.WriteResults = True Then
-                                                    filechanges.Add(New FileChange() With {
-                                                    .sourcefile = mediadict("OriginalFullPath"),
-                                                    .destinationfile = mediadict("NewFullPath"),
-                                                    .fileoperation = "move"
-                                                    })
-                                                End If
+                                                    If My.Settings.WriteResults = True Then
+                                                        filechanges.Add(New FileChange() With {
+                                                        .sourcefile = mediadict("OriginalFullPath"),
+                                                        .destinationfile = mediadict("NewFullPath"),
+                                                        .fileoperation = "copy"
+                                                        })
+                                                    End If
+
+                                                    lbNew.Items.Add(mediadict("NewFullPath"))
+
+                                                Catch ex As Exception
+                                                    MsgBox("Error - " & ex.Message.ToString)
+                                                    lbNew.Items.Add("Error - Moving File")
+                                                End Try
                                         End Select
-
+                                        'My.Computer.FileSystem.CopyFile(mediadict("OriginalFullPath"), mediadict("NewFullPath"), True)
                                         'File.Copy(mediadict("OriginalFullPath"), mediadict("NewFullPath"), True)
+                                    Else
+                                        lbNew.Items.Add(mediadict("NewFullPath"))
                                     End If
 
-                                    lbNew.Items.Add(mediadict("NewFullPath"))
-                                Else
-                                    lbNew.Items.Add(mediadict("title") & " (" & mediadict("release_date") & ") Season " & mediadict("searchseason") & " Episode " & mediadict("searchepisode") & " Not Found")
-                                End If
-                        End Select
+
+                                Case "tvshow"
+                                    'Check to see if the tvshow season and episode actually exists
+
+                                    mediatype = "tvexactshow"
+                                    Call ValidTVSeasonEpisode()
+                                    mediatype = "tvshow"
+
+                                    If mediadict("totalresults") <> 0 Then
+                                        'Build the new tv show name and add options on the name as needed
+                                        mediadict("NewFileName") = BuildTVName()
+
+                                        mediadict("NewFileName") = mediadict("NewFileName") & mediadict("OriginalFileExt")
+
+                                        'If creating individual folders - then add in the tv show folder and the season folder
+                                        If My.Settings.IndividualFolders = True Then
+                                            mediadict("NewFilePath") = mediadict("NewFilePath") & "\" & mediadict("title") & " (" & mediadict("release_date") & ")"
+                                            mediadict("NewSeasonPath") = mediadict("NewFilePath") & "\Season " & mediadict("season")
+                                            mediadict("NewFullPath") = mediadict("NewSeasonPath") & "\" & mediadict("NewFileName")
+                                        Else
+                                            'if not then just add the tv show episode to the root new folder
+                                            mediadict("NewFullPath") = mediadict("NewFilePath") & "\" & mediadict("NewFileName")
+                                        End If
+
+                                        'Make changes in the file system if Make Changes is checked
+                                        If cbMakeChanges.Checked = True Then
+                                            Select Case mediaop
+                                                Case 0
+                                                    Try
+                                                        My.Computer.FileSystem.MoveFile(mediadict("OriginalFullPath"), mediadict("NewFullPath"), FileIO.UIOption.AllDialogs)
+
+                                                        If My.Settings.WriteResults = True Then
+                                                            filechanges.Add(New FileChange() With {
+                                                        .sourcefile = mediadict("OriginalFullPath"),
+                                                        .destinationfile = mediadict("NewFullPath"),
+                                                        .fileoperation = "move"
+                                                        })
+                                                        End If
+
+                                                        If My.Settings.RemoveEmptyFolders = True Then
+                                                            'this will delete empty folders back up to the root folder if they are empty as files are moved
+                                                            Call DeleteEmptyParentFolders(mediadict("OriginalFilePath"), lblOriginalFolder.Text)
+                                                        End If
+
+                                                        lbNew.Items.Add(mediadict("NewFullPath"))
+
+                                                    Catch ex As Exception
+                                                        MsgBox("Error - " & ex.Message.ToString)
+                                                        lbNew.Items.Add("Error - Moving File")
+                                                    End Try
+
+
+
+                                                Case 1
+                                                    Try
+                                                        My.Computer.FileSystem.CopyFile(mediadict("OriginalFullPath"), mediadict("NewFullPath"), FileIO.UIOption.AllDialogs)
+
+                                                        If My.Settings.WriteResults = True Then
+                                                            filechanges.Add(New FileChange() With {
+                                                            .sourcefile = mediadict("OriginalFullPath"),
+                                                            .destinationfile = mediadict("NewFullPath"),
+                                                            .fileoperation = "move"
+                                                            })
+                                                        End If
+
+                                                        lbNew.Items.Add(mediadict("NewFullPath"))
+
+                                                    Catch ex As Exception
+                                                        MsgBox("Error - " & ex.Message.ToString)
+                                                        lbNew.Items.Add("Error - Copying File")
+                                                    End Try
+
+                                            End Select
+
+                                        Else
+                                            lbNew.Items.Add(mediadict("NewFullPath"))
+                                        End If
+
+                                    Else
+                                        lbNew.Items.Add(mediadict("title") & " (" & mediadict("release_date") & ") Season " & mediadict("searchseason") & " Episode " & mediadict("searchepisode") & " Not Found")
+                                    End If
+
+                            End Select
+                        Else
+                            lbNew.Items.Add("Not Found")
+                        End If
                     Else
                         lbNew.Items.Add("Not Found")
                     End If
@@ -560,14 +639,17 @@ Public Class Main
 
     Private Sub Main_Load(sender As Object, e As EventArgs) Handles Me.Load
 
-        cmbOperation.SelectedIndex = 0
+        If My.Settings.DefaultAction < 0 Or My.Settings.DefaultAction > 3 Then
+            My.Settings.DefaultAction = 0
+        End If
+        cmbOperation.SelectedIndex = My.Settings.DefaultAction
         mediaop = cmbOperation.SelectedIndex
         cbMakeChanges.Checked = My.Settings.MakeChanges
 
         Dim tooltip As New ToolTip()
         ' Set properties for the ToolTip (optional)
         tooltip.AutoPopDelay = 5000  ' Time in milliseconds the tooltip remains visible
-        tooltip.InitialDelay = 1000 ' Time in milliseconds before the tooltip appears
+        tooltip.InitialDelay = 750 ' Time in milliseconds before the tooltip appears
         tooltip.ReshowDelay = 500   ' Time in milliseconds before reappearing
         tooltip.ShowAlways = True   ' Ensures the tooltip is displayed even if the form is inactive
 
@@ -890,9 +972,23 @@ Public Class Main
     End Sub
 
     Private Sub ToolStripMenuItem2_Click(sender As Object, e As EventArgs) Handles ToolStripMenuItem2.Click
+        If filechanges.Count = 0 Then
+            MsgBox("There are no file renames, moves or copies to undo")
+            Exit Sub
+        End If
         Dim undochangesform As New UndoChanges
+        AddHandler undochangesform.FormClosed, AddressOf undochangesform_Closed
         undochangesform.Show()
 
+    End Sub
+
+    Private Sub undochangesform_Closed(sender As Object, e As FormClosedEventArgs)
+        If lblOriginalFolder.Text <> "" Then
+            lbOriginal.Items.Clear()
+            lbNew.Items.Clear()
+            Call PopulateListBoxRecursively(lblOriginalFolder.Text, lbOriginal)
+            Call cbSelectAll_CheckedChanged(Nothing, Nothing)
+        End If
     End Sub
 
     Private Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click

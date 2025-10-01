@@ -12,47 +12,49 @@ Public Class UndoChanges
             item.SubItems.Add(mychange.destinationfile)
             ListView1.Items.Add(item)
         Next
+        'This will select the first item in the list when the form loads
+        'If ListView1.Items.Count > 0 Then
+        'ListView1.Items(0).Selected = True
+        'End If
+
     End Sub
 
     Private Sub btnUndo_Click(sender As Object, e As EventArgs) Handles btnUndo.Click
-        For Each item As ListViewItem In ListView1.SelectedItems
 
-            Dim origfile As String = item.Text
-            Dim operation As String = item.SubItems(1).Text
-            Dim destfile As String = item.SubItems(2).Text
+        If ListView1.SelectedItems.Count > 0 Then
+            For Each item As ListViewItem In ListView1.SelectedItems
 
-            Select Case operation
-                Case "move"
-                    My.Computer.FileSystem.MoveFile(destfile, origfile, FileIO.UIOption.AllDialogs)
-                Case "copy"
-                    If File.Exists(destfile) Then
-                        If File.Exists(origfile) Then
-                            File.Delete(destfile)
-                        Else
-                            My.Computer.FileSystem.CopyFile(destfile, origfile, FileIO.UIOption.AllDialogs)
+                Dim origfile As String = item.Text
+                Dim operation As String = item.SubItems(1).Text
+                Dim destfile As String = item.SubItems(2).Text
+
+                Select Case operation
+                    Case "move"
+                        My.Computer.FileSystem.MoveFile(destfile, origfile, FileIO.UIOption.AllDialogs)
+                    Case "copy"
+                        If File.Exists(destfile) Then
+                            If File.Exists(origfile) Then
+                                File.Delete(destfile)
+                            Else
+                                My.Computer.FileSystem.CopyFile(destfile, origfile, FileIO.UIOption.AllDialogs)
+                            End If
                         End If
-                    End If
-            End Select
+                End Select
 
-        Next
-
-        If ListView1.SelectedIndices.Count > 0 Then
-            For index As Integer = ListView1.SelectedIndices.Count - 1 To 0 Step -1
-                ListView1.Items.RemoveAt(ListView1.SelectedIndices(index))
-                filechanges.RemoveAt(index)
             Next
-        End If
 
-        'If ListView1.SelectedItems.Count > 0 Then
-        'For count As Integer = 0 To ListView1.Items.Count - 1
-        'If ListView1.Items(count).Selected Then
-        'ListView1.Items.RemoveAt(count)
-        'If count < filechanges.Count Then
-        'filechanges.RemoveAt(count)
-        'End If
-        'End If
-        'Next
-        'End If
+            If ListView1.SelectedIndices.Count > 0 Then
+                For index As Integer = ListView1.SelectedIndices.Count - 1 To 0 Step -1
+                    ListView1.Items.RemoveAt(ListView1.SelectedIndices(index))
+                    filechanges.RemoveAt(index)
+                Next
+            End If
+        Else
+            MsgBox("Please select files to undo changes.")
+        End If
+        If ListView1.Items.Count = 0 Then
+            btnUndo.Enabled = False
+        End If
     End Sub
 
     Private Sub btnExit_Click(sender As Object, e As EventArgs) Handles btnExit.Click

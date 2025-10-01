@@ -1,5 +1,7 @@
 ﻿
 
+Imports System.ComponentModel
+
 Public Class Duplicate
     Public Class MediaDetails
         Public Property title As String
@@ -144,5 +146,13 @@ Public Class Duplicate
             PictureBox1.Image = Image.FromFile(tempImagePath)
         End If
 
+    End Sub
+
+    Private Sub Duplicate_Closing(sender As Object, e As FormClosingEventArgs) Handles Me.Closing
+        If e.CloseReason = CloseReason.UserClosing Then
+            If PictureBox1.Image IsNot Nothing Then
+                PictureBox1.Image?.Dispose()
+            End If
+        End If
     End Sub
 End Class

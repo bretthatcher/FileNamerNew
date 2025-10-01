@@ -11,11 +11,12 @@
         Me.cbIncludeSubtitleFiles.Checked = My.Settings.IncludeSubtitleFiles
         Me.cbMakeChanges.Checked = My.Settings.MakeChanges
         Me.cbRemoveEmptyFolders.Checked = My.Settings.RemoveEmptyFolders
+        Me.cmbDefaultAction.SelectedIndex = My.Settings.DefaultAction
 
         Dim tooltip As New ToolTip()
         ' Set properties for the ToolTip (optional)
         tooltip.AutoPopDelay = 5000  ' Time in milliseconds the tooltip remains visible
-        tooltip.InitialDelay = 1000 ' Time in milliseconds before the tooltip appears
+        tooltip.InitialDelay = 750 ' Time in milliseconds before the tooltip appears
         tooltip.ReshowDelay = 500   ' Time in milliseconds before reappearing
         tooltip.ShowAlways = True   ' Ensures the tooltip is displayed even if the form is inactive
 
@@ -42,55 +43,6 @@
 
         tooltip.SetToolTip(btnRenamedTVFolder, "This will Set the default New Folder for TV Shows.  Defaults can be selected from the Settings Menu.")
 
-    End Sub
-
-
-    Private Sub cbWriteResults_CheckedChanged(sender As Object, e As EventArgs) Handles cbWriteResults.CheckedChanged
-        'If Me.cbWriteResults.Checked = True Then
-        'My.Settings.WriteResults = True
-        'Else
-        'My.Settings.WriteResults = False
-        'End If
-    End Sub
-
-    Private Sub cbSuggestFileName_CheckedChanged(sender As Object, e As EventArgs) Handles cbSuggestFileName.CheckedChanged
-        'If Me.cbSuggestFileName.Checked = True Then
-        'My.Settings.SuggestFileName = True
-        'Else
-        'My.Settings.SuggestFileName = False
-        'End If
-    End Sub
-
-    Private Sub cbIndividualFolders_CheckedChanged(sender As Object, e As EventArgs) Handles cbIndividualFolders.CheckedChanged
-        'If cbIndividualFolders.Checked = True Then
-        'My.Settings.IndividualFolders = True
-        'Else
-        'My.Settings.IndividualFolders = False
-        'End If
-    End Sub
-
-    Private Sub cbIncludeSubtitleFiles_CheckedChanged(sender As Object, e As EventArgs) Handles cbIncludeSubtitleFiles.CheckedChanged
-        'If cbIncludeSubtitleFiles.Checked = True Then
-        'My.Settings.IncludeSubtitleFiles = True
-        'Else
-        'My.Settings.IncludeSubtitleFiles = False
-        'End If
-    End Sub
-
-    Private Sub cbMakeChanges_CheckedChanged(sender As Object, e As EventArgs) Handles cbMakeChanges.CheckedChanged
-        'If cbMakeChanges.Checked = True Then
-        'My.Settings.MakeChanges = True
-        'Else
-        'My.Settings.MakeChanges = False
-        'End If
-    End Sub
-
-    Private Sub cbRemoveEmptyFolders_CheckedChanged(sender As Object, e As EventArgs) Handles cbRemoveEmptyFolders.CheckedChanged
-        'If cbRemoveEmptyFolders.Checked = True Then
-        'My.Settings.RemoveEmptyFolders = True
-        'Else
-        'My.Settings.RemoveEmptyFolders = False
-        'End If
     End Sub
 
     Private Sub btnOriginalMovieFolder_Click(sender As Object, e As EventArgs) Handles btnOriginalMovieFolder.Click
@@ -134,6 +86,7 @@
         My.Settings.IncludeSubtitleFiles = Me.cbIncludeSubtitleFiles.Checked
         My.Settings.MakeChanges = Me.cbMakeChanges.Checked
         My.Settings.RemoveEmptyFolders = Me.cbRemoveEmptyFolders.Checked
+        My.Settings.DefaultAction = Me.cmbDefaultAction.SelectedIndex
 
         Me.Close()
     End Sub

@@ -48,24 +48,22 @@ Module tools
     End Sub
     Public Function ShowFolderChooser(defaultfolder As String) As String
         ' Create a new instance of FolderBrowserDialog
-        Dim folderDialog As New FolderBrowserDialog()
-
         ' Optional: Set the description shown in the dialog
-        folderDialog.Description = "Please select a folder."
-
-        ' Optional: Set the root folder (e.g., Desktop, MyComputer, etc.)
-        'folderDialog.RootFolder = Environment.SpecialFolder.Desktop
-
         ' Optional: Set the initially selected folder
-        folderDialog.SelectedPath = defaultfolder
-
+        Dim folderDialog As New FolderBrowserDialog With {
+            .Description = "Please select a folder.",
+            .SelectedPath = defaultfolder
+        }
         ' Show the dialog and check if the user clicked OK
         If folderDialog.ShowDialog() = DialogResult.OK Then
+
             ' Retrieve the selected folder path
-            'Dim selectedFolder As String = folderDialog.SelectedPath
             Return folderDialog.SelectedPath
-            'MessageBox.Show("You selected: " & selectedFolder)
+
+        Else
+            Return ""
         End If
+
     End Function
 
     Public Function Get_HTTP_Image(picurl As String) As String
@@ -79,28 +77,28 @@ Module tools
         Return temppic
     End Function
 
-    Public Sub DeleteEmptyParentFolders(ByVal folder As String, stopAt As String)
-        Dim current As String = folder
+    Sub DeleteEmptyParentFolders(startFolder As String, stopFolder As String)
+        Dim currentFolder As String = startFolder
 
-        While Not String.IsNullOrEmpty(current) AndAlso
-              current.StartsWith(stopAt, StringComparison.OrdinalIgnoreCase)
+        ' Normalize paths (remove trailing backslashes)
+        stopFolder = stopFolder.TrimEnd(Path.DirectorySeparatorChar)
 
-            ' If directory exists and is empty, delete it
-            If Directory.Exists(current) Then
-                If Directory.GetFiles(current).Length = 0 AndAlso Directory.GetDirectories(current).Length = 0 Then
-                    Try
-                        Directory.Delete(current)
-                    Catch ex As Exception
-                        'MsgBox("Could not delete: " & current & " - " & ex.Message)
-                        Exit While
-                    End Try
+        While Not String.Equals(currentFolder.TrimEnd(Path.DirectorySeparatorChar), stopFolder, StringComparison.OrdinalIgnoreCase)
+            If Directory.Exists(currentFolder) Then
+                ' Delete if empty
+                If Not Directory.EnumerateFileSystemEntries(currentFolder).Any() Then
+                    Directory.Delete(currentFolder)
                 Else
-                    ' Stop if folder isn't empty
+                    ' Stop if folder is not empty
                     Exit While
                 End If
             End If
-            ' Move one level up
-            current = Path.GetDirectoryName(current)
+
+            ' Move up one folder
+            currentFolder = Path.GetDirectoryName(currentFolder)
+
+            ' Safety check
+            If String.IsNullOrEmpty(currentFolder) Then Exit While
         End While
     End Sub
 

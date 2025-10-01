@@ -292,6 +292,18 @@ Namespace My
                 Me("TVExtras") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
+        Public Property DefaultAction() As Integer
+            Get
+                Return CType(Me("DefaultAction"),Integer)
+            End Get
+            Set
+                Me("DefaultAction") = value
+            End Set
+        End Property
     End Class
 End Namespace
 
