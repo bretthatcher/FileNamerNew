@@ -30,7 +30,10 @@ Public Class UndoChanges
 
                 Select Case operation
                     Case "move"
-                        My.Computer.FileSystem.MoveFile(destfile, origfile, FileIO.UIOption.AllDialogs)
+                        If File.Exists(destfile) Then
+                            My.Computer.FileSystem.MoveFile(destfile, origfile, FileIO.UIOption.AllDialogs)
+                        End If
+
                     Case "copy"
                         If File.Exists(destfile) Then
                             If File.Exists(origfile) Then

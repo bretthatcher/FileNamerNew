@@ -35,7 +35,8 @@ Public Class Duplicate
             Case "movie"
                 If movies IsNot Nothing AndAlso movies.Count > 0 Then
                     ' Populate the ListBox with movie titles
-                    For Each movie In movies
+                    Dim sortedmovies = movies.OrderByDescending(Function(p) p.popularity).ToList()
+                    For Each movie In sortedmovies
                         If mediadict("searchname").ToString.ToLower() = movie.title.ToLower() And mediadict("searchyear") = movie.release_date Then
 
                             lbDuplicates.Items.Add(movie.title & " (" & movie.release_date & ") (Exact Match)")
@@ -63,7 +64,7 @@ Public Class Duplicate
                     Next
 
                     If mediaarray.Count = 0 Then
-                        For Each movie In movies
+                        For Each movie In sortedmovies
                             lbDuplicates.Items.Add(movie.title & " (" & movie.release_date & ")")
 
                             mediaarray.Add(New MediaDetails With {
@@ -80,7 +81,10 @@ Public Class Duplicate
 
             Case "tvshow"
                 If tvshows IsNot Nothing AndAlso tvshows.Count > 0 Then
-                    For Each tvshow In tvshows
+                    Dim sortedtvshows = tvshows.OrderByDescending(Function(p) p.popularity).ToList()
+
+                    'For Each tvshow In tvshows
+                    For Each tvshow In sortedtvshows
                         If mediadict("searchname").ToString.ToLower() = tvshow.title.ToLower() Then
                             lbDuplicates.Items.Add(tvshow.title & " (" & tvshow.release_date & ") (Exact Match)")
 
@@ -106,7 +110,8 @@ Public Class Duplicate
 
                     Next
                     If mediaarray.Count = 0 Then
-                        For Each tvshow In tvshows
+                        'For Each tvshow In tvshows
+                        For Each tvshow In sortedtvshows
 
                             lbDuplicates.Items.Add(tvshow.title & " (" & tvshow.release_date & ")")
 

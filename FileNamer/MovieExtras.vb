@@ -146,7 +146,7 @@
     End Sub
 
     Private Sub UpdateResultLabel()
-        lblResult.Text = "Movie (2025)"
+        lblResult.Text = "Movie (" & CStr(DateTime.Now.Year) & ")"
         For count As Integer = 0 To ListBox2.Items.Count - 1
             Select Case ListBox2.Items(count).ToString
                 Case "Video Resolution"

@@ -948,7 +948,7 @@ Public Class Main
 
     End Function
     Private Sub BuildMovieExample()
-        lblExtras.Text = "Movie (2025)"
+        lblExtras.Text = "Movie (" & CStr(DateTime.Now.Year) & ")"
         If My.Settings.MovieExtras IsNot Nothing Then
 
             For Each item As String In My.Settings.MovieExtras

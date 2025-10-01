@@ -27,24 +27,31 @@ Module tools
 
     Public Sub PopulateListBoxRecursively(folderPath As String, listBox As ListBox)
         ' Add all files in the current folder
-        Dim files As String() = Directory.GetFiles(folderPath)
-        For Each file As String In files
-            If ValidExtension(file) Then
-                listBox.Items.Add(file)
-            End If
-            If My.Settings.IncludeSubtitleFiles = True Then
-                If ValidSubTitleExtension(file) Then
+        Try
+            Dim files As String() = Directory.GetFiles(folderPath)
+            For Each file As String In files
+                If ValidExtension(file) Then
                     listBox.Items.Add(file)
                 End If
-            End If
-        Next
-
+                If My.Settings.IncludeSubtitleFiles = True Then
+                    If ValidSubTitleExtension(file) Then
+                        listBox.Items.Add(file)
+                    End If
+                End If
+            Next
+        Catch ex As UnauthorizedAccessException
+        End Try
         ' Recursively add all subfolders
-        Dim folders As String() = Directory.GetDirectories(folderPath)
-        For Each folder As String In folders
-            ' Recursive call for the subfolder
-            PopulateListBoxRecursively(folder, listBox)
-        Next
+        Try
+            Dim folders As String() = Directory.GetDirectories(folderPath)
+
+            For Each folder As String In folders
+                ' Recursive call for the subfolder
+                PopulateListBoxRecursively(folder, listBox)
+            Next
+        Catch ex As UnauthorizedAccessException
+        End Try
+
     End Sub
     Public Function ShowFolderChooser(defaultfolder As String) As String
         ' Create a new instance of FolderBrowserDialog
