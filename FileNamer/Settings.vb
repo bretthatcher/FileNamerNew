@@ -12,6 +12,9 @@
         Me.cbMakeChanges.Checked = My.Settings.MakeChanges
         Me.cbRemoveEmptyFolders.Checked = My.Settings.RemoveEmptyFolders
         Me.cmbDefaultAction.SelectedIndex = My.Settings.DefaultAction
+        Me.cmbDefaultMovieLibrary.SelectedIndex = My.Settings.DefaultMovieLibrary
+        Me.cmbDefaultTVLibrary.SelectedIndex = My.Settings.DefaultTVLibrary
+
 
         Dim tooltip As New ToolTip()
         ' Set properties for the ToolTip (optional)
@@ -41,8 +44,13 @@
 
         tooltip.SetToolTip(btnRenamedMovieFolder, "This will set the default New Folder for Movies.  Defaults can be selected from the Settings Menu.")
 
-        tooltip.SetToolTip(btnRenamedTVFolder, "This will Set the default New Folder for TV Shows.  Defaults can be selected from the Settings Menu.")
+        tooltip.SetToolTip(btnRenamedTVFolder, "This will set the default New Folder for TV Shows.  Defaults can be selected from the Settings Menu.")
 
+        tooltip.SetToolTip(cmbDefaultMovieLibrary, "This will set the default library that is used to gather movie information for renames.")
+
+        tooltip.SetToolTip(cmbDefaultTVLibrary, "This will set the default library that is used to gather TV show information for renames.")
+
+        tooltip.SetToolTip(cmbDefaultAction, "This will set the default action for processing files when the application first loads.")
     End Sub
 
     Private Sub btnOriginalMovieFolder_Click(sender As Object, e As EventArgs) Handles btnOriginalMovieFolder.Click
@@ -87,7 +95,8 @@
         My.Settings.MakeChanges = Me.cbMakeChanges.Checked
         My.Settings.RemoveEmptyFolders = Me.cbRemoveEmptyFolders.Checked
         My.Settings.DefaultAction = Me.cmbDefaultAction.SelectedIndex
-
+        My.Settings.DefaultMovieLibrary = Me.cmbDefaultMovieLibrary.SelectedIndex
+        My.Settings.DefaultTVLibrary = Me.cmbDefaultTVLibrary.SelectedIndex
         Me.Close()
     End Sub
 End Class

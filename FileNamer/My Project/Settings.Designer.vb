@@ -304,6 +304,42 @@ Namespace My
                 Me("DefaultAction") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property JWTToken() As String
+            Get
+                Return CType(Me("JWTToken"),String)
+            End Get
+            Set
+                Me("JWTToken") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
+        Public Property DefaultMovieLibrary() As Integer
+            Get
+                Return CType(Me("DefaultMovieLibrary"),Integer)
+            End Get
+            Set
+                Me("DefaultMovieLibrary") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("1")>  _
+        Public Property DefaultTVLibrary() As Integer
+            Get
+                Return CType(Me("DefaultTVLibrary"),Integer)
+            End Get
+            Set
+                Me("DefaultTVLibrary") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

@@ -208,6 +208,7 @@ Partial Class TVExtras
         Me.Controls.Add(Me.cmbSeasonEpisodeSeperator)
         Me.Controls.Add(Me.cmbSeasonNumber)
         Me.Controls.Add(Me.cmbSeasonText)
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.Name = "TVExtras"
         Me.Text = "TV Extras"
         Me.ResumeLayout(False)

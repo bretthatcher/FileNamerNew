@@ -6,18 +6,25 @@ Imports System.Net.Http.Headers
 Imports System.Reflection
 Imports System.Reflection.Emit
 Imports System.Runtime.CompilerServices
+Imports System.Runtime.InteropServices
 
 Public Class Main
+
     Private cancelprocess As Boolean = False
+    Private syncingScroll As Boolean = False ' To prevent infinite loop during sync
+
+    Private isTMDB As Boolean = True
+    Private TMDBImage As Image = My.Resources.tmdb
+    Private TVDBImage As Image = My.Resources.tvdb
 
     Private Sub btnProcess_Click(sender As Object, e As EventArgs) Handles btnProcess.Click
         If lblOriginalFolder.Text = "" Then
-            MsgBox("Please select your original files folder")
+            MsgBox("Please select your Original files folder")
             Exit Sub
         End If
 
         If lblNewFolder.Text = "" Then
-            MsgBox("Please select your new files folder")
+            MsgBox("Please select your New files folder")
             Exit Sub
         End If
 
@@ -30,18 +37,27 @@ Public Class Main
             MsgBox("Please select at least 1 original file to process")
             Exit Sub
         End If
+
         If cbMovies.Checked = True Then mediatype = "movie"
         If cbTV.Checked = True Then mediatype = "tvshow"
 
+        If isTMDB Then
+            medialibrary = "TMDB"
+        Else
+            medialibrary = "TVDB"
+        End If
+
+        Dim msgresult As MsgBoxResult
+
         If cbMakeChanges.Checked = True Then
-            Dim msgresult As MsgBoxResult = MsgBox("You are about to make changes to the original files.  Continue?", MsgBoxStyle.YesNo)
+            msgresult = MsgBox("You are about to make changes to the original files.  Continue?", MsgBoxStyle.YesNo)
             If msgresult = MsgBoxResult.No Then
                 Exit Sub
             End If
         End If
 
         If cbMakeChanges.Checked = False Then
-            Dim msgresult As MsgBoxResult = MsgBox("Make Changes is not checked so this is a dry run. Continue?", MsgBoxStyle.YesNo)
+            msgresult = MsgBox("Make Changes is not checked so this is a dry run. Continue?", MsgBoxStyle.YesNo)
             If msgresult = MsgBoxResult.No Then
                 Exit Sub
             End If
@@ -52,7 +68,6 @@ Public Class Main
         lblCurrentItemText.Visible = True
         lblTotalItemsText.Visible = True
         btnCancel.Visible = True
-        'btnCancel.Focus()
 
         Select Case mediaop
             Case 0, 1
@@ -61,19 +76,46 @@ Public Class Main
                 Call Move_Copy_Files()
         End Select
 
-        'Clear both original and new listboxes - re-populate original listbox
+        btnCancel.Visible = False
+
+
+        'This form will show the results of the process
+        Dim myData As New List(Of MyResults)()
+
+
+        For i As Integer = 0 To lbNew.Items.Count - 1
+            If lbNew.Items(i).ToString() <> "" Then
+                'notFoundItems.Add((lbOriginal.Items(i).ToString(), lbNew.Items(i).ToString()))
+                Dim myitem As New MyResults() With {
+                        .Original = lbOriginal.Items(i).ToString(),
+                        .NewName = lbNew.Items(i).ToString()
+                    }
+                myData.Add(myitem)
+            End If
+        Next
+
         If cancelprocess = True Then
-            MsgBox("Process canceled by the user")
+            msgresult = MsgBox("Process canceled by the user.  Would you like to see the partial results?", MsgBoxStyle.YesNo)
             cancelprocess = False
         Else
-            MsgBox(btnProcess.Text & " complete")
+            msgresult = MsgBox(btnProcess.Text & " complete.  Would you like to see the results?", MsgBoxStyle.YesNo)
         End If
 
+        If msgresult = MsgBoxResult.Yes Then
+            ' Show the new form
+            Dim frm As New Results()
+            frm.MyList = myData
+            frm.Show()
+        End If
+
+
+        'Clear both original and new listboxes - re-populate original listbox
         lblProcessingText.Visible = False
         lblProcessingOfText.Visible = False
         lblCurrentItemText.Visible = False
         lblTotalItemsText.Visible = False
-        btnCancel.Visible = False
+
+
         lbOriginal.Items.Clear()
         lbNew.Items.Clear()
 
@@ -133,9 +175,14 @@ Public Class Main
     End Sub
     Public Sub Move_Copy_Files()
 
-        lblTotalItemsText.Text = lbOriginal.Items.Count
+        Call RemoveUnselectedItems()
 
-        For loopcount = 0 To lbOriginal.Items.Count - 1
+        If lbOriginal.Items.Count > 0 Then
+            lblTotalItemsText.Text = lbOriginal.Items.Count
+            lbOriginal.TopIndex = 0
+        End If
+
+        For loopcount As Long = 0 To lbOriginal.Items.Count - 1
 
             If cancelprocess = True Then
                 Exit For
@@ -218,16 +265,27 @@ Public Class Main
 
         Next
     End Sub
+    Public Sub RemoveUnselectedItems()
+
+        For loopcount As Long = lbOriginal.Items.Count - 1 To 0 Step -1
+            If Not lbOriginal.GetSelected(loopcount) Then
+                lbOriginal.Items.RemoveAt(loopcount)
+            End If
+        Next
+    End Sub
 
     Public Sub ProcessFiles()
         Dim subtitlefile As Boolean = False
         Dim lasttvshow As String = ""
         Dim name_unknown As String = ""
-        Dim loopcount As Long
 
-        lblTotalItemsText.Text = lbOriginal.Items.Count
+        Call RemoveUnselectedItems()
+        If lbOriginal.Items.Count > 0 Then
+            lblTotalItemsText.Text = lbOriginal.Items.Count
+            lbOriginal.TopIndex = 0
+        End If
 
-        For loopcount = 0 To lbOriginal.Items.Count - 1
+        For loopcount As Long = 0 To lbOriginal.Items.Count - 1
 
             If cancelprocess = True Then
                 Exit For
@@ -258,10 +316,12 @@ Public Class Main
 
                     'Build the search URL and call TMDB to search for the media
                     'url_search = Build_TMDB_URL(mediatype)
-                    Call TMDB_Search_Media(mediatype)
+                    'Call TMDB_Search_Media(mediatype)
 
                     'Parse the returned JSON and populate the movies, tvshows, tvseasons or tvepisodes lists
-                    Call JSON_Parse(mediatype)
+                    'Call JSON_Parse(mediatype)
+
+                    Call Search_Media(mediatype)
 
                     Dim new_searchname As String = ""
 
@@ -289,8 +349,11 @@ Public Class Main
                                     name_unknown = mediadict("searchname")
                                     mediadict("searchname") = new_searchname
 
-                                    Call TMDB_Search_Media(mediatype)
-                                    Call JSON_Parse(mediatype)
+                                    'Call TMDB_Search_Media(mediatype)
+                                    'Call JSON_Parse(mediatype)
+
+                                    Call Search_Media(mediatype)
+
                                 Else
                                     Exit Do
                                 End If
@@ -469,7 +532,8 @@ Public Class Main
                                     'Check to see if the tvshow season and episode actually exists
 
                                     mediatype = "tvexactshow"
-                                    Call ValidTVSeasonEpisode()
+                                    'Call ValidTVSeasonEpisode()
+                                    Call Search_Media(mediatype)
                                     mediatype = "tvshow"
 
                                     If mediadict("totalresults") <> 0 Then
@@ -580,6 +644,17 @@ Public Class Main
         If cbMovies.Checked = True Then
             cbTV.Checked = False
             mediatype = "movie"
+
+            lblLibraryText.Visible = True
+            pbLibrary.Visible = True
+
+            If My.Settings.DefaultMovieLibrary = 0 Then
+                isTMDB = True
+            Else
+                isTMDB = False
+            End If
+            pbLibrary.Image = If(isTMDB, TMDBImage, TVDBImage)
+
             lblExample.Visible = True
             lblExtras.Visible = True
             btnChangeExample.Visible = True
@@ -590,7 +665,12 @@ Public Class Main
             lblExample.Visible = False
             lblExtras.Visible = False
             btnChangeExample.Visible = False
+
+            lblLibraryText.Visible = False
+            pbLibrary.Visible = False
+
         End If
+
 
     End Sub
 
@@ -599,6 +679,17 @@ Public Class Main
 
             cbMovies.Checked = False
             mediatype = "tvshow"
+
+            lblLibraryText.Visible = True
+            pbLibrary.Visible = True
+
+            If My.Settings.DefaultTVLibrary = 0 Then
+                isTMDB = True
+            Else
+                isTMDB = False
+            End If
+            pbLibrary.Image = If(isTMDB, TMDBImage, TVDBImage)
+
             lblExample.Visible = True
             lblExtras.Visible = True
             btnChangeExample.Visible = True
@@ -618,6 +709,9 @@ Public Class Main
             lblExample.Visible = False
             lblExtras.Visible = False
             btnChangeExample.Visible = False
+
+            lblLibraryText.Visible = False
+            pbLibrary.Visible = False
 
         End If
     End Sub
@@ -646,6 +740,28 @@ Public Class Main
         mediaop = cmbOperation.SelectedIndex
         cbMakeChanges.Checked = My.Settings.MakeChanges
 
+        pbLibrary.Image = TMDBImage
+        pbLibrary.SizeMode = PictureBoxSizeMode.StretchImage
+
+        lblLibraryText.Visible = False
+        pbLibrary.Visible = False
+
+        ' Attach event handlers for scrolling
+        'AddHandler lbOriginal.MouseWheel, AddressOf ListBox_MouseWheel
+        'AddHandler lbNew.MouseWheel, AddressOf ListBox_MouseWheel
+
+        'Check to see if we have a valid TVDB token, if not then get one
+        If My.Settings.JWTToken = "" Then
+            Dim mytoken As String = GetJWTToken()
+            My.Settings.JWTToken = mytoken
+        Else
+            Dim mytokenexpired As Boolean = IsJwtExpired(My.Settings.JWTToken)
+            If mytokenexpired = True Then
+                Dim mytoken As String = GetJWTToken()
+                My.Settings.JWTToken = mytoken
+            End If
+        End If
+
         Dim tooltip As New ToolTip()
         ' Set properties for the ToolTip (optional)
         tooltip.AutoPopDelay = 5000  ' Time in milliseconds the tooltip remains visible
@@ -660,6 +776,7 @@ Public Class Main
         tooltip.SetToolTip(btnChangeExample, "Allows the user to set the defaul template for Movie or TV Show titles when renaming")
         tooltip.SetToolTip(btnOriginalFolder, "Sets the root folder for original files for the rename, copy or move process")
         tooltip.SetToolTip(btnNewFolder, "Sets the root folder for the new files after the rename, copy or move process")
+        tooltip.SetToolTip(pbLibrary, "Sets the current library used to gather media information. Click to toggle.")
     End Sub
 
     Private Sub cmbOperation_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbOperation.SelectedIndexChanged
@@ -733,11 +850,11 @@ Public Class Main
         End If
 
         If mediaop = 0 Or mediaop = 1 Then
-                cbTV.Enabled = True
-                cbMovies.Enabled = True
-                cbTV.Checked = True
-                cbTV_CheckedChanged(cbTV, EventArgs.Empty)
-            End If
+            cbTV.Enabled = True
+            cbMovies.Enabled = True
+            cbTV.Checked = True
+            cbTV_CheckedChanged(cbTV, EventArgs.Empty)
+        End If
 
     End Sub
 
@@ -812,7 +929,7 @@ Public Class Main
         End If
 
         If My.Settings.TVEpisodeNumber <> "" Then
-            episodenumber = My.Settings.TVSeasonNumber
+            episodenumber = My.Settings.TVEpisodeNumber
             Select Case episodenumber
                 Case "Leading Zero"
                     If CInt(mediadict("episode")) < 10 Then
@@ -893,7 +1010,7 @@ Public Class Main
         End If
 
         If My.Settings.TVEpisodeNumber <> "" Then
-            episodenumber = My.Settings.TVSeasonNumber
+            episodenumber = My.Settings.TVEpisodeNumber
             Select Case episodenumber
                 Case "Leading Zero"
                     episodenumber = "01"
@@ -995,4 +1112,9 @@ Public Class Main
         cancelprocess = True
     End Sub
 
+
+    Private Sub pbLibrary_Click(sender As Object, e As EventArgs) Handles pbLibrary.Click
+        isTMDB = Not isTMDB
+        pbLibrary.Image = If(isTMDB, TMDBImage, TVDBImage)
+    End Sub
 End Class

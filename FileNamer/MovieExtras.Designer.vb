@@ -137,6 +137,7 @@ Partial Class MovieExtras
         Me.Controls.Add(Me.btnAdd)
         Me.Controls.Add(Me.ListBox2)
         Me.Controls.Add(Me.ListBox1)
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.Name = "MovieExtras"
         Me.Text = "Movie Extras"
         Me.ResumeLayout(False)

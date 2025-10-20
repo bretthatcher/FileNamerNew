@@ -164,7 +164,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="MediaInfoDLL.vb" />
-    <Compile Include="JSON.vb" />
     <Compile Include="MovieExtras.Designer.vb">
       <DependentUpon>MovieExtras.vb</DependentUpon>
     </Compile>
@@ -172,6 +171,12 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="MovieTV.vb" />
+    <Compile Include="Results.Designer.vb">
+      <DependentUpon>Results.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Results.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Settings.Designer.vb">
       <DependentUpon>Settings.vb</DependentUpon>
     </Compile>
@@ -221,6 +226,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MovieExtras.resx">
       <DependentUpon>MovieExtras.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Results.resx">
+      <DependentUpon>Results.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Settings.resx">
       <DependentUpon>Settings.vb</DependentUpon>
@@ -281,6 +289,15 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\tmdb.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\tmdb.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\tvdb.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

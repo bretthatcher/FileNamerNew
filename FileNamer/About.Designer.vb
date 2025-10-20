@@ -87,6 +87,7 @@ Partial Class About
         Me.Controls.Add(Me.lblAuthor)
         Me.Controls.Add(Me.lblWrittenBy)
         Me.Controls.Add(Me.PictureBox1)
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.Name = "About"
         Me.Text = "About"
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()

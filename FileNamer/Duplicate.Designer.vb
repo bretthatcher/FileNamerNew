@@ -72,6 +72,7 @@ Partial Class Duplicate
         Me.Controls.Add(Me.btnSaveExit)
         Me.Controls.Add(Me.PictureBox1)
         Me.Controls.Add(Me.lbDuplicates)
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.Name = "Duplicate"
         Me.Text = "Choose Media Match"
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()

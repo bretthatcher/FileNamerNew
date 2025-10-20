@@ -47,6 +47,11 @@ Partial Class Settings
         Me.lblDefaultOperation = New System.Windows.Forms.Label()
         Me.lblAction = New System.Windows.Forms.Label()
         Me.cmbDefaultAction = New System.Windows.Forms.ComboBox()
+        Me.lblDefaultLibraryTxt = New System.Windows.Forms.Label()
+        Me.cmbDefaultMovieLibrary = New System.Windows.Forms.ComboBox()
+        Me.cmbDefaultTVLibrary = New System.Windows.Forms.ComboBox()
+        Me.lblMovieLibrary = New System.Windows.Forms.Label()
+        Me.lblTVLibrary = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'lblOriginalMovie
@@ -88,7 +93,7 @@ Partial Class Settings
         'cbWriteResults
         '
         Me.cbWriteResults.AutoSize = True
-        Me.cbWriteResults.Location = New System.Drawing.Point(28, 333)
+        Me.cbWriteResults.Location = New System.Drawing.Point(28, 424)
         Me.cbWriteResults.Name = "cbWriteResults"
         Me.cbWriteResults.Size = New System.Drawing.Size(89, 17)
         Me.cbWriteResults.TabIndex = 12
@@ -98,7 +103,7 @@ Partial Class Settings
         'cbSuggestFileName
         '
         Me.cbSuggestFileName.AutoSize = True
-        Me.cbSuggestFileName.Location = New System.Drawing.Point(28, 364)
+        Me.cbSuggestFileName.Location = New System.Drawing.Point(28, 455)
         Me.cbSuggestFileName.Name = "cbSuggestFileName"
         Me.cbSuggestFileName.Size = New System.Drawing.Size(200, 17)
         Me.cbSuggestFileName.TabIndex = 13
@@ -108,7 +113,7 @@ Partial Class Settings
         'cbIndividualFolders
         '
         Me.cbIndividualFolders.AutoSize = True
-        Me.cbIndividualFolders.Location = New System.Drawing.Point(28, 395)
+        Me.cbIndividualFolders.Location = New System.Drawing.Point(28, 486)
         Me.cbIndividualFolders.Name = "cbIndividualFolders"
         Me.cbIndividualFolders.Size = New System.Drawing.Size(108, 17)
         Me.cbIndividualFolders.TabIndex = 14
@@ -118,7 +123,7 @@ Partial Class Settings
         'cbIncludeSubtitleFiles
         '
         Me.cbIncludeSubtitleFiles.AutoSize = True
-        Me.cbIncludeSubtitleFiles.Location = New System.Drawing.Point(28, 461)
+        Me.cbIncludeSubtitleFiles.Location = New System.Drawing.Point(28, 552)
         Me.cbIncludeSubtitleFiles.Name = "cbIncludeSubtitleFiles"
         Me.cbIncludeSubtitleFiles.Size = New System.Drawing.Size(123, 17)
         Me.cbIncludeSubtitleFiles.TabIndex = 15
@@ -128,7 +133,7 @@ Partial Class Settings
         'cbMakeChanges
         '
         Me.cbMakeChanges.AutoSize = True
-        Me.cbMakeChanges.Location = New System.Drawing.Point(28, 494)
+        Me.cbMakeChanges.Location = New System.Drawing.Point(28, 585)
         Me.cbMakeChanges.Name = "cbMakeChanges"
         Me.cbMakeChanges.Size = New System.Drawing.Size(98, 17)
         Me.cbMakeChanges.TabIndex = 16
@@ -138,7 +143,7 @@ Partial Class Settings
         'cbRemoveEmptyFolders
         '
         Me.cbRemoveEmptyFolders.AutoSize = True
-        Me.cbRemoveEmptyFolders.Location = New System.Drawing.Point(28, 428)
+        Me.cbRemoveEmptyFolders.Location = New System.Drawing.Point(28, 519)
         Me.cbRemoveEmptyFolders.Name = "cbRemoveEmptyFolders"
         Me.cbRemoveEmptyFolders.Size = New System.Drawing.Size(243, 17)
         Me.cbRemoveEmptyFolders.TabIndex = 17
@@ -239,7 +244,7 @@ Partial Class Settings
         '
         Me.lblOptions.AutoSize = True
         Me.lblOptions.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblOptions.Location = New System.Drawing.Point(24, 301)
+        Me.lblOptions.Location = New System.Drawing.Point(24, 392)
         Me.lblOptions.Name = "lblOptions"
         Me.lblOptions.Size = New System.Drawing.Size(71, 20)
         Me.lblOptions.TabIndex = 33
@@ -247,7 +252,7 @@ Partial Class Settings
         '
         'btnExit
         '
-        Me.btnExit.Location = New System.Drawing.Point(389, 518)
+        Me.btnExit.Location = New System.Drawing.Point(389, 609)
         Me.btnExit.Name = "btnExit"
         Me.btnExit.Size = New System.Drawing.Size(92, 37)
         Me.btnExit.TabIndex = 34
@@ -258,7 +263,7 @@ Partial Class Settings
         '
         Me.lblDefaultOperation.AutoSize = True
         Me.lblDefaultOperation.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblDefaultOperation.Location = New System.Drawing.Point(24, 211)
+        Me.lblDefaultOperation.Location = New System.Drawing.Point(24, 302)
         Me.lblDefaultOperation.Name = "lblDefaultOperation"
         Me.lblDefaultOperation.Size = New System.Drawing.Size(124, 20)
         Me.lblDefaultOperation.TabIndex = 35
@@ -267,7 +272,7 @@ Partial Class Settings
         'lblAction
         '
         Me.lblAction.AutoSize = True
-        Me.lblAction.Location = New System.Drawing.Point(89, 254)
+        Me.lblAction.Location = New System.Drawing.Point(89, 345)
         Me.lblAction.Name = "lblAction"
         Me.lblAction.Size = New System.Drawing.Size(37, 13)
         Me.lblAction.TabIndex = 36
@@ -278,16 +283,69 @@ Partial Class Settings
         Me.cmbDefaultAction.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cmbDefaultAction.FormattingEnabled = True
         Me.cmbDefaultAction.Items.AddRange(New Object() {"Rename and Move", "Rename and Copy", "Move", "Copy"})
-        Me.cmbDefaultAction.Location = New System.Drawing.Point(141, 252)
+        Me.cmbDefaultAction.Location = New System.Drawing.Point(141, 343)
         Me.cmbDefaultAction.Name = "cmbDefaultAction"
         Me.cmbDefaultAction.Size = New System.Drawing.Size(279, 21)
         Me.cmbDefaultAction.TabIndex = 37
+        '
+        'lblDefaultLibraryTxt
+        '
+        Me.lblDefaultLibraryTxt.AutoSize = True
+        Me.lblDefaultLibraryTxt.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblDefaultLibraryTxt.Location = New System.Drawing.Point(24, 202)
+        Me.lblDefaultLibraryTxt.Name = "lblDefaultLibraryTxt"
+        Me.lblDefaultLibraryTxt.Size = New System.Drawing.Size(240, 20)
+        Me.lblDefaultLibraryTxt.TabIndex = 38
+        Me.lblDefaultLibraryTxt.Text = "Default Library For Renames"
+        '
+        'cmbDefaultMovieLibrary
+        '
+        Me.cmbDefaultMovieLibrary.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cmbDefaultMovieLibrary.FormattingEnabled = True
+        Me.cmbDefaultMovieLibrary.Items.AddRange(New Object() {"The Movie Database (TMDB)", "The TV Database (TVDB)"})
+        Me.cmbDefaultMovieLibrary.Location = New System.Drawing.Point(141, 238)
+        Me.cmbDefaultMovieLibrary.Name = "cmbDefaultMovieLibrary"
+        Me.cmbDefaultMovieLibrary.Size = New System.Drawing.Size(279, 21)
+        Me.cmbDefaultMovieLibrary.TabIndex = 39
+        '
+        'cmbDefaultTVLibrary
+        '
+        Me.cmbDefaultTVLibrary.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cmbDefaultTVLibrary.FormattingEnabled = True
+        Me.cmbDefaultTVLibrary.Items.AddRange(New Object() {"The Movie Database (TMDB)", "The TV Database (TVDB)"})
+        Me.cmbDefaultTVLibrary.Location = New System.Drawing.Point(141, 265)
+        Me.cmbDefaultTVLibrary.Name = "cmbDefaultTVLibrary"
+        Me.cmbDefaultTVLibrary.Size = New System.Drawing.Size(279, 21)
+        Me.cmbDefaultTVLibrary.TabIndex = 40
+        '
+        'lblMovieLibrary
+        '
+        Me.lblMovieLibrary.AutoSize = True
+        Me.lblMovieLibrary.Location = New System.Drawing.Point(89, 241)
+        Me.lblMovieLibrary.Name = "lblMovieLibrary"
+        Me.lblMovieLibrary.Size = New System.Drawing.Size(41, 13)
+        Me.lblMovieLibrary.TabIndex = 41
+        Me.lblMovieLibrary.Text = "Movies"
+        '
+        'lblTVLibrary
+        '
+        Me.lblTVLibrary.AutoSize = True
+        Me.lblTVLibrary.Location = New System.Drawing.Point(89, 268)
+        Me.lblTVLibrary.Name = "lblTVLibrary"
+        Me.lblTVLibrary.Size = New System.Drawing.Size(21, 13)
+        Me.lblTVLibrary.TabIndex = 42
+        Me.lblTVLibrary.Text = "TV"
         '
         'Settings
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(496, 587)
+        Me.ClientSize = New System.Drawing.Size(496, 659)
+        Me.Controls.Add(Me.lblTVLibrary)
+        Me.Controls.Add(Me.lblMovieLibrary)
+        Me.Controls.Add(Me.cmbDefaultTVLibrary)
+        Me.Controls.Add(Me.cmbDefaultMovieLibrary)
+        Me.Controls.Add(Me.lblDefaultLibraryTxt)
         Me.Controls.Add(Me.cmbDefaultAction)
         Me.Controls.Add(Me.lblAction)
         Me.Controls.Add(Me.lblDefaultOperation)
@@ -312,6 +370,7 @@ Partial Class Settings
         Me.Controls.Add(Me.lblOriginalTV)
         Me.Controls.Add(Me.lblRenamedMovie)
         Me.Controls.Add(Me.lblOriginalMovie)
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.Name = "Settings"
         Me.Text = "Options"
         Me.ResumeLayout(False)
@@ -344,4 +403,9 @@ Partial Class Settings
     Friend WithEvents lblDefaultOperation As Label
     Friend WithEvents lblAction As Label
     Friend WithEvents cmbDefaultAction As ComboBox
+    Friend WithEvents lblDefaultLibraryTxt As Label
+    Friend WithEvents cmbDefaultMovieLibrary As ComboBox
+    Friend WithEvents cmbDefaultTVLibrary As ComboBox
+    Friend WithEvents lblMovieLibrary As Label
+    Friend WithEvents lblTVLibrary As Label
 End Class

@@ -93,6 +93,7 @@ Partial Class UndoChanges
         Me.Controls.Add(Me.btnExit)
         Me.Controls.Add(Me.btnUndo)
         Me.Controls.Add(Me.ListView1)
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.Name = "UndoChanges"
         Me.Text = "Undo Changes"
         Me.ResumeLayout(False)

@@ -57,7 +57,11 @@ Partial Class Main
         Me.lblTotalItemsText = New System.Windows.Forms.Label()
         Me.lblProcessingOfText = New System.Windows.Forms.Label()
         Me.btnCancel = New System.Windows.Forms.Button()
+        Me.lblMediaText = New System.Windows.Forms.Label()
+        Me.lblLibraryText = New System.Windows.Forms.Label()
+        Me.pbLibrary = New System.Windows.Forms.PictureBox()
         Me.MenuStrip1.SuspendLayout()
+        CType(Me.pbLibrary, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'MenuStrip1
@@ -203,7 +207,7 @@ Partial Class Main
         'cbMovies
         '
         Me.cbMovies.AutoSize = True
-        Me.cbMovies.Location = New System.Drawing.Point(549, 218)
+        Me.cbMovies.Location = New System.Drawing.Point(550, 135)
         Me.cbMovies.Name = "cbMovies"
         Me.cbMovies.Size = New System.Drawing.Size(60, 17)
         Me.cbMovies.TabIndex = 18
@@ -213,7 +217,7 @@ Partial Class Main
         'cbTV
         '
         Me.cbTV.AutoSize = True
-        Me.cbTV.Location = New System.Drawing.Point(549, 241)
+        Me.cbTV.Location = New System.Drawing.Point(550, 158)
         Me.cbTV.Name = "cbTV"
         Me.cbTV.Size = New System.Drawing.Size(40, 17)
         Me.cbTV.TabIndex = 19
@@ -362,11 +366,42 @@ Partial Class Main
         Me.btnCancel.UseVisualStyleBackColor = True
         Me.btnCancel.Visible = False
         '
+        'lblMediaText
+        '
+        Me.lblMediaText.AutoSize = True
+        Me.lblMediaText.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblMediaText.Location = New System.Drawing.Point(547, 116)
+        Me.lblMediaText.Name = "lblMediaText"
+        Me.lblMediaText.Size = New System.Drawing.Size(43, 16)
+        Me.lblMediaText.TabIndex = 35
+        Me.lblMediaText.Text = "Type"
+        '
+        'lblLibraryText
+        '
+        Me.lblLibraryText.AutoSize = True
+        Me.lblLibraryText.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblLibraryText.Location = New System.Drawing.Point(547, 214)
+        Me.lblLibraryText.Name = "lblLibraryText"
+        Me.lblLibraryText.Size = New System.Drawing.Size(55, 16)
+        Me.lblLibraryText.TabIndex = 36
+        Me.lblLibraryText.Text = "Library"
+        '
+        'pbLibrary
+        '
+        Me.pbLibrary.Location = New System.Drawing.Point(548, 233)
+        Me.pbLibrary.Name = "pbLibrary"
+        Me.pbLibrary.Size = New System.Drawing.Size(61, 40)
+        Me.pbLibrary.TabIndex = 39
+        Me.pbLibrary.TabStop = False
+        '
         'Main
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1105, 502)
+        Me.Controls.Add(Me.pbLibrary)
+        Me.Controls.Add(Me.lblLibraryText)
+        Me.Controls.Add(Me.lblMediaText)
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.lblProcessingOfText)
         Me.Controls.Add(Me.lblTotalItemsText)
@@ -391,12 +426,14 @@ Partial Class Main
         Me.Controls.Add(Me.lbNew)
         Me.Controls.Add(Me.lbOriginal)
         Me.Controls.Add(Me.MenuStrip1)
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MainMenuStrip = Me.MenuStrip1
         Me.Name = "Main"
         Me.Text = "File Namer"
         Me.MenuStrip1.ResumeLayout(False)
         Me.MenuStrip1.PerformLayout()
+        CType(Me.pbLibrary, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -436,4 +473,7 @@ Partial Class Main
     Friend WithEvents lblTotalItemsText As Label
     Friend WithEvents lblProcessingOfText As Label
     Friend WithEvents btnCancel As Button
+    Friend WithEvents lblMediaText As Label
+    Friend WithEvents lblLibraryText As Label
+    Friend WithEvents pbLibrary As PictureBox
 End Class

@@ -29,51 +29,65 @@ Public Class Duplicate
         'lbDuplicates.Items.Add(dupe.title & " (" & dupe.release_date & ")")
         'Next
         'End If
-        Me.Text = "Choose the correct name for: " & mediadict("searchname").ToString & " (" & mediadict("searchyear").ToString & ")"
+        If mediadict("searchyear") = "" Then
+            Me.Text = "Choose the correct name out of the list for: " & mediadict("searchname").ToString
+        Else
+            Me.Text = "Choose the correct name out of the list for: " & mediadict("searchname").ToString & " (" & mediadict("searchyear").ToString & ")"
+        End If
+
+        'Me.Text = "Choose the correct name out of the list for: " & mediadict("searchname").ToString & " (" & mediadict("searchyear").ToString & ")"
 
         Select Case mediatype
             Case "movie"
                 If movies IsNot Nothing AndAlso movies.Count > 0 Then
                     ' Populate the ListBox with movie titles
                     Dim sortedmovies = movies.OrderByDescending(Function(p) p.popularity).ToList()
+                    Dim namewithspace As String = mediadict("searchname").ToString.ToLower & " "
+
                     For Each movie In sortedmovies
-                        If mediadict("searchname").ToString.ToLower() = movie.title.ToLower() And mediadict("searchyear") = movie.release_date Then
+                        If movie.release_date <> "NULL" Then
 
-                            lbDuplicates.Items.Add(movie.title & " (" & movie.release_date & ") (Exact Match)")
+                            If mediadict("searchname").ToString.ToLower() = movie.title.ToLower() And mediadict("searchyear") = movie.release_date Then
 
-                            mediaarray.Add(New MediaDetails With {
-                            .id = movie.id,
-                            .overview = movie.overview,
-                            .poster_path = movie.poster_path,
-                            .release_date = movie.release_date,
-                            .title = movie.title
-                            })
+                                lbDuplicates.Items.Add(movie.title & " (" & movie.release_date & ") (Exact Match)")
 
-                        ElseIf movie.title.ToLower.StartsWith(mediadict("searchname").ToString.ToLower) Then
-                            lbDuplicates.Items.Add(movie.title & " (" & movie.release_date & ")")
+                                mediaarray.Add(New MediaDetails With {
+                                .id = movie.id,
+                                .overview = movie.overview,
+                                .poster_path = movie.poster_path,
+                                .release_date = movie.release_date,
+                                .title = movie.title
+                                })
 
-                            mediaarray.Add(New MediaDetails With {
-                            .id = movie.id,
-                            .overview = movie.overview,
-                            .poster_path = movie.poster_path,
-                            .release_date = movie.release_date,
-                            .title = movie.title
-                            })
+                                'ElseIf movie.title.ToLower.StartsWith(mediadict("searchname").ToString.ToLower) Then
+                            ElseIf mediadict("searchname").ToString.ToLower() = movie.title.ToLower() Or movie.title.ToLower.StartsWith(namewithspace) Then
+                                lbDuplicates.Items.Add(movie.title & " (" & movie.release_date & ")")
 
+                                mediaarray.Add(New MediaDetails With {
+                                .id = movie.id,
+                                .overview = movie.overview,
+                                .poster_path = movie.poster_path,
+                                .release_date = movie.release_date,
+                                .title = movie.title
+                                })
+
+                            End If
                         End If
                     Next
 
                     If mediaarray.Count = 0 Then
                         For Each movie In sortedmovies
-                            lbDuplicates.Items.Add(movie.title & " (" & movie.release_date & ")")
+                            If movie.release_date <> "NULL" Then
+                                lbDuplicates.Items.Add(movie.title & " (" & movie.release_date & ")")
 
-                            mediaarray.Add(New MediaDetails With {
-                                    .id = movie.id,
-                                    .overview = movie.overview,
-                                    .poster_path = movie.poster_path,
-                                    .release_date = movie.release_date,
-                                    .title = movie.title
-                                })
+                                mediaarray.Add(New MediaDetails With {
+                                        .id = movie.id,
+                                        .overview = movie.overview,
+                                        .poster_path = movie.poster_path,
+                                        .release_date = movie.release_date,
+                                        .title = movie.title
+                                    })
+                            End If
                         Next
                     End If
                 End If
@@ -85,10 +99,12 @@ Public Class Duplicate
 
                     'For Each tvshow In tvshows
                     For Each tvshow In sortedtvshows
-                        If mediadict("searchname").ToString.ToLower() = tvshow.title.ToLower() Then
-                            lbDuplicates.Items.Add(tvshow.title & " (" & tvshow.release_date & ") (Exact Match)")
+                        If tvshow.release_date <> "NULL" Then
 
-                            mediaarray.Add(New MediaDetails With {
+                            If mediadict("searchname").ToString.ToLower() = tvshow.title.ToLower() Then
+                                lbDuplicates.Items.Add(tvshow.title & " (" & tvshow.release_date & ") (Exact Match)")
+
+                                mediaarray.Add(New MediaDetails With {
                             .id = tvshow.id,
                             .overview = tvshow.overview,
                             .poster_path = tvshow.poster_path,
@@ -96,32 +112,33 @@ Public Class Duplicate
                             .title = tvshow.title
                             })
 
-                        ElseIf tvshow.title.ToLower.StartsWith(mediadict("searchname").ToString.ToLower) Then
-                            lbDuplicates.Items.Add(tvshow.title & " (" & tvshow.release_date & ")")
+                            ElseIf tvshow.title.ToLower.StartsWith(mediadict("searchname").ToString.ToLower) Then
+                                lbDuplicates.Items.Add(tvshow.title & " (" & tvshow.release_date & ")")
 
-                            mediaarray.Add(New MediaDetails With {
+                                mediaarray.Add(New MediaDetails With {
                            .id = tvshow.id,
                            .overview = tvshow.overview,
                            .poster_path = tvshow.poster_path,
                            .release_date = tvshow.release_date,
                            .title = tvshow.title
                             })
+                            End If
                         End If
-
                     Next
                     If mediaarray.Count = 0 Then
                         'For Each tvshow In tvshows
                         For Each tvshow In sortedtvshows
+                            If tvshow.release_date <> "NULL" Then
+                                lbDuplicates.Items.Add(tvshow.title & " (" & tvshow.release_date & ")")
 
-                            lbDuplicates.Items.Add(tvshow.title & " (" & tvshow.release_date & ")")
-
-                            mediaarray.Add(New MediaDetails With {
-                            .id = tvshow.id,
-                            .overview = tvshow.overview,
-                            .poster_path = tvshow.poster_path,
-                            .release_date = tvshow.release_date,
-                            .title = tvshow.title
-                        })
+                                mediaarray.Add(New MediaDetails With {
+                                .id = tvshow.id,
+                                .overview = tvshow.overview,
+                                .poster_path = tvshow.poster_path,
+                                .release_date = tvshow.release_date,
+                                .title = tvshow.title
+                            })
+                            End If
                         Next
                     End If
 
@@ -147,7 +164,7 @@ Public Class Duplicate
         PictureBox1.Image?.Dispose()
         PictureBox1.Image = Nothing
         If mediaarray(lbDuplicates.SelectedIndex).poster_path <> "" Then
-            Dim tempImagePath As String = Get_HTTP_Image("https://image.tmdb.org/t/p/w500" & mediaarray(lbDuplicates.SelectedIndex).poster_path)
+            Dim tempImagePath As String = Get_HTTP_Image(mediaarray(lbDuplicates.SelectedIndex).poster_path)
             PictureBox1.Image = Image.FromFile(tempImagePath)
         End If
 
